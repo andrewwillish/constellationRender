@@ -114,7 +114,7 @@ def setupJobTable():
         #Create constellationJobTable to record submitted job
         connectionVar.execute("CREATE TABLE constellationJobTable "\
                 "(jobId INTEGER PRIMARY KEY AUTOINCREMENT,"\
-            "jobUuid CHAR(50) NOT NULL,"\
+            "jobUuid CHAR(50) NOT NULL UNIQUE,"\
             "jobProject CHAR(50) NOT NULL,"\
             "jobUser CHAR(50) NOT NULL,"\
             "jobSoftware CHAR(50) NOT NULL,"\
@@ -124,12 +124,12 @@ def setupJobTable():
             "jobFrameEnd CHAR(50) NOT NULL,"\
             "jobLayer CHAR(50) NOT NULL,"\
             "jobStatus CHAR(50) NOT NULL,"\
-            "jobBlock CHAR(50) NOT NULL,"\
+            "jobBlocked CHAR(50) NOT NULL,"\
             "jobRegistered DATETIME DEFAULT CURRENT_TIMESTAMP,"\
             "jobPriority CHAR(50) NOT NULL,"\
             "jobCamera CHAR(50),"\
             "jobClassification CHAR(50),"\
-            "jobAvRenderTime CHAR(50))")
+            "jobRenderTime CHAR(50))")
         connectionVar.commit()
         returnVar=1
     except:
@@ -167,10 +167,13 @@ def setupClientTable():
         #Create constellationClientTable to record working client
         connectionVar.execute("CREATE TABLE constellationClientTable "\
                 "(clientId INTEGER PRIMARY KEY AUTOINCREMENT,"\
-            "clientName CHAR(50)  NOT NULL,"\
+            "clientName CHAR(50) NOT NULL, UNIQUE,"\
             "clientJob CHAR(50),"\
+            "clientBlocked CHAR(50),"\
             "clientMemory CHAR(50),"\
             "clientThread CHAR(50),"\
+            "clientWorkMemory CHAR(50),"\
+            "clientWorkThread CHAR(50),"\
             "clientClassification CHAR(50),"\
             "clientStatus CHAR(50) NOT NULL)")
         connectionVar.commit()

@@ -1,7 +1,133 @@
-#Shepard render notes
+Shepard render notes
 
-jobEnabler [ENABLED, DISABLED]
-jobStatus [QUEUE, RENDERING, DONE]
-clientBlocked [ACTIVE, SUSPENDED, SUSPENDED-RDRR, STOPPING,STOPPING-OFF]
-clientFullForce [STANDARD, MAXIMUM]
-clientStatus [STANDBY, RENDERING, COOLDOWN, SUSPENDED,OFFLINE]
+[Things to do]
+
+2014/9/8 [DONE]
+Test render to local by changing the render destination in batch script.
+*-------------------------------------------------------------------------------------
+<pathToRenderer> -rd <"localTarget"> -fnc <"fileNamingConvention"> -im <"imageName"> <renderFilePath>
+"C:\Program Files\Autodesk\Maya2013.5\bin\Render.exe" -rd "D:\test" -fnc "name_#.ext" -im "test" "C:\Users\andrew.willis\Desktop\localTestRender.ma"
+*-------------------------------------------------------------------------------------
+
+2014/9/8 [PENDING]
+Test daemon service including make database connection. Pending to wait the service script done
+
+2014/9/8 [DONE]
+Error return test.
+*-------------------------------------------------------------------------------------
+import subprocess
+from subprocess import Popen, PIPE
+from threading import Thread
+
+proc= subprocess.Popen(['dir'],shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+
+print proc.stderr.readline()
+*-------------------------------------------------------------------------------------
+
+2014/9/8 [DONE]
+Comparing working hour epoch from one another to determine elapsed time.
+*-------------------------------------------------------------------------------------
+import calendar
+import time
+
+print calendar.timegm(time.gmtime())
+
+time.sleep(5)
+
+print calendar.timegm(time.gmtime())
+*-------------------------------------------------------------------------------------
+*-------------------------------------------------------------------------------------
+from datetime import datetime, timedelta
+
+sec=timedelta(seconds=1000)
+print sec
+d=datetime(1,1,1)+sec
+
+print("%d:%d:%d:%d" % (d.day-1, d.hour, d.minute, d.second))
+*-------------------------------------------------------------------------------------
+
+2014/9/8
+Make client workflow
+
+2014/9/8
+Ensure client working flawlessly, build client integrity test system.
+
+[Database Roster]
+constellationJobTable
+-jobId              :<assigned by database>
+-jobUuid            :<assigned by system generated code>
+-jobProject         :string project
+-jobUser            :string user submitter
+-jobSoftware        :string software used [maya-mray, maya-vray, maya-hardware,maya-software,nuke]
+-jobScriptPath      :string job path
+-jobTargetPath      :string job render output directory
+-jobFrameStart      :string job frame start
+-jobFrameEnd        :string job frame end
+-jobLayer           :string job layer
+-jobStatus          :string job status [QUEUE,RENDERING,HALT,DONE,ERROR]
+-jobBlocked         :string job disability [ENABLED,DISABLED]
+-jobRegistered      :date job registered time stamp
+-jobPriority        :string job priority [0-99]
+-jobCamera          :string job renderable camera
+-jobClassification  :string job classification [A-Z]
+-jobRenderTime      :string job render time
+
+constellationlogTable
+-logId              :<assigned by database>
+-clientName         :string client name
+-jobUuid            :job Uuid
+-logDescription     :string description of the log or error report
+-logRegistered      :timestamp of the registered log
+
+constellationClientTable
+-clientId           :<assigned by database>
+-clientName         :string client name
+-clientJob          :string client current job Uuid
+-clientBlocked      :string client block status [ENABLED,DISABLED]
+-clientMemory       :string client memory limit
+-clientThread       :string client thread limit
+-clientWorkMemory   :string client work hour memory limit
+-clientWorkThread   :string client work hour thread limit
+-clientStatus       :string client current status [STANDBY,OFFLINE,]
+-clientClassification   :string client classification
+
+[New Feature for 4.0]
+Hail:
+Client will communicate one another to check whether the other client who's rendering
+is still running or not. If the other client did not running while the job status is rendering
+(which can only means a stall), the current client will re-render the stalled job.
+Hail procedure will also invoked when a controller being started up to ensure actual
+information being served to the artist
+
+Error Return:
+The batch render process will now able to return any error encountered during rendering.
+If there is any error fatal enough to fail the render process, CR will disable the job,
+report it in log and move on to the next job.
+
+Classification:
+Classify client and job into alphabetical classification which can be used to route specific
+job to specific client. Advisably to classify client based on the rendering power.
+
+Average Render Time:
+Count average per frame render time. CR do this by recording the time at the start of the render
+then compare it with the time end of the render then divide it with total frame of the block.
+
+Contained Render Process:
+Render will render to local client first then copy it in bulk to the server instead than render
+straight away to server. This will reduce network traffic and give more leeway for the file reading
+process.
+
+Service Client:
+Client converted to daemonized service which still run even though the computer being logged off.
+This will ensure continuity of the system.
+
+Memory and Thread Control:
+Client can adjust the memory and thread reserved for rendering making the artist to be able to user
+the computer while rendering mini render job.
+
+Working Hour:
+Client can be scheduled when to start and when to stop rendering on specific day.
+
+Log Report:
+See what happen to job during their voyage in sea of CR database. The artist can troubleshoot easily
+as the render report will also included in the report.
