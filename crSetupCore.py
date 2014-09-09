@@ -30,9 +30,9 @@ def addRenderer( nameVar, pathVar):
     elif nameVar==1:
         nameVar='maya-vray'
     elif nameVar==2:
-        nameVar='maya-hardware'
+        nameVar='maya-hw'
     elif nameVar==3:
-        nameVar='maya-software'
+        nameVar='maya-sw'
     elif nameVar==4:
         nameVar='nuke'
     else:
@@ -110,23 +110,23 @@ def setupJobTable():
         connectionVar=sqlite3.connect('constellationDatabase.db')
 
     try:
-        connectionVar=sqlite3.connect('constellationDatabase.db')
+        connectionVar=sqlite3.connect(rootPathVar+'/constellationDatabase.db')
         #Create constellationJobTable to record submitted job
         connectionVar.execute("CREATE TABLE constellationJobTable "\
                 "(jobId INTEGER PRIMARY KEY AUTOINCREMENT,"\
-            "jobUuid CHAR(50) NOT NULL UNIQUE,"\
+            "jobUuid CHAR(50) NOT NULL,"\
             "jobProject CHAR(50) NOT NULL,"\
             "jobUser CHAR(50) NOT NULL,"\
             "jobSoftware CHAR(50) NOT NULL,"\
-            "jobScriptPath CHAR(50) NOT NULL,"\
-            "jobTargetPath CHAR(50) NOT NULL,"\
-            "jobFrameStart CHAR(50) NOT NULL,"\
-            "jobFrameEnd CHAR(50) NOT NULL,"\
-            "jobLayer CHAR(50) NOT NULL,"\
-            "jobStatus CHAR(50) NOT NULL,"\
-            "jobBlocked CHAR(50) NOT NULL,"\
+            "jobScriptPath CHAR(50),"\
+            "jobTargetPath CHAR(50),"\
+            "jobFrameStart CHAR(50),"\
+            "jobFrameEnd CHAR(50),"\
+            "jobLayer CHAR(50),"\
+            "jobStatus CHAR(50),"\
+            "jobBlocked CHAR(50),"\
             "jobRegistered DATETIME DEFAULT CURRENT_TIMESTAMP,"\
-            "jobPriority CHAR(50) NOT NULL,"\
+            "jobPriority CHAR(50),"\
             "jobCamera CHAR(50),"\
             "jobClassification CHAR(50),"\
             "jobRenderTime CHAR(50))")
@@ -142,7 +142,7 @@ def setupLogTable():
         connectionVar=sqlite3.connect('constellationDatabase.db')
 
     try:
-        connectionVar=sqlite3.connect('constellationDatabase.db')
+        connectionVar=sqlite3.connect(rootPathVar+'/constellationDatabase.db')
         #Create constellationClientTable to record working client
         connectionVar.execute("CREATE TABLE constellationLogTable "\
                 "(logId INTEGER PRIMARY KEY AUTOINCREMENT,"\
@@ -160,14 +160,14 @@ def setupLogTable():
 def setupClientTable():
     #Setup main database called constellationDatabase.db
     if os.path.isfile(rootPathVar+'/constellationDatabase.db')==False:
-        connectionVar=sqlite3.connect('constellationDatabase.db')
+        connectionVar=sqlite3.connect(rootPathVar+'/constellationDatabase.db')
 
     try:
-        connectionVar=sqlite3.connect('constellationDatabase.db')
+        connectionVar=sqlite3.connect(rootPathVar+'/constellationDatabase.db')
         #Create constellationClientTable to record working client
         connectionVar.execute("CREATE TABLE constellationClientTable "\
                 "(clientId INTEGER PRIMARY KEY AUTOINCREMENT,"\
-            "clientName CHAR(50) NOT NULL, UNIQUE,"\
+            "clientName CHAR(50) NOT NULL UNIQUE,"\
             "clientJob CHAR(50),"\
             "clientBlocked CHAR(50),"\
             "clientMemory CHAR(50),"\
@@ -175,11 +175,22 @@ def setupClientTable():
             "clientWorkMemory CHAR(50),"\
             "clientWorkThread CHAR(50),"\
             "clientClassification CHAR(50),"\
-            "clientStatus CHAR(50) NOT NULL)")
+            "clientStatus CHAR(50))")
         connectionVar.commit()
         returnVar=1
     except Exception as e:
         print str(e)
+        returnVar=0
+    return returnVar
+
+def setupConfiguration():
+    #Generating renderer.xml to record renderer
+    if os.path.isfile(rootPathVar+'/config.xml')==False:
+        root=ET.Element('root')
+        tree=ET.ElementTree(root)
+        tree.write(rootPathVar+'/config.xml')
+        returnVar=1
+    else:
         returnVar=0
     return returnVar
 

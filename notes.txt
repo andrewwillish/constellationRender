@@ -1,7 +1,7 @@
 Shepard render notes
 
 [Things to do]
-
+============================================================================================
 2014/9/8 [DONE]
 Test render to local by changing the render destination in batch script.
 *-------------------------------------------------------------------------------------
@@ -46,13 +46,15 @@ d=datetime(1,1,1)+sec
 print("%d:%d:%d:%d" % (d.day-1, d.hour, d.minute, d.second))
 *-------------------------------------------------------------------------------------
 
-2014/9/8
+2014/9/8 [DONE]
 Make client workflow
 
 2014/9/8
 Ensure client working flawlessly, build client integrity test system.
+============================================================================================
 
 [Database Roster]
+============================================================================================
 constellationJobTable
 -jobId              :<assigned by database>
 -jobUuid            :<assigned by system generated code>
@@ -90,8 +92,10 @@ constellationClientTable
 -clientWorkThread   :string client work hour thread limit
 -clientStatus       :string client current status [STANDBY,OFFLINE,]
 -clientClassification   :string client classification
+============================================================================================
 
 [New Feature for 4.0]
+============================================================================================
 Hail:
 Client will communicate one another to check whether the other client who's rendering
 is still running or not. If the other client did not running while the job status is rendering
@@ -131,3 +135,4 @@ Client can be scheduled when to start and when to stop rendering on specific day
 Log Report:
 See what happen to job during their voyage in sea of CR database. The artist can troubleshoot easily
 as the render report will also included in the report.
+============================================================================================

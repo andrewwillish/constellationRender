@@ -10,7 +10,7 @@ import getpass
 
 #Determining root path
 #Note: hard code root path to fit with current studio mapping.
-rootPathVar='A:/visualExpert/development/constellationRender/'
+rootPathVar='E:/development/constellationRender/'
 
 def launcherscr(scr,srvrname):
     try:

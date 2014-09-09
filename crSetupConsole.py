@@ -9,8 +9,7 @@ import crSetupCore
 class constellationRenderConsoleClass:
     def __init__(self):
         #Welcome message
-        self.statPrint('Constellation Render Manager 3.0')
-        self.statPrint('Setup Console')
+        print 'Constellation Render Manager 4.0 - Setup Console'
         print ''
         #invoking main menu looping around to keep asking for new order
         while True:
@@ -37,21 +36,25 @@ class constellationRenderConsoleClass:
         return
 
     def deleteRdrrFun(self):
+        self.listRdrrFun()
+        self.statPrint('type x to cancel deleting file')
         rendererVar=raw_input('enter renderer name >> ')
-        if rendererVar=='':
-            self.statPrint('empty renderer specified')
-        try:
-            crSetupCore.deleteRenderer(rendererVar)
-            self.statPrint(str(rendererVar)+' renderer removed')
-        except Exception as e:
-            self.statPrint('error : '+str(e))
+        if rendererVar != 'x':
+            if rendererVar=='':
+                self.statPrint('empty renderer specified')
+            try:
+                crSetupCore.deleteRenderer(rendererVar)
+                self.statPrint(str(rendererVar)+' renderer removed')
+            except Exception as e:
+                self.statPrint('error : '+str(e))
         return
 
     def listRdrrFun(self):
         try:
+            self.statPrint('available renderer:')
             allRendererLis=crSetupCore.listRenderer()
             for chk in allRendererLis:
-                self.statPrint(chk)
+                print chk
         except Exception as e:
             self.statPrint(str(e))
         return
@@ -82,6 +85,11 @@ class constellationRenderConsoleClass:
             self.statPrint('renderer list created')
         else:
             self.statPrint('failed to create renderer list')
+        repVar=crSetupCore.setupConfiguration()
+        if repVar==1:
+            self.statPrint('Config file created')
+        else:
+            self.statPrint('failed to create config file')
         return
 
     def printHelp(self):
@@ -100,7 +108,7 @@ class constellationRenderConsoleClass:
         timeVar=str(nowVar.hour)+':'+str(nowVar.minute)+':'+str(nowVar.second)+' '+str(nowVar.year)+'/'+\
                                                             str(nowVar.month)+'/'+str(nowVar.day)
         #Print to screen output
-        print '[SETUP - '+str(timeVar)+'] '+str(textVar)
+        print '['+str(timeVar)+'] '+str(textVar)
         return
 
 constellationRenderConsoleClass()
