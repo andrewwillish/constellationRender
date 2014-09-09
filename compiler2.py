@@ -7,7 +7,7 @@ except:
     pass
 
 try:
-    import crClientCore
-    reload (crClientCore)
+    import crClientService
+    reload (crClientService)
 except:
     pass

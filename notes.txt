@@ -86,10 +86,10 @@ constellationClientTable
 -clientName         :string client name
 -clientJob          :string client current job Uuid
 -clientBlocked      :string client block status [ENABLED,DISABLED]
--clientMemory       :string client memory limit
--clientThread       :string client thread limit
--clientWorkMemory   :string client work hour memory limit
--clientWorkThread   :string client work hour thread limit
+-clientMemory       :string client memory limit [-1 means unlimited]
+-clientThread       :string client thread limit [-1 means unlimited]
+-clientWorkMemory   :string client work hour memory limit [-1 means unlimited]
+-clientWorkThread   :string client work hour thread limit [-1 means unlimited]
 -clientStatus       :string client current status [STANDBY,OFFLINE,]
 -clientClassification   :string client classification
 ============================================================================================
