@@ -3,7 +3,7 @@ __author__ = 'Andrewwillish'
 #Constellation Render Manager - Client Console
 #Andrew Willis 2014
 
-import crClientCore, os
+import crClientCore, os, time, sys
 
 class crClientConsoleClass:
     def __init__(self):
@@ -32,9 +32,22 @@ class crClientConsoleClass:
             print ''
         return
 
+    def printHelp(self, *args):
+        print 'Constellation Render Manager 4.0 - Client Console Help'
+        print ''
+        print 'help-show this help menu'
+        print 'setup-setup client in this computer'
+        print 'changeClass-change current client classification'
+        print 'startClient-start client rendering service (separate instruction will be executed)'
+        print 'exit-close this console'
+        return
+
     def startClientFun(self,*args):
         #start client service externally without waiting for error
-        #error watching will be betwee client service and the renderer
+        #error watching will be between client service and the renderer
+
+        #temporarily client service will be started directly during development
+        #stage for ease of debuggin (damn I'm tired)
         os.startfile()
         return
 
@@ -45,6 +58,7 @@ class crClientConsoleClass:
                 crClientCore.setupClient(classification=classVar)
             except Exception as e:
                 self.statPrint(str(e))
+            self.statPrint('client registered to database')
         else:
             self.statPrint('invalid classification input')
         return
@@ -68,3 +82,5 @@ class crClientConsoleClass:
         #Print to screen output
         print '['+str(timeVar)+'] '+str(textVar)
         return
+
+crClientConsoleClass()
