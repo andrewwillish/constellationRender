@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/constellationRender.iml" filepath="$PROJECT_DIR$/.idea/constellationRender.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../networkRunTest/.idea/networkRunTest.iml" filepath="$PROJECT_DIR$/../networkRunTest/.idea/networkRunTest.iml" />
     </modules>
   </component>
 </project>

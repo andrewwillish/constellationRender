@@ -66,7 +66,6 @@ def instructionFunc():
     clientStat=clientSetting[8]
     clientClass=clientSetting[9]
 
-    raise StandardError, 'blocked'
     #Check client activation status
     if clientSetting[3]=='ACTIVE':
         #Fetch all job array
