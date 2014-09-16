@@ -90,8 +90,9 @@ constellationClientTable
 -clientThread       :string client thread limit [-1 means unlimited]
 -clientWorkMemory   :string client work hour memory limit [-1 means unlimited]
 -clientWorkThread   :string client work hour thread limit [-1 means unlimited]
--clientStatus       :string client current status [STANDBY,OFFLINE,RENDERING,ERROR]
 -clientClassification   :string client classification
+-clientStatus       :string client current status [STANDBY,OFFLINE,RENDERING,ERROR]
+
 ============================================================================================
 
 [New Feature for 4.0]

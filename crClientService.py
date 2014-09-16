@@ -5,7 +5,7 @@ __author__ = 'andrew.willis'
 
 #Module import
 import os, shutil, sys, sqlite3, imp, time, threading, thread
-import hashlib, time, datetime, socket, subprocess
+import hashlib, datetime, socket, subprocess
 from multiprocessing import Process
 import xml.etree.cElementTree as ET
 from threading import Thread
@@ -39,6 +39,10 @@ def startService():
         os.makedirs(systemRootVar+'/crClient')
         os.makedirs(systemRootVar+'/crClient/tempRender')
 
+    #set client to enabled
+    connectionVar.execute("UPDATE constellationClienTable SET"\
+        " clientBlocked='ENABLED' WHERE clientName='"+str(clientName)+"'")
+
     #Executing instruction function
     while True:
         instructionFunc()
@@ -63,13 +67,14 @@ def instructionFunc():
     clientThread=clientSetting[5]
     clientWorkMem=clientSetting[6]
     clientWorkThread=clientSetting[7]
-    clientStat=clientSetting[8]
-    clientClass=clientSetting[9]
+    clientClass=clientSetting[8]
+    clientStat=clientSetting[9]
 
     #Check client activation status
-    if clientSetting[3]=='ACTIVE':
+    if clientSetting[3]=='ENABLED':
         #Fetch all job array
-        allJobLis=connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobEnabler='ENABLED' AND jobStatus='QUEUE'").fetchall()
+        allJobLis=connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobEnabler='ENABLED' "\
+            "AND jobStatus='QUEUE'").fetchall()
 
         #Check if array result is empty. Empty list mean there are neither ENABLED or QUEUE job in database
         if allJobLis!=[]:
@@ -83,10 +88,11 @@ def instructionFunc():
             #Based on the highest priority searched, get the latest job in database
             jobToRender=None
             for jobRecord in allJobLis:
-                if jobToRender==None:
-                    if int(jobRecord[13])==highestPrior:
-                        jobToRender=jobRecord
+                if int(jobRecord[13])==highestPrior:
+                    jobToRender=jobRecord
 
+            print jobToRender
+            raise StandardError, 'block'
             #Determine and fetch renderer path from renderer.xml
             rendererVar=str(jobToRender[4])
 
@@ -144,7 +150,7 @@ def instructionFunc():
                 #subprocess.call(renderCommandVar,startupinfo=startupinfo)
 
                 #dummy render process
-                import random,time
+                import random
                 error=random.randint(1,10)
                 if error>7:
                     #make error command line
