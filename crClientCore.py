@@ -18,8 +18,7 @@ if os.path.isfile(rootPathVar+'/constellationDatabase.db')==False:
     raise StandardError, 'error : constellation database non-exists'
 connectionVar=sqlite3.connect('constellationDatabase.db')
 
-#Determining client name
-clientName=str(socket.gethostname())
+
 
 #Determining system root
 systemRootVar = str(os.environ['WINDIR']).replace('\\Windows','')

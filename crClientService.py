@@ -26,20 +26,22 @@ systemRootVar = str(os.environ['WINDIR']).replace('\\Windows','')
 
 #This function start cyclic process only in client module.
 def startService():
-    #Check if the client has been regstered to the database or not
+    #Check if the client has been registered to the database
     allClientLis=connectionVar.execute("SELECT * FROM constellationClientTable")
     templis=[]
-    print 'all client in server'
     for chk in allClientLis:
-        print chk
         templis.append(chk[1])
-
     if clientName not in templis:
         raise StandardError, 'error : client has not been registered'
 
+    #check local workspace made
+    if os.path.isdir(systemRootVar+'/crClient')==False:
+        os.makedirs(systemRootVar+'/crClient')
+        os.makedirs(systemRootVar+'/crClient/tempRender')
+
     #Executing instruction function
-    #while True:
-    #    instructionFunc()
+    while True:
+        instructionFunc()
     return
 
 #continue with render job tackling algorithm. lets go we can do this. damn im super tired.
@@ -49,7 +51,22 @@ def startService():
 def instructionFunc():
     #Fetch client setting from database
     clientSetting=(connectionVar.execute("SELECT * FROM constellationClientTable WHERE clientName='"\
-                                        +str(socket.gethostname())+"'").fetchall())[0]
+                                        +str(socket.gethostname())+"'").fetchall())
+    if len(clientSetting)!=1:
+        raise StandardError, 'error : database respond anomaly'
+    clientSetting=clientSetting[0]
+    clientId=clientSetting[0]
+    clientName=clientSetting[1]
+    clientJob=clientSetting[2]
+    clientBlocker=clientSetting[3]
+    clientMemory=clientSetting[4]
+    clientThread=clientSetting[5]
+    clientWorkMem=clientSetting[6]
+    clientWorkThread=clientSetting[7]
+    clientStat=clientSetting[8]
+    clientClass=clientSetting[9]
+
+    raise StandardError, 'blocked'
     #Check client activation status
     if clientSetting[3]=='ACTIVE':
         #Fetch all job array

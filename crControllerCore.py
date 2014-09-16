@@ -16,6 +16,51 @@ if os.path.isfile(rootPathVar+'/constellationDatabase.db')==False:
     raise StandardError, 'error : constellation database non-exists'
 connectionVar=sqlite3.connect('constellationDatabase.db')
 
+#This function start cyclic process only in client module.
+def setupClient(client=None,classification=None):
+    #validate classification
+    if classification==None or client==None:
+        raise StandardError, 'error : client classification not specified'
+
+    #Register client to database
+    try:
+        connectionVar.execute("INSERT INTO constellationClientTable "\
+            "("\
+            "clientName,clientBlocked,clientMemory,clientThread,clientWorkMemory,clientWorkThread,clientStatus,clientClassification)"\
+            "VALUES ("\
+            "'"+str(client)+"',"\
+            "'DISABLED',"\
+            "'-1',"\
+            "'-1',"\
+            "'-1',"\
+            "'-1',"\
+            "'OFFLINE',"\
+            "'"+str(classification)+"')")
+        connectionVar.commit()
+    except Exception as e:
+        raise StandardError, str(e)
+
+    #create local workspace
+    try:
+        if os.path.isdir(rootPathVar+'/crClient/renderTemp')==False:
+            os.makedirs(rootPathVar+'/crClient/renderTemp')
+    except Exception as e:
+        raise StandardError, str(e)
+    return
+
+def changeClass(client=None,classification=None):
+    #validate classification
+    if classification==None or client==None:
+        raise StandardError, 'error : client classification or name are not specified'
+
+    try:
+        connectionVar.execute("UPDATE constellationClientTable "\
+            "SET clientClassification='"+str(classification)+"' WHERE clientName='"+str(client)+"'")
+        connectionVar.commit()
+    except Exception as e:
+        raise StandardError, str(e)
+    return
+
 #This function list all recorded job.
 def listAllJob():
     returnLis=(connectionVar.execute("SELECT * FROM constellationJobTable")).fetchall()

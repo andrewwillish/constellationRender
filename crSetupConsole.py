@@ -93,13 +93,14 @@ class constellationRenderConsoleClass:
         return
 
     def printHelp(self):
-        self.statPrint('-+ Constellation Render Manager Setup Help +-')
-        self.statPrint('setup - setup constellation render manager dependencies')
-        self.statPrint('addRdrr - add new renderer')
-        self.statPrint('listRdrr - list all recorded renderer')
-        self.statPrint('delRdrr - delete recorded renderer')
-        self.statPrint('exit - exit setup')
-        self.statPrint('help - view help menu')
+        print 'Constellation Render Manager 4.0 - Setup Console Help'
+        print ''
+        print 'setup\t\t- setup constellation render manager dependencies'
+        print 'addRdrr\t\t- add new renderer'
+        print 'listRdrr\t- list all recorded renderer'
+        print 'delRdrr\t\t- delete recorded renderer'
+        print 'exit\t\t- exit setup'
+        print 'help\t\t- view help menu'
         return
 
     def statPrint(self,textVar):
