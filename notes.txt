@@ -84,7 +84,7 @@ constellationlogTable
 constellationClientTable
 -clientId           :<assigned by database>
 -clientName         :string client name
--clientJob          :string client current job Uuid
+-clientJob          :string client current job id
 -clientBlocked      :string client block status [ENABLED,DISABLED]
 -clientMemory       :string client memory limit [-1 means unlimited]
 -clientThread       :string client thread limit [-1 means unlimited]

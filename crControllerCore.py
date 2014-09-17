@@ -11,6 +11,9 @@ import xml.etree.cElementTree as ET
 #Determining root path
 rootPathVar=os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
 
+#Determining system root
+systemRootVar = str(os.environ['WINDIR']).replace('\\Windows','')
+
 #Connect to database
 if os.path.isfile(rootPathVar+'/constellationDatabase.db')==False:
     raise StandardError, 'error : constellation database non-exists'
@@ -42,8 +45,39 @@ def setupClient(client=None,classification=None):
 
     #create local workspace
     try:
-        if os.path.isdir(rootPathVar+'/crClient/renderTemp')==False:
-            os.makedirs(rootPathVar+'/crClient/renderTemp')
+        print systemRootVar+'/crClient/renderTemp'
+        if os.path.isdir(systemRootVar+'/crClient/renderTemp')==False:
+            os.makedirs(systemRootVar+'/crClient/renderTemp')
+            os.makedirs(systemRootVar+'/crClient/data')
+    except Exception as e:
+        raise StandardError, str(e)
+
+    #create working hour .xml
+    try:
+        root=ET.Element("root")
+        sunday=ET.SubElement(root,'sunday')
+        sunday.set('workHourStart','-')
+        sunday.set('workHourEnd','-')
+        monday=ET.SubElement(root,'monday')
+        monday.set('workHourStart','0800AM')
+        monday.set('workHourEnd','1000PM')
+        tuesday=ET.SubElement(root,'tuesday')
+        tuesday.set('workHourStart','0800AM')
+        tuesday.set('workHourEnd','1000PM')
+        wednesday=ET.SubElement(root,'wednesday')
+        wednesday.set('workHourStart','0800AM')
+        wednesday.set('workHourEnd','1000PM')
+        thursday=ET.SubElement(root,'thursday')
+        thursday.set('workHourStart','0800AM')
+        thursday.set('workHourEnd','1000PM')
+        friday=ET.SubElement(root,'friday')
+        friday.set('workHourStart','0800AM')
+        friday.set('workHourEnd','1000PM')
+        saturday=ET.SubElement(root,'saturday')
+        saturday.set('workHourStart','-')
+        saturday.set('workHourEnd','-')
+        tree=ET.ElementTree(root)
+        tree.write(systemRootVar+'/crClient/data/workHour.xml')
     except Exception as e:
         raise StandardError, str(e)
     return
