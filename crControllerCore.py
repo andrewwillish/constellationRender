@@ -33,10 +33,10 @@ def setupClient(client=None,classification=None):
             "VALUES ("\
             "'"+str(client)+"',"\
             "'DISABLED',"\
-            "'-1',"\
-            "'-1',"\
-            "'-1',"\
-            "'-1',"\
+            "'0',"\
+            "'0',"\
+            "'0',"\
+            "'0',"\
             "'OFFLINE',"\
             "'"+str(classification)+"')")
         connectionVar.commit()

@@ -134,11 +134,11 @@ def instructionFunc(clientSetting):
                 useThread=str(clientSetting[4])
                 useMemory=str(clientSetting[5])
         else:
-            useThread='-1'
-            useMemory='-1'
+            useThread='0'
+            useMemory='0'
         #THREAD AND MEMORY==================================================================================================
 
-        if not useThread=='0' or not useMemory=='0':
+        if not useThread=='-1' or not useMemory=='-1':
             jobToRender=None
             #HAIL==========================================================================================================
             #hail transfer stalled job from one system to another by
@@ -200,6 +200,10 @@ def instructionFunc(clientSetting):
                 elif jobToRender[4]=='maya-vray':
                     vrayRenderer(clientSetting,jobToRender)
             #RENDERER======================================================================================================
+        else:
+            statPrint('client disabled - work mem and thread block')
+    else:
+        statPrint('client disabled - database block')
     return
 
 def statPrint(textVar):

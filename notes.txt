@@ -20,7 +20,6 @@ from subprocess import Popen, PIPE
 from threading import Thread
 
 proc= subprocess.Popen(['dir'],shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-
 print proc.stderr.readline()
 *-------------------------------------------------------------------------------------
 
