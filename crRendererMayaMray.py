@@ -4,8 +4,13 @@ __author__ = 'Andrewwillish'
 #Maya Mental Ray
 
 #import module
-import os, time, shutil, datetime, subprocess
+import os, time, shutil, datetime, subprocess, sys, sqlite3, socket
 import xml.etree.cElementTree as ET
+
+import crControllerCore
+
+#get client name
+clientName=str(socket.gethostname())
 
 #Determining system root
 systemRootVar = str(os.environ['WINDIR']).replace('\\Windows','')
@@ -13,9 +18,19 @@ systemRootVar = str(os.environ['WINDIR']).replace('\\Windows','')
 #Determining root path
 rootPathVar=os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
 
-def render(clientSetting, jobToRender, useThread, useMemory):
-    #CHANGE CLIENT AND JOB STATUS======================================================================================
+#Connect to database
 
+def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
+    #CHANGE CLIENT AND JOB STATUS======================================================================================
+    #change client status to RENDERING
+    connectionVar.execute("UPDATE constellationClientTable SET clientStatus='RENDERING' "\
+        ",clientJob='"+str(jobToRender[0])+"'"
+        "WHERE clientName='"+clientName+"'")
+    connectionVar.commit()
+
+    #change job status to RENDERING
+    connectionVar.execute("UPDATE constellationJobTable SET jobStatus='RENDERING' WHERE jobId='"+str(jobToRender[0])+"'")
+    connectionVar.commit()
     #CHANGE CLIENT AND JOB STATUS======================================================================================
 
     #GET RENDERER======================================================================================================
@@ -28,10 +43,11 @@ def render(clientSetting, jobToRender, useThread, useMemory):
             if str(chk.tag)==str(jobToRender[4]):
                 rendererPath= chk.text
     #GET RENDERER======================================================================================================
+    rendererPath=None
 
     if rendererPath!=None:
         #<pathToRenderer> -rd <"localTarget"> -fnc <"fileNamingConvention"> -im <"imageName"> <renderFilePath>
-        statPrint('processing job id:'+str(jobToRender[0])+' uuid:'+str(jobToRender[1]))
+        statPrint('starting job id:'+str(jobToRender[0])+' uuid:'+str(jobToRender[1]))
         #PRE-PROCESSING=================================================================================================
         statPrint('pre-processing')
 
@@ -40,21 +56,52 @@ def render(clientSetting, jobToRender, useThread, useMemory):
                    str(jobToRender[7])+' -e '+\
                    str(jobToRender[8])+' -mr:rt '+\
                    str(useThread)+' -mr:mem '+\
-                   str(useMemory)+' '+'"'+str(jobToRender[5])+'"'
+                   str(useMemory)+' '+'"'+str(jobToRender[5]).replace('/','\\')+'"'
         #PRE-PROCESSING=================================================================================================
 
         #PROCESSING=====================================================================================================
         statPrint('processing')
-        print renderInst
-        renderRun= subprocess.Popen([renderInst],shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-
-        renderRunError=renderRun.stderr.readline()
+        renderRunError=None
+        try:
+            subprocess.check_output(renderInst, shell=True, stderr=subprocess.STDOUT)
+        except Exception as renderRunError:
+            pass
         print renderRunError
         #PROCESSING=====================================================================================================
 
         #POST-PROCESSING================================================================================================
         statPrint('post-processing')
+        if renderRunError==None:
+            #rendering finished without error.
+            #change job status to RENDERING
+            connectionVar.execute("UPDATE constellationJobTable SET jobStatus='DONE' WHERE jobId='"+str(jobToRender[0])+"'")
+            connectionVar.commit()
+
+            #change client status to STANDBY
+            connectionVar.execute("UPDATE constellationClientTable SET clientStatus='STANDBY' "\
+                ",clientJob=''"
+                "WHERE clientName='"+clientName+"'")
+            connectionVar.commit()
+        else:
+            #rendering finished with error. block appropriate client
+            #rendering finished without error.
+            #change status to RENDERING to all job uuid [block everything that share the same uuid]
+            connectionVar.execute("UPDATE constellationJobTable SET jobStatus='ERROR' WHERE jobUuid='"+str(jobToRender[1])+"'")
+            connectionVar.commit()
+
+            #change client status to STANDBY
+            connectionVar.execute("UPDATE constellationClientTable SET clientStatus='STANDBY' "\
+                ",clientJob=''"
+                "WHERE clientName='"+clientName+"'")
+            connectionVar.commit()
         #POST-PROCESSING================================================================================================
+    else:
+        statPrint('no renderer specified')
+        #change client status to STANDBY
+        connectionVar.execute("UPDATE constellationClientTable SET clientStatus='STANDBY' "\
+            ",clientJob='',clientBlocked='DISABLED'"
+            "WHERE clientName='"+clientName+"'")
+        connectionVar.commit()
     return
 
 def statPrint(textVar):

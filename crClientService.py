@@ -19,7 +19,7 @@ rootPathVar=os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
 #Connect to database
 if os.path.isfile(rootPathVar+'/constellationDatabase.db')==False:
     raise StandardError, 'error : constellation database non-exists'
-connectionVar=sqlite3.connect('constellationDatabase.db')
+connectionVar=sqlite3.connect(rootPathVar+'/constellationDatabase.db')
 
 #Determining client name
 clientName=str(socket.gethostname())
@@ -71,6 +71,7 @@ def startService():
         instructionFunc(clientSetting)
         statPrint('--render cycle end--')
         print ''
+        time.sleep(3)
     return
 
 
@@ -93,7 +94,15 @@ def hailServer(clientSetting):
 #This function contain all the render instruction. Customized render procedure here.
 #Render instruction command : <mayaDir> -rl <layer> -s <startFrame> -e <endFrame> <filePath>
 def instructionFunc(clientSetting):
-    #Check client activation status
+    #Re-fetch client setting from database
+    clientSetting=(connectionVar.execute("SELECT * FROM constellationClientTable WHERE clientName='"\
+                                        +str(socket.gethostname())+"'").fetchall())
+    if len(clientSetting)!=1:
+        statPrint('database respond anomaly')
+        raise StandardError, 'error : database respond anomaly'
+    clientSetting=clientSetting[0]
+
+    #Check client activatiqon status
     if clientSetting[3]=='ENABLED':
         #THREAD AND MEMORY==================================================================================================
         #work hour is not fullly developed therefore only the programmer can alter the value
@@ -146,7 +155,7 @@ def instructionFunc(clientSetting):
             statPrint('starting hail routine')
             clientList=crControllerCore.listAllClient()
             for clientRow in clientList:
-                if clientRow[9]=='RENDERING' and clientRow[1] != clientName:
+                if str(clientRow[9])=='RENDERING' and clientRow[1] != clientName:
                     statPrint('hailing '+clientRow[1])
                     hailCon=socket.socket()
                     hailHost=clientRow[1]
@@ -159,10 +168,12 @@ def instructionFunc(clientSetting):
                         hailCon.close()
                     except:
                         pass
-                    if repVar!=None:
-                        alllJob=crControllerCore.listAllJob()
+                    if repVar==None:
+                        statPrint('stalled job detected jobId='+str(clientRow[2]))
+                        allJob=crControllerCore.listAllJob()
                         for chk in allJob:
-                            if str(chk[0])==str(clientRow[2]):
+                            #compare if the id match and the classification match as well
+                            if str(chk[0])==str(clientRow[2]) and str(chk[15])==str(clientSetting[8]):
                                 jobToRender=chk
                                 statPrint('taking over job '+str(jobToRender[1])+' from '+str(clientRow[2]))
             if jobToRender==None:
@@ -174,7 +185,7 @@ def instructionFunc(clientSetting):
             if jobToRender==None:
                 #Fetch all job array
                 allJobLis=connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobBlocked='ENABLED' "\
-                    "AND jobStatus='QUEUE'").fetchall()
+                    "AND jobStatus='QUEUE' AND jobClassification='"+str(clientSetting[8])+"'").fetchall()
 
                 #Check if array result is empty. Empty list mean there are neither ENABLED or QUEUE job in database
                 if allJobLis!=[]:
@@ -196,7 +207,7 @@ def instructionFunc(clientSetting):
             if jobToRender!=None:
                 #find job renderer and pass the job to each individual renderer
                 if jobToRender[4]=='maya-mray':
-                    crRendererMayaMray.render(clientSetting,jobToRender, useThread, useMemory)
+                    crRendererMayaMray.render(clientSetting,jobToRender, useThread, useMemory, connectionVar)
                 elif jobToRender[4]=='maya-vray':
                     vrayRenderer(clientSetting,jobToRender)
             #RENDERER======================================================================================================
