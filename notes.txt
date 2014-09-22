@@ -73,7 +73,7 @@ constellationJobTable
 -jobClassification  :string job classification [A-Z]
 -jobRenderTime      :string job render time
 
-constellationlogTable
+constellationLogTable
 -logId              :<assigned by database>
 -clientName         :string client name
 -jobUuid            :job Uuid

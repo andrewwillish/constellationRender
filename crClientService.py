@@ -11,7 +11,7 @@ import xml.etree.cElementTree as ET
 from threading import Thread
 
 #import renderer module
-import crRendererMayaMray, crControllerCore
+import crRendererMayaMray, crRendererMayaVray, crControllerCore
 
 #Determining root path
 rootPathVar=os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
@@ -71,7 +71,7 @@ def startService():
         instructionFunc(clientSetting)
         statPrint('--render cycle end--')
         print ''
-        time.sleep(3)
+        time.sleep(2)
     return
 
 
@@ -149,35 +149,56 @@ def instructionFunc(clientSetting):
 
         if not useThread=='-1' or not useMemory=='-1':
             jobToRender=None
-            #HAIL==========================================================================================================
-            #hail transfer stalled job from one system to another by
-            #check all the client that is rendering but not responding.
-            statPrint('starting hail routine')
-            clientList=crControllerCore.listAllClient()
-            for clientRow in clientList:
-                if str(clientRow[9])=='RENDERING' and clientRow[1] != clientName:
-                    statPrint('hailing '+clientRow[1])
-                    hailCon=socket.socket()
-                    hailHost=clientRow[1]
-                    hailPort=1989+int(clientRow[0])
-                    repVar=None
-                    try:
-                        hailCon.connect((hailHost, hailPort))
-                        hailCon.send('stallCheck')
-                        repVar=hailCon.recv(1024)
-                        hailCon.close()
-                    except:
-                        pass
-                    if repVar==None:
-                        statPrint('stalled job detected jobId='+str(clientRow[2]))
-                        allJob=crControllerCore.listAllJob()
-                        for chk in allJob:
-                            #compare if the id match and the classification match as well
-                            if str(chk[0])==str(clientRow[2]) and str(chk[15])==str(clientSetting[8]):
-                                jobToRender=chk
-                                statPrint('taking over job '+str(jobToRender[1])+' from '+str(clientRow[2]))
+
+            #SELF-CHECK====================================================================================================
+            #check if there are previous stalled job made by current client
             if jobToRender==None:
-                statPrint('no stalled job')
+                statPrint('checking local stalled job')
+                for chk in crControllerCore.listAllClient():
+                    if str(chk[9])=='RENDERING' and str(chk[1])==str(clientName):
+                        statPrint('previous stalled job detected')
+                        for chb in crControllerCore.listAllJob():
+                            if str(chb[0])==str(chk[2]):
+                                jobToRender=chb
+                                statPrint('resuming job id:'+str(jobToRender[0]))
+                if jobToRender==None:
+                    statPrint('no local stalled job')
+            #SELF-CHECK====================================================================================================
+
+            #HAIL==========================================================================================================
+            if jobToRender==None:
+                #hail transfer stalled job from one system to another by
+                #check all the client that is rendering but not responding.
+                statPrint('checking peer stalled job')
+                clientList=crControllerCore.listAllClient()
+                for clientRow in clientList:
+                    if clientRow[1] != clientName and clientRow[2]!='':
+                        statPrint('hailing '+clientRow[1])
+                        hailCon=socket.socket()
+                        hailCon.settimeout(3)
+                        hailHost=clientRow[1]
+                        hailPort=1989+int(clientRow[0])
+                        repVar=None
+                        try:
+                            hailCon.connect((hailHost, hailPort))
+                            hailCon.send('stallCheck')
+                            repVar=hailCon.recv(1024)
+                            hailCon.close()
+                        except:
+                            pass
+                        if repVar==None:
+                            statPrint('stalled job detected jobId='+str(clientRow[2]))
+                            allJob=crControllerCore.listAllJob()
+                            for chk in allJob:
+                                #compare if the id match and the classification match as well
+                                if str(chk[0])==str(clientRow[2]) and str(chk[15])==str(clientSetting[8]):
+                                    jobToRender=chk
+                                    statPrint('taking over job '+str(jobToRender[1])+' from '+str(clientRow[1]))
+                                    #set other client as offline
+                                    connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='DISABLED', clientJob='' WHERE clientName='"+str(clientRow[1])+"'")
+                                    connectionVar.commit()
+                if jobToRender==None:
+                    statPrint('no peer stalled job')
             #HAIL==========================================================================================================
 
             #FETCH NEW=====================================================================================================
@@ -207,9 +228,12 @@ def instructionFunc(clientSetting):
             if jobToRender!=None:
                 #find job renderer and pass the job to each individual renderer
                 if jobToRender[4]=='maya-mray':
+                    #re-routed
                     crRendererMayaMray.render(clientSetting,jobToRender, useThread, useMemory, connectionVar)
                 elif jobToRender[4]=='maya-vray':
-                    vrayRenderer(clientSetting,jobToRender)
+                    crRendererMayaVray.render(clientSetting,jobToRender, useThread, useMemory, connectionVar)
+            else:
+                statPrint('client standby - no job available')
             #RENDERER======================================================================================================
         else:
             statPrint('client disabled - work mem and thread block')

@@ -7,7 +7,8 @@ __author__ = 'Andrewwillish'
 import os, time, shutil, datetime, subprocess, sys, sqlite3, socket
 import xml.etree.cElementTree as ET
 
-import crControllerCore
+from datetime import timedelta
+import calendar
 
 #get client name
 clientName=str(socket.gethostname())
@@ -43,21 +44,31 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
             if str(chk.tag)==str(jobToRender[4]):
                 rendererPath= chk.text
     #GET RENDERER======================================================================================================
-    rendererPath=None
 
     if rendererPath!=None:
         #<pathToRenderer> -rd <"localTarget"> -fnc <"fileNamingConvention"> -im <"imageName"> <renderFilePath>
         statPrint('starting job id:'+str(jobToRender[0])+' uuid:'+str(jobToRender[1]))
+
+        #WRITELOG=======================================================================================================
+        connectionVar.execute("INSERT INTO constellationLogTable (clientName,jobUuid,logDescription) "\
+            "VALUES ('"+str(clientName)+"','"+str(jobToRender[1])+"','process started')")
+        connectionVar.commit()
+        #WRITELOG=======================================================================================================
+
         #PRE-PROCESSING=================================================================================================
         statPrint('pre-processing')
 
         #writing render instruction
-        renderInst=str(rendererPath)+' -rl '+str(jobToRender[9])+' -s '+\
+        renderInst=str(rendererPath)+' -rl '+str(jobToRender[9])+' -cam '+str(jobToRender[14])+' -s '+\
                    str(jobToRender[7])+' -e '+\
                    str(jobToRender[8])+' -mr:rt '+\
                    str(useThread)+' -mr:mem '+\
                    str(useMemory)+' '+'"'+str(jobToRender[5]).replace('/','\\')+'"'
         #PRE-PROCESSING=================================================================================================
+
+        #RENDERTIME WATCHER=============================================================================================
+        startEpoch=calendar.timegm(time.gmtime())
+        #RENDERTIME WATCHER=============================================================================================
 
         #PROCESSING=====================================================================================================
         statPrint('processing')
@@ -66,14 +77,27 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
             subprocess.check_output(renderInst, shell=True, stderr=subprocess.STDOUT)
         except Exception as renderRunError:
             pass
-        print renderRunError
         #PROCESSING=====================================================================================================
+
+        #RENDERTIME WATCHER=============================================================================================
+        endEpoch=calendar.timegm(time.gmtime())
+        averageTime=(endEpoch-startEpoch)/((int(jobToRender[8])-int(jobToRender[7]))+1)
+        #RENDERTIME WATCHER=============================================================================================
 
         #POST-PROCESSING================================================================================================
         statPrint('post-processing')
         if renderRunError==None:
             #rendering finished without error.
-            #change job status to RENDERING
+            #Write job render average
+            currentRenderTime=connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobId='"+str(jobToRender[0])+"'").fetchall()
+            if len(currentRenderTime)!=1:
+                statPrint('unable to record average render time database fetch anomaly')
+            else:
+                newRenderTime=averageTime
+                connectionVar.execute("UPDATE constellationJobTable SET jobRenderTime='"+str(newRenderTime)+"' WHERE jobId='"+str(jobToRender[0])+"'")
+                connectionVar.commit()
+
+            #change job status to DONE
             connectionVar.execute("UPDATE constellationJobTable SET jobStatus='DONE' WHERE jobId='"+str(jobToRender[0])+"'")
             connectionVar.commit()
 
@@ -82,18 +106,37 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
                 ",clientJob=''"
                 "WHERE clientName='"+clientName+"'")
             connectionVar.commit()
+
+            #WRITELOG=======================================================================================================
+            connectionVar.execute("INSERT INTO constellationLogTable (clientName,jobUuid,logDescription) "\
+                "VALUES ('"+str(clientName)+"','"+str(jobToRender[1])+"','process finished')")
+            connectionVar.commit()
+            #WRITELOG=======================================================================================================
+
         else:
             #rendering finished with error. block appropriate client
             #rendering finished without error.
+
+            statPrint('process error check job log for detail')
+
             #change status to RENDERING to all job uuid [block everything that share the same uuid]
-            connectionVar.execute("UPDATE constellationJobTable SET jobStatus='ERROR' WHERE jobUuid='"+str(jobToRender[1])+"'")
+            connectionVar.execute("UPDATE constellationJobTable SET jobStatus='ERROR', jobBlocked='DISABLED' WHERE jobUuid='"+str(jobToRender[1])+"'")
             connectionVar.commit()
+
+            statPrint('job Uuid:'+str(jobToRender[1])+' blocked and disabled')
 
             #change client status to STANDBY
             connectionVar.execute("UPDATE constellationClientTable SET clientStatus='STANDBY' "\
                 ",clientJob=''"
                 "WHERE clientName='"+clientName+"'")
             connectionVar.commit()
+
+            #WRITELOG=======================================================================================================
+            connectionVar.execute("INSERT INTO constellationLogTable (clientName,jobUuid,logDescription) "\
+                "VALUES ('"+str(clientName)+"','"+str(jobToRender[1])+"','process failed:\n "+str(renderRunError).replace("'","")+"')")
+            connectionVar.commit()
+            #WRITELOG=======================================================================================================
+
         #POST-PROCESSING================================================================================================
     else:
         statPrint('no renderer specified')

@@ -80,6 +80,11 @@ class constellationRenderConsoleClass:
             self.statPrint('client table created')
         else:
             self.statPrint('failed to create client job table')
+        repVar=crSetupCore.setupLogTable()
+        if repVar==1:
+            self.statPrint('log table created')
+        else:
+            self.statPrint('failed to log client job table')
         repVar=crSetupCore.setupRenderer()
         if repVar==1:
             self.statPrint('renderer list created')
