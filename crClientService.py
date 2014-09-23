@@ -67,11 +67,7 @@ def startService():
     #Executing instruction function
     print ''
     while True:
-        statPrint('--render cycle start--')
         instructionFunc(clientSetting)
-        statPrint('--render cycle end--')
-        print ''
-        time.sleep(2)
     return
 
 
@@ -104,6 +100,7 @@ def instructionFunc(clientSetting):
 
     #Check client activatiqon status
     if clientSetting[3]=='ENABLED':
+        statPrint('--render cycle start--')
         #THREAD AND MEMORY==================================================================================================
         #work hour is not fullly developed therefore only the programmer can alter the value
         #default will be set to run full force starting 2200 until 0900 from monday to friday
@@ -237,8 +234,16 @@ def instructionFunc(clientSetting):
             #RENDERER======================================================================================================
         else:
             statPrint('client disabled - work mem and thread block')
-    else:
+        statPrint('--render cycle end--')
+        print ''
+        time.sleep(2)
+    elif clientSetting[3]=='DISABLED':
         statPrint('client disabled - database block')
+    else:
+        statPrint('client instructed to shutdown')
+        statPrint('bye bye')
+        time.sleep(5)
+        sys.exit()
     return
 
 def statPrint(textVar):

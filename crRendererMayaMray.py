@@ -6,7 +6,7 @@ __author__ = 'Andrewwillish'
 #import module
 import os, time, shutil, datetime, subprocess, sys, sqlite3, socket
 import xml.etree.cElementTree as ET
-
+import crControllerCore
 from datetime import timedelta
 import calendar
 
@@ -18,8 +18,6 @@ systemRootVar = str(os.environ['WINDIR']).replace('\\Windows','')
 
 #Determining root path
 rootPathVar=os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
-
-#Connect to database
 
 def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
     #CHANGE CLIENT AND JOB STATUS======================================================================================
@@ -140,7 +138,7 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
         #POST-PROCESSING================================================================================================
     else:
         statPrint('no renderer specified')
-        #change client status to STANDBY
+        #change client status to STANDBY and DISABLED
         connectionVar.execute("UPDATE constellationClientTable SET clientStatus='STANDBY' "\
             ",clientJob='',clientBlocked='DISABLED'"
             "WHERE clientName='"+clientName+"'")

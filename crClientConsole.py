@@ -8,6 +8,9 @@ import crControllerCore, os, time, sys, datetime, socket
 #Determining client name
 clientName=str(socket.gethostname())
 
+#Determining root path
+rootPathVar=os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
+
 class crClientConsoleClass:
     def __init__(self):
         #Welcome message
@@ -30,6 +33,8 @@ class crClientConsoleClass:
                 self.changeClassFun()
             elif commandVar=='startClient':
                 self.startClientFun()
+            elif commandVar=='stopClient':
+                self.stopClientFun()
             else:
                 self.statPrint('invalid command')
             print ''
@@ -42,7 +47,13 @@ class crClientConsoleClass:
         print 'setup\t\t- Setup client in this computer'
         print 'changeClass\t- Change current client classification'
         print 'startClient\t- Start client rendering service (separate instruction will be executed)'
+        print 'stopClient\t- Stop client rendering service'
         print 'exit\t\t- Close this console'
+        return
+
+    def stopClientFun(self,*args):
+        crControllerCore.changeClientStatus(clientName=str(clientName),blockClient='OFFLINE',clientJob='')
+        self.statPrint('client has been instructed to go offline but will finish the job already assigned to it')
         return
 
     def startClientFun(self,*args):
@@ -51,7 +62,7 @@ class crClientConsoleClass:
 
         #temporarily client service will be started directly during development
         #stage for ease of debuggin (damn I'm tired)
-        #os.startfile()
+        os.startfile(rootPathVar+'/crClientServiceLaunch.bat')
         return
 
     def setupFun(self,*args):

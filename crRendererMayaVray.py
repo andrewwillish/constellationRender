@@ -6,8 +6,9 @@ __author__ = 'Andrewwillish'
 #import module
 import os, time, shutil, datetime, subprocess, sys, sqlite3, socket
 import xml.etree.cElementTree as ET
-
 import crControllerCore
+from datetime import timedelta
+import calendar
 
 #get client name
 clientName=str(socket.gethostname())
@@ -17,8 +18,6 @@ systemRootVar = str(os.environ['WINDIR']).replace('\\Windows','')
 
 #Determining root path
 rootPathVar=os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
-
-#Connect to database
 
 def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
     #CHANGE CLIENT AND JOB STATUS======================================================================================
@@ -48,6 +47,12 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
         #<pathToRenderer> -rd <"localTarget"> -fnc <"fileNamingConvention"> -im <"imageName"> <renderFilePath>
         statPrint('starting job id:'+str(jobToRender[0])+' uuid:'+str(jobToRender[1]))
 
+        #WRITELOG=======================================================================================================
+        connectionVar.execute("INSERT INTO constellationLogTable (clientName,jobUuid,logDescription) "\
+            "VALUES ('"+str(clientName)+"','"+str(jobToRender[1])+"','process started')")
+        connectionVar.commit()
+        #WRITELOG=======================================================================================================
+
         #CREATE DIRECTORY===============================================================================================
         #vray unable to create their own output directory so we need to create one
         #please note that CR only able to parse <Layer>,<Camera>,and <Scene> tag and not passes
@@ -74,7 +79,7 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
                 dirResult=False
         #CREATE DIRECTORY===============================================================================================
 
-        if dirResult==True:
+        if dirResult==True and os.path.isdir(directoryInst):
             #PRE-PROCESSING=================================================================================================
             statPrint('pre-processing')
             #writing render instruction
@@ -94,7 +99,6 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
                 subprocess.check_output(renderInst, shell=True, stderr=subprocess.STDOUT)
             except Exception as renderRunError:
                 pass
-            print renderRunError
             #PROCESSING=====================================================================================================
 
             #RENDERTIME WATCHER=============================================================================================
@@ -162,6 +166,12 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
                 ",clientJob=''"
                 "WHERE clientName='"+clientName+"'")
             connectionVar.commit()
+
+            #WRITELOG=======================================================================================================
+            connectionVar.execute("INSERT INTO constellationLogTable (clientName,jobUuid,logDescription) "\
+                "VALUES ('"+str(clientName)+"','"+str(jobToRender[1])+"','process failed:\n "+str(renderRunError).replace("'","")+"')")
+            connectionVar.commit()
+            #WRITELOG=======================================================================================================
     else:
         statPrint('no renderer specified')
         #change client status to STANDBY

@@ -84,13 +84,13 @@ constellationClientTable
 -clientId           :<assigned by database>
 -clientName         :string client name
 -clientJob          :string client current job id
--clientBlocked      :string client block status [ENABLED,DISABLED]
+-clientBlocked      :string client block status [ENABLED,DISABLED,OFFLINE]
 -clientMemory       :string client memory limit [-1 means unlimited]
 -clientThread       :string client thread limit [-1 means unlimited]
 -clientWorkMemory   :string client work hour memory limit [-1 means unlimited]
 -clientWorkThread   :string client work hour thread limit [-1 means unlimited]
 -clientClassification   :string client classification
--clientStatus       :string client current status [STANDBY,OFFLINE,RENDERING,ERROR]
+-clientStatus       :string client current status [STANDBY,RENDERING,ERROR]
 
 ============================================================================================
 

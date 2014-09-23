@@ -17,7 +17,7 @@ systemRootVar = str(os.environ['WINDIR']).replace('\\Windows','')
 #Connect to database
 if os.path.isfile(rootPathVar+'/constellationDatabase.db')==False:
     raise StandardError, 'error : constellation database non-exists'
-connectionVar=sqlite3.connect('constellationDatabase.db')
+connectionVar=sqlite3.connect(rootPathVar+'/constellationDatabase.db')
 
 #This function start cyclic process only in client module.
 def setupClient(client=None,classification=None):
@@ -310,23 +310,14 @@ def changeJobPrior(uid=None, priority=None):
     return
 
 #This function will change job record attribute
-def changeJobRecord(uid=None, enabler=None):
+def changeJobRecord(jobId=None, status=None):
     #Validate uid. Make sure its not None
-    if uid==None:
+    if jobId==None:
         raise ValueError, 'error : no id specified'
 
-    #Change job enabler. Enabler used to block and prevent a job being rendered by client.
-    #Note enabler: 0=SUSPENDED 1=ENABLED
-    if enabler!=None:
-        if enabler not in [0,1]:
-            raise ValueError, 'error : invalid value'
-
-        if enabler==0:
-            enabler='DISABLED'
-        elif enabler==1:
-            enabler='ENABLED'
-
-        connectionVar.execute("UPDATE constellationJobTable SET jobEnabler='"+enabler+"' WHERE jobUuid='"+str(uid)+"'")
+    #change job status
+    if status!=None:
+        connectionVar.execute("UPDATE constellationJobTable SET jobStatus='"+str(status)+"' WHERE jobId='"+str(jobId)+"'")
         connectionVar.commit()
 
     return
@@ -339,7 +330,10 @@ def listAllClient():
     return returnLis
 
 #This function change client status
-def changeClientStatus(clientName=None, status=None, blockClient=None,offline=None):
+def changeClientStatus(clientName=None,\
+                       status=None,\
+                       blockClient=None,\
+                       clientJob=None):
     #Validate client id
     if clientName==None:
         raise ValueError, 'error : no id specified'
@@ -350,27 +344,18 @@ def changeClientStatus(clientName=None, status=None, blockClient=None,offline=No
         connectionVar.commit()
 
     #Processing blockClient
-    #Algorithm will check if the client is rendering or not. If its rendering the status will be stopping instead
-    #of SUSPENDED. This is to avoid confusion later on.
     if blockClient!=None:
-        if blockClient==True:
-            clientBlocked='SUSPENDED'
-            #Compare clientName with listAllClient() to find out client is rendering or not.
-            for clientCheck in listAllClient():
-                if clientCheck[1]==clientName:
-                    if clientCheck[4]=='RENDERING':
-                        clientBlocked='STOPPING'
-
-            connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='"+clientBlocked+"' WHERE clientName='"+str(clientName)+"'")
+        if blockClient=='DISABLED':
+            connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='DISABLED' WHERE clientName='"+str(clientName)+"'")
             connectionVar.commit()
-        elif blockClient==False:
-            connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='ACTIVE' WHERE clientName='"+str(clientName)+"'")
+        elif blockClient=='ENABLED':
+            connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='ENABLED' WHERE clientName='"+str(clientName)+"'")
+            connectionVar.commit()
+        elif blockClient=='OFFLINE':
+            connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='OFFLINE' WHERE clientName='"+str(clientName)+"'")
             connectionVar.commit()
 
-    if offline==True:
-        connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='STOPPING-OFF' WHERE clientName='"+str(clientName)+"'")
-        connectionVar.commit()
-    elif offline==False:
-        connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='ACTIVE' WHERE clientName='"+str(clientName)+"'")
+    if clientJob!=None:
+        connectionVar.execute("UPDATE constellationClientTable SET clientJob='"+str(clientJob)+"' WHERE clientName='"+str(clientName)+"'")
         connectionVar.commit()
     return
