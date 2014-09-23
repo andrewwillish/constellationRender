@@ -9,10 +9,10 @@ import maya.OpenMaya as om
 import getpass
 
 #Determining root path
-#Note: hard code root path to fit with current studio mapping.
-rootPathVar='E:/development/constellationRender/'
+rootPathVar='Y:/TECH/constellationRender/'
 
 def launcherscr(scr,srvrname):
+    print srvrname+scr+'.py'
     try:
         imp.load_compiled(scr,srvrname+scr+'.pyc')
     except:
@@ -27,10 +27,10 @@ def menutls(*args):
     global rootPathVar
     gMainWindow = mel.eval('$temp1=$gMainWindow')
     mainzmenu=cmds.menu(tearOff=True,l='Constellation Render',p=gMainWindow)
-    cmds.menuItem(parent=mainzmenu, l='Submit Job',c=lambda*args:launcherscr('constellationRenderMayaSubmit',rootPathVar))
+    cmds.menuItem(parent=mainzmenu, l='Submit Job',c=lambda*args:launcherscr('crSubmitUIMaya',rootPathVar))
     cmds.menuItem(parent=mainzmenu,d=True)
-    cmds.menuItem(parent=mainzmenu,l='Launch Controller',c=lambda*args:osLaunch('constellationRender - controller',rootPathVar))
-    cmds.menuItem(parent=mainzmenu,l='Launch Client',c=lambda*args:osLaunch('constellationRender - client',rootPathVar))
+    cmds.menuItem(parent=mainzmenu,l='Launch Client Service',c=lambda*args:osLaunch('_crClientServiceLaunch.bat',rootPathVar))
+    cmds.menuItem(parent=mainzmenu,l='Launch Client Console',c=lambda*args:osLaunch('_crClientConsole.bat',rootPathVar))
     return
     
 utils.executeDeferred (menutls)

@@ -48,7 +48,7 @@ def startService():
     #set client to enabled
     connectionVar.execute("UPDATE constellationClientTable SET"\
         " clientBlocked='ENABLED' WHERE clientName='"+str(clientName)+"'")
-
+    connectionVar.commit()
     #Fetch client setting from database
     clientSetting=(connectionVar.execute("SELECT * FROM constellationClientTable WHERE clientName='"\
                                         +str(socket.gethostname())+"'").fetchall())

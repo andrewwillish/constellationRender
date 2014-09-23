@@ -62,7 +62,7 @@ class crClientConsoleClass:
 
         #temporarily client service will be started directly during development
         #stage for ease of debuggin (damn I'm tired)
-        os.startfile(rootPathVar+'/crClientServiceLaunch.bat')
+        os.startfile(rootPathVar+'/_crClientServiceLaunch.bat')
         return
 
     def setupFun(self,*args):

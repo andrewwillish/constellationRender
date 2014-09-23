@@ -56,7 +56,7 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
         #CREATE DIRECTORY===============================================================================================
         #vray unable to create their own output directory so we need to create one
         #please note that CR only able to parse <Layer>,<Camera>,and <Scene> tag and not passes
-        statPrint('creating directory <special vray only>')
+        statPrint('creating directory <special for vray only>')
         directoryInst=jobToRender[6]
         cameraName=jobToRender[14]
         layerName=jobToRender[9]
@@ -95,6 +95,8 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
             #PROCESSING=====================================================================================================
             statPrint('processing')
             renderRunError=None
+            print renderInst
+
             try:
                 subprocess.check_output(renderInst, shell=True, stderr=subprocess.STDOUT)
             except Exception as renderRunError:
