@@ -83,7 +83,7 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
             #PRE-PROCESSING=================================================================================================
             statPrint('pre-processing')
             #writing render instruction
-            renderInst=str(rendererPath)+' -r vray -rl '+str(jobToRender[9])+' -cam '+str(jobToRender[14])+' -s '+\
+            renderInst=str(rendererPath)+' -r vray -rl '+str(jobToRender[9])+' -threads '+str(useThread)+' -cam '+str(jobToRender[14])+' -s '+\
                        str(jobToRender[7])+' -e '+str(jobToRender[8])+\
                        ' '+'"'+str(jobToRender[5]).replace('/','\\')+'"'
             #PRE-PROCESSING=================================================================================================
@@ -95,8 +95,6 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
             #PROCESSING=====================================================================================================
             statPrint('processing')
             renderRunError=None
-            print renderInst
-
             try:
                 subprocess.check_output(renderInst, shell=True, stderr=subprocess.STDOUT)
             except Exception as renderRunError:

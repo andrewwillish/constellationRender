@@ -200,7 +200,7 @@ def searchJob(id=None, project=None, user=None, software=None, scriptPath=None,\
     return towriteLis
 
 #This function open output folder
-def openOutput(uid=None):
+def openOutput(uid=None, renderer=None):
     recordVar=connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobUuid='"+str(uid)+"'").fetchall()
     recordVar=recordVar[0]
 
@@ -210,14 +210,32 @@ def openOutput(uid=None):
     sceneVar=recordVar[5]
     sceneVar=sceneVar[sceneVar.rfind('/')+1:sceneVar.rfind('.ma')]
 
-    pathInstructionVar=pathInstructionVar[:pathInstructionVar.rfind('/')]
-    pathInstructionVar=pathInstructionVar.replace('<Layer>',str(layerVar))
-    pathInstructionVar=pathInstructionVar.replace('<Camera>',str(cameraVar))
-    pathInstructionVar=pathInstructionVar.replace('<Scene>',str(sceneVar))
 
-    print pathInstructionVar
+    renderer=recordVar[4]
+    if renderer=='maya-vray':
+        pathInstructionVar=pathInstructionVar[:pathInstructionVar.rfind('/')]
+        pathInstructionVar=pathInstructionVar.replace('<Layer>',str(layerVar))
+        pathInstructionVar=pathInstructionVar.replace('<Camera>',str(cameraVar))
+        pathInstructionVar=pathInstructionVar.replace('<Scene>',str(sceneVar))
 
-    subprocess.Popen(r'explorer /select,"'+pathInstructionVar.replace('/','\\')+'\\'+'"')
+        subprocess.Popen(r'explorer /select,"'+pathInstructionVar.replace('/','\\')+'\\'+'"')
+
+    elif renderer=='maya-mray':
+        pathInstructionVar=pathInstructionVar[:pathInstructionVar.rfind('/')]
+        pathInstructionVar=pathInstructionVar.replace('<RenderLayer>',str(layerVar))
+        pathInstructionVar=pathInstructionVar.replace('<Camera>',str(cameraVar))
+        pathInstructionVar=pathInstructionVar.replace('<Scene>',str(sceneVar))
+        pathInstructionVar=pathInstructionVar.replace('<RenderPass>','')
+
+        pathInstructionVar=pathInstructionVar[:pathInstructionVar.rfind('\\')]
+        while pathInstructionVar.endswith('\\'):
+            pathInstructionVar=pathInstructionVar[:pathInstructionVar.rfind('\\')]
+
+    if pathInstructionVar!='':
+        if os.path.isdir(pathInstructionVar)==True:
+            subprocess.Popen(r'explorer /select,"'+pathInstructionVar.replace('/','\\')+'\\'+'"')
+        else:
+            raise StandardError, 'error : directory not found'
     return
 
 #This function will delete all or done job by uid
@@ -318,6 +336,19 @@ def changeJobRecord(jobId=None, status=None):
     #change job status
     if status!=None:
         connectionVar.execute("UPDATE constellationJobTable SET jobStatus='"+str(status)+"' WHERE jobId='"+str(jobId)+"'")
+        connectionVar.commit()
+
+    return
+
+#This function will change job record attribute
+def changeJobRecordBlocked(jobUuid=None, blockStatus=None):
+    #Validate uid. Make sure its not None
+    if jobUuid==None:
+        raise ValueError, 'error : no id specified'
+
+    #change job status
+    if blockStatus!=None:
+        connectionVar.execute("UPDATE constellationJobTable SET jobBlocked='"+str(blockStatus)+"' WHERE jobUuid='"+str(jobUuid)+"'")
         connectionVar.commit()
 
     return

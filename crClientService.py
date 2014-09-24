@@ -192,7 +192,7 @@ def instructionFunc(clientSetting):
                                     jobToRender=chk
                                     statPrint('taking over job '+str(jobToRender[1])+' from '+str(clientRow[1]))
                                     #set other client as offline
-                                    connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='DISABLED', clientJob='' WHERE clientName='"+str(clientRow[1])+"'")
+                                    connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='OFFLINE', clientJob='',clientStatus='STANDBY' WHERE clientName='"+str(clientRow[1])+"'")
                                     connectionVar.commit()
                 if jobToRender==None:
                     statPrint('no peer stalled job')
