@@ -242,7 +242,7 @@ def instructionFunc(clientSetting):
     else:
         statPrint('client instructed to shutdown')
         statPrint('bye bye')
-        time.sleep(5)
+        time.sleep(2)
         sys.exit()
     return
 

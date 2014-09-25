@@ -1,0 +1,54 @@
+Constellation Render Manager 4.0 Setup Instruction
+
+CR File List
+---------------------------------------------------------------------------
+1. _crClientConsole.bat         -Launch client console
+2. _crClientServiceLaunch.bat   -Launch client renderer service
+3. _crControllerUI.bat          -Launch controller UI
+4. _crSetupConsole.bat          -Launch setup console
+5. config.xml                   -Configuration file
+6. constellationDatabase.db     -Main database for CR Renderer
+7. crClientConsole.pyc          -Client console python module
+8. crClientService.pyc          -Client service python module
+9. crControllerCore.pyc         -Controller core python module
+10. crControllerUI              -Controller UI python module. Require PyQt4
+11. crRendererMayaMray.pyc      -Renderer python module. Mental Ray
+12. crRendererMayaVray.pyc      -Renderer python module. V ray
+13. crSetupConsole.pyc          -Setup console python module
+14. crSetupCore.pyc             -Setup core python module
+15. crSubmitCore.pyc            -Submit core python module
+16. crSubmitUIMaya.pyc          -Submit UI python module. Maya version
+17. renderer.xml                -Renderer data
+18. userSetup.py                -User setup for maya file
+19. customLauncherTemplate.bat  -Custom launcher template for maya
+
+CR Main Setup Procedure
+---------------------------------------------------------------------------
+1. Copy entire constellationRender folder to shared server which can be
+   accessed by all the render client.
+2. Run _crSetupConsole.bat and type setup in the command. This will create
+   database, config, and renderer file.
+3. Set a custom launcher for maya by copying the bat then change the value.
+
+        ::Get active directory
+        SET mypath=%~dp0
+
+        ::Set python path
+        set PYTHONPATH=%PYTHONPATH%;%mypath:~0,-1%;<constellationRender folder location>
+
+        ::Call maya
+        ::sample >> "C:\Program Files\Autodesk\Maya2013.5\bin\maya.exe"
+        <maya.exe location>
+
+   Change maya location and constellationRender folder location.
+4. Change _crClientConsole.bat, _crClientServiceLaunch.bat, _crControllerUI.bat, and
+   _crSetupConsole.bat python path. Note that python has to be version 2.7
+
+CR Client Setup Procedure
+---------------------------------------------------------------------------
+1. Start _crSetupConsole.bat from shared file server.
+2. Type setup in the command and enter client classification. This will
+   register client to database.
+3. Type startClient. This will start a new process crClientService which
+   can be started separately as well.
+4. Service will start checking for a job and render cycle process.

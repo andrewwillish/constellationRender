@@ -7,4 +7,4 @@ set PYTHONPATH=%mypath:~0,-1%;
 
 ::Call client service
 ::Change python source path when installing
-"C:\Python27\Python.exe" %mypath:~0,-1%\crSetupConsole.py
+"C:\Python27\Python.exe" %mypath:~0,-1%\crControllerUI.py

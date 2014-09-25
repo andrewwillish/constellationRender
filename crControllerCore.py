@@ -295,25 +295,6 @@ def resetJobRecord(uid=None):
         if chk[0][1]==str(uid):
             jobGroupLis=chk
 
-    #Checking render directory make one if non exists
-    pathInstructionVar=jobGroupLis[0][6]
-    layerVar=jobGroupLis[0][9]
-    cameraVar=jobGroupLis[0][14]
-    sceneVar=jobGroupLis[0][5]
-    sceneVar=sceneVar[sceneVar.rfind('/')+1:sceneVar.rfind('.ma')]
-
-    pathInstructionVar=pathInstructionVar[:pathInstructionVar.rfind('/')]
-    pathInstructionVar=pathInstructionVar.replace('<Layer>',str(layerVar))
-    pathInstructionVar=pathInstructionVar.replace('<Camera>',str(cameraVar))
-    pathInstructionVar=pathInstructionVar.replace('<Scene>',str(sceneVar))
-
-    if os.path.isdir(pathInstructionVar)==False:
-        os.makedirs(pathInstructionVar)
-
-    for chk in os.listdir(pathInstructionVar):
-        if os.path.isfile(pathInstructionVar+'/'+chk)==True:
-            os.remove(pathInstructionVar+'/'+chk)
-
     connectionVar.execute("UPDATE constellationJobTable SET jobStatus='QUEUE' WHERE jobUuid='"+uid+"'")
     connectionVar.commit()
     return
