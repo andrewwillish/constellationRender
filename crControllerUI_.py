@@ -7,19 +7,16 @@ __author__='andrew.willis'
 import os, shutil, sys, sqlite3, imp
 import hashlib, time, datetime, socket
 import xml.etree.cElementTree as ET
-import threading, thread
 
 #Import constellation module
 import crControllerCore
 
 from PyQt4 import QtCore, QtGui
 
-from PyQt4 import QtCore, QtGui
-
 class Ui_constellationRenderForm(object):
     def setupUi(self, constellationRenderForm):
         constellationRenderForm.setObjectName("constellationRenderForm")
-        constellationRenderForm.resize(1268, 591)
+        constellationRenderForm.resize(1268, 592)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -448,7 +445,7 @@ class Ui_constellationRenderForm(object):
         self.jobTable.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.jobTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.jobTable.setObjectName("jobTable")
-        self.jobTable.setColumnCount(14)
+        self.jobTable.setColumnCount(13)
         self.jobTable.setRowCount(2)
         item = QtGui.QTableWidgetItem()
         self.jobTable.setVerticalHeaderItem(0, item)
@@ -480,8 +477,6 @@ class Ui_constellationRenderForm(object):
         self.jobTable.setHorizontalHeaderItem(11, item)
         item = QtGui.QTableWidgetItem()
         self.jobTable.setHorizontalHeaderItem(12, item)
-        item = QtGui.QTableWidgetItem()
-        self.jobTable.setHorizontalHeaderItem(13, item)
         item = QtGui.QTableWidgetItem()
         self.jobTable.setItem(0, 0, item)
         item = QtGui.QTableWidgetItem()
@@ -2632,7 +2627,7 @@ class Ui_constellationRenderForm(object):
         self.clientLabel.setAutoFillBackground(True)
         self.clientLabel.setObjectName("clientLabel")
         self.activateClientBtn = QtGui.QPushButton(self.clientGroup)
-        self.activateClientBtn.setGeometry(QtCore.QRect(76, 1, 61, 20))
+        self.activateClientBtn.setGeometry(QtCore.QRect(138, 0, 61, 21))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -2779,7 +2774,7 @@ class Ui_constellationRenderForm(object):
         self.activateClientBtn.setFlat(True)
         self.activateClientBtn.setObjectName("activateClientBtn")
         self.suspendClientBtn = QtGui.QPushButton(self.clientGroup)
-        self.suspendClientBtn.setGeometry(QtCore.QRect(138, 1, 61, 20))
+        self.suspendClientBtn.setGeometry(QtCore.QRect(200, 0, 61, 21))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -2925,153 +2920,6 @@ class Ui_constellationRenderForm(object):
         self.suspendClientBtn.setAutoFillBackground(True)
         self.suspendClientBtn.setFlat(True)
         self.suspendClientBtn.setObjectName("suspendClientBtn")
-        self.offlineClientButton = QtGui.QPushButton(self.clientGroup)
-        self.offlineClientButton.setGeometry(QtCore.QRect(200, 1, 61, 20))
-        palette = QtGui.QPalette()
-        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.WindowText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(170, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Button, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Light, brush)
-        brush = QtGui.QBrush(QtGui.QColor(212, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Midlight, brush)
-        brush = QtGui.QBrush(QtGui.QColor(85, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Dark, brush)
-        brush = QtGui.QBrush(QtGui.QColor(113, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Mid, brush)
-        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Text, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.BrightText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.ButtonText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Base, brush)
-        brush = QtGui.QBrush(QtGui.QColor(170, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Window, brush)
-        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Shadow, brush)
-        brush = QtGui.QBrush(QtGui.QColor(212, 127, 127))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.AlternateBase, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 220))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.ToolTipBase, brush)
-        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.ToolTipText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.WindowText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(170, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Button, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Light, brush)
-        brush = QtGui.QBrush(QtGui.QColor(212, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Midlight, brush)
-        brush = QtGui.QBrush(QtGui.QColor(85, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Dark, brush)
-        brush = QtGui.QBrush(QtGui.QColor(113, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Mid, brush)
-        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Text, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.BrightText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.ButtonText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Base, brush)
-        brush = QtGui.QBrush(QtGui.QColor(170, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Window, brush)
-        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Shadow, brush)
-        brush = QtGui.QBrush(QtGui.QColor(212, 127, 127))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.AlternateBase, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 220))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.ToolTipBase, brush)
-        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.ToolTipText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(85, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.WindowText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(170, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Button, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Light, brush)
-        brush = QtGui.QBrush(QtGui.QColor(212, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Midlight, brush)
-        brush = QtGui.QBrush(QtGui.QColor(85, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Dark, brush)
-        brush = QtGui.QBrush(QtGui.QColor(113, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Mid, brush)
-        brush = QtGui.QBrush(QtGui.QColor(85, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Text, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.BrightText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(85, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.ButtonText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(170, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
-        brush = QtGui.QBrush(QtGui.QColor(170, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Window, brush)
-        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Shadow, brush)
-        brush = QtGui.QBrush(QtGui.QColor(170, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.AlternateBase, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 220))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.ToolTipBase, brush)
-        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.ToolTipText, brush)
-        self.offlineClientButton.setPalette(palette)
-        font = QtGui.QFont()
-        font.setPointSize(7)
-        font.setWeight(75)
-        font.setBold(True)
-        self.offlineClientButton.setFont(font)
-        self.offlineClientButton.setAutoFillBackground(True)
-        self.offlineClientButton.setFlat(True)
-        self.offlineClientButton.setObjectName("offlineClientButton")
 
         self.retranslateUi(constellationRenderForm)
         QtCore.QMetaObject.connectSlotsByName(constellationRenderForm)
@@ -3089,33 +2937,11 @@ class Ui_constellationRenderForm(object):
         self.deleteJobBtn.clicked.connect(self.deleteJob)
         self.deleteAllBtn.clicked.connect(self.deleteAll)
         self.deleteDoneBtn.clicked.connect(self.deleteDone)
-        self.offlineClientButton.clicked.connect(self.shutDownClient)
 
         self.outputBtn.clicked.connect(self.openOutputFolder)
 
         self.jobTable.itemSelectionChanged.connect(self.populatePriorityFun)
         self.updateSelectedBtn.clicked.connect(self.prioritySet)
-
-        return
-
-    def shutDownClient(self):
-        repVar=QtGui.QMessageBox.question(None,\
-                                          'Shut Down Client',\
-                                          'Shut down selected client? Client will finish job assigned to it before shut down.',\
-                                          QtGui.QMessageBox.Ok,\
-                                          QtGui.QMessageBox.Cancel)
-        if repVar==1024:
-            selectedRecordLis=self.clientTable.selectedItems()
-
-            if selectedRecordLis==[]:
-                QtGui.QMessageBox.warning(None,'Error','There is no record selected.')
-                raise StandardError, 'error : no record selected'
-
-            for chk in range(len(selectedRecordLis)/4):
-                clientNameVar= str(selectedRecordLis[chk].text())
-                crControllerCore.changeClientStatus(clientName=str(clientNameVar),\
-                                                    blockClient='OFFLINE')
-        self.refreshFun()
         return
 
     def populatePriorityFun(self):
@@ -3164,7 +2990,7 @@ class Ui_constellationRenderForm(object):
     def openOutputFolder(self):
         selectedRecordLis=self.jobTable.selectedItems()
         if selectedRecordLis!=[]:
-            if len(selectedRecordLis)>14:
+            if len(selectedRecordLis)>13:
                 QtGui.QMessageBox.warning(None, 'Error', 'Unable to open multiple job folder output.')
             else:
                 try:
@@ -3247,8 +3073,8 @@ class Ui_constellationRenderForm(object):
 
         for chk in range(len(selectedRecordLis)/13):
             jobUuid= str(selectedRecordLis[chk].text())
-            crControllerCore.changeJobRecordBlocked(jobUuid=jobUuid,\
-                                                        blockStatus='DISABLED')
+            crControllerCore.changeJobRecord(uid=jobUuid,\
+                                                        enabler=0)
         self.refreshFun()
         return
 
@@ -3262,8 +3088,8 @@ class Ui_constellationRenderForm(object):
 
         for chk in range(len(selectedRecordLis)/13):
             jobUuid= str(selectedRecordLis[chk].text())
-            crControllerCore.changeJobRecordBlocked(jobUuid=jobUuid,\
-                                                        blockStatus='ENABLED')
+            crControllerCore.changeJobRecord(uid=jobUuid,\
+                                                        enabler=1)
         self.refreshFun()
         return
 
@@ -3281,10 +3107,10 @@ class Ui_constellationRenderForm(object):
             clientNameVar= str(selectedRecordLis[chk].text())
             if switch==0:
                 crControllerCore.changeClientStatus(clientName=clientNameVar,\
-                                                               blockClient='DISABLED')
+                                                               blockClient=True)
             else:
                 crControllerCore.changeClientStatus(clientName=clientNameVar,\
-                                                               blockClient='ENABLED')
+                                                               blockClient=False)
         self.refreshFun()
         return
 
@@ -3306,7 +3132,6 @@ class Ui_constellationRenderForm(object):
             countStatusDone=0
             countStatusRendering=0
             countStatusQueue=0
-            countStatusError=0
             for chb in chk:
                 if chb[10]=='DONE':
                     countStatusDone+=1
@@ -3314,8 +3139,6 @@ class Ui_constellationRenderForm(object):
                     countStatusRendering+=1
                 if chb[10]=='QUEUE':
                     countStatusQueue+=1
-                if chb[10]=='ERROR':
-                    countStatusError+=1
                 tempStatusLis.append(chb[10])
             if countStatusDone==len(tempStatusLis):
                 statusinVar='DONE'
@@ -3326,9 +3149,6 @@ class Ui_constellationRenderForm(object):
             elif countStatusDone>0 and countStatusQueue>0 and countStatusRendering==0:
                 statusinVar='HALTED'
 
-            if countStatusError>0:
-                statusinVar='ERROR'
-
             #Determining color code
             if statusinVar=='DONE':
                 colorCodeVar=QtGui.QColor(100,100,100)
@@ -3338,8 +3158,6 @@ class Ui_constellationRenderForm(object):
                 colorCodeVar=QtGui.QColor(100,250,100)
             elif statusinVar=='HALTED':
                 colorCodeVar=QtGui.QColor(150,150,0)
-            elif statusinVar=='ERROR':
-                colorCodeVar=QtGui.QColor(180,180,0)
             if str(chk[0][11])=='DISABLED':
                 colorCodeVar=QtGui.QColor(255,0,0)
 
@@ -3419,24 +3237,6 @@ class Ui_constellationRenderForm(object):
             itemVar=QtGui.QTableWidgetItem(str(chk[0][12]))
             itemVar.setBackgroundColor(colorCodeVar)
             self.jobTable.setItem(cnt,12,itemVar)
-
-            #average render time
-            renderTotal=0
-            counter=0
-            for chb in chk:
-                if chb[16]!=None:
-                    runTime=int(chb[16])
-                    renderTotal=renderTotal+int(runTime)
-                    counter+=1
-
-            if renderTotal==0:
-                averageTime=0
-            else:
-                averageTime=renderTotal/counter
-            averageTime=datetime.timedelta(seconds=averageTime)
-            itemVar=QtGui.QTableWidgetItem(str(averageTime))
-            itemVar.setBackgroundColor(colorCodeVar)
-            self.jobTable.setItem(cnt,13,itemVar)
             cnt+=1
         self.jobTable.resizeColumnsToContents()
         return
@@ -3444,22 +3244,27 @@ class Ui_constellationRenderForm(object):
     #Function to populate client table
     def populateClientFun(self):
         self.clientTable.setRowCount(0)
+
         if crControllerCore.listAllClient()[0]!='<no client registered to the network>':
             self.clientTable.setRowCount(len(crControllerCore.listAllClient()))
             cnt=0
             for chk in crControllerCore.listAllClient():
-                if chk[3]=='ENABLED':
-                    colorCodeVar=QtGui.QColor(0,150,0)
-                elif chk[3]=='DISABLED':
-                    colorCodeVar=QtGui.QColor(150,150,0)
-                elif chk[3]=='OFFLINE':
+                if chk[3]=='SUSPENDED':
                     colorCodeVar=QtGui.QColor(150,0,0)
+                elif chk[3]=='ACTIVE':
+                    colorCodeVar=QtGui.QColor(0,200,0)
+                elif chk[3]=='STOPPING':
+                    colorCodeVar=QtGui.QColor(125,125,0)
+                elif chk[3]=='SUSPENDED-RDRR':
+                    colorCodeVar=QtGui.QColor(125,0,0)
+                elif chk[3]=='STOPPING-OFF':
+                    colorCodeVar=QtGui.QColor(250,0,0)
 
                 itemVar=QtGui.QTableWidgetItem(str(chk[1]))
                 itemVar.setBackgroundColor(colorCodeVar)
                 self.clientTable.setItem(cnt,0,itemVar)
 
-                itemVar=QtGui.QTableWidgetItem(str(chk[9]))
+                itemVar=QtGui.QTableWidgetItem(str(chk[4]))
                 itemVar.setBackgroundColor(colorCodeVar)
                 self.clientTable.setItem(cnt,1,itemVar)
 
@@ -3471,11 +3276,14 @@ class Ui_constellationRenderForm(object):
                 itemVar.setBackgroundColor(colorCodeVar)
                 self.clientTable.setItem(cnt,3,itemVar)
                 cnt+=1
-        self.clientTable.resizeColumnsToContents()
+        self.clientTable.resizeColumnToContents(0)
+        self.clientTable.resizeColumnToContents(1)
+        self.clientTable.resizeColumnToContents(3)
+        self.clientTable.resizeColumnToContents(4)
         return
 
     def retranslateUi(self, constellationRenderForm):
-        constellationRenderForm.setWindowTitle(QtGui.QApplication.translate("constellationRenderForm", "Constellation Render Manager", None, QtGui.QApplication.UnicodeUTF8))
+        constellationRenderForm.setWindowTitle(QtGui.QApplication.translate("constellationRenderForm", "Shepard Render Controller", None, QtGui.QApplication.UnicodeUTF8))
         self.jobTable.verticalHeaderItem(0).setText(QtGui.QApplication.translate("constellationRenderForm", "New Row", None, QtGui.QApplication.UnicodeUTF8))
         self.jobTable.verticalHeaderItem(1).setText(QtGui.QApplication.translate("constellationRenderForm", "New Row", None, QtGui.QApplication.UnicodeUTF8))
         self.jobTable.horizontalHeaderItem(0).setText(QtGui.QApplication.translate("constellationRenderForm", "UUID", None, QtGui.QApplication.UnicodeUTF8))
@@ -3491,7 +3299,6 @@ class Ui_constellationRenderForm(object):
         self.jobTable.horizontalHeaderItem(10).setText(QtGui.QApplication.translate("constellationRenderForm", "Priority", None, QtGui.QApplication.UnicodeUTF8))
         self.jobTable.horizontalHeaderItem(11).setText(QtGui.QApplication.translate("constellationRenderForm", "Blocked", None, QtGui.QApplication.UnicodeUTF8))
         self.jobTable.horizontalHeaderItem(12).setText(QtGui.QApplication.translate("constellationRenderForm", "Registered", None, QtGui.QApplication.UnicodeUTF8))
-        self.jobTable.horizontalHeaderItem(13).setText(QtGui.QApplication.translate("constellationRenderForm", "Render Time (avg)", None, QtGui.QApplication.UnicodeUTF8))
         __sortingEnabled = self.jobTable.isSortingEnabled()
         self.jobTable.setSortingEnabled(False)
         self.jobTable.item(0, 0).setText(QtGui.QApplication.translate("constellationRenderForm", "91bc9c72-dcc6-44f7-8239-2caa81b29566", None, QtGui.QApplication.UnicodeUTF8))
@@ -3529,9 +3336,9 @@ class Ui_constellationRenderForm(object):
         self.clientTable.item(0, 1).setText(QtGui.QApplication.translate("constellationRenderForm", "RENDERING", None, QtGui.QApplication.UnicodeUTF8))
         self.clientTable.setSortingEnabled(__sortingEnabled)
         self.clientLabel.setText(QtGui.QApplication.translate("constellationRenderForm", "   [Clients]", None, QtGui.QApplication.UnicodeUTF8))
-        self.activateClientBtn.setText(QtGui.QApplication.translate("constellationRenderForm", "ENABLE", None, QtGui.QApplication.UnicodeUTF8))
-        self.suspendClientBtn.setText(QtGui.QApplication.translate("constellationRenderForm", "DISABLE", None, QtGui.QApplication.UnicodeUTF8))
-        self.offlineClientButton.setText(QtGui.QApplication.translate("constellationRenderForm", "OFFLINE", None, QtGui.QApplication.UnicodeUTF8))
+        self.activateClientBtn.setText(QtGui.QApplication.translate("constellationRenderForm", "ACTIVE", None, QtGui.QApplication.UnicodeUTF8))
+        self.suspendClientBtn.setText(QtGui.QApplication.translate("constellationRenderForm", "SUSPEND", None, QtGui.QApplication.UnicodeUTF8))
+        return
 
 if __name__=='__main__':
     import sys

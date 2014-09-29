@@ -4,20 +4,27 @@ __author__ = 'andrew.willis'
 
 #import module
 import sys, time, datetime
-import crSetupCore
+import crSetupCore, os
+
+os.system("cls")
 
 class constellationRenderConsoleClass:
     def __init__(self):
         #Welcome message
-        self.statPrint('Constellation Render Manager 3.0')
-        self.statPrint('Setup Console')
+        print 'Constellation Render Manager 4.0 - Setup Console'
         print ''
         #invoking main menu looping around to keep asking for new order
         while True:
             commandVar=raw_input('Insert Command >> ')
 
+            os.system('cls')
+
+            print 'Constellation Render Manager 4.0 - Client Console'
+            print ''
             #Parsing command
             if commandVar=='exit':
+                print 'bye bye'
+                time.sleep(2)
                 sys.exit(0)
             elif commandVar=='':
                 pass
@@ -32,28 +39,32 @@ class constellationRenderConsoleClass:
             elif commandVar=='delRdrr':
                 self.deleteRdrrFun()
             else:
-                self.statPrint('invalid command')
+                print ('invalid command')
             print ''
         return
 
     def deleteRdrrFun(self):
+        self.listRdrrFun()
+        print ('type x to cancel deleting file')
         rendererVar=raw_input('enter renderer name >> ')
-        if rendererVar=='':
-            self.statPrint('empty renderer specified')
-        try:
-            crSetupCore.deleteRenderer(rendererVar)
-            self.statPrint(str(rendererVar)+' renderer removed')
-        except Exception as e:
-            self.statPrint('error : '+str(e))
+        if rendererVar != 'x':
+            if rendererVar=='':
+                print ('empty renderer specified')
+            try:
+                crSetupCore.deleteRenderer(rendererVar)
+                print (str(rendererVar)+' renderer removed')
+            except Exception as e:
+                print ('error : '+str(e))
         return
 
     def listRdrrFun(self):
         try:
+            print ('available renderer:')
             allRendererLis=crSetupCore.listRenderer()
             for chk in allRendererLis:
-                self.statPrint(chk)
+                print chk
         except Exception as e:
-            self.statPrint(str(e))
+            print (str(e))
         return
 
     def addRdrrFun(self):
@@ -61,46 +72,46 @@ class constellationRenderConsoleClass:
             newNameVar=raw_input('enter new renderer type (read documentation for renderer detail) >> ')
             newPathVar=raw_input('enter new renderer path >> ')
             crSetupCore.addRenderer(nameVar=newNameVar,pathVar=newPathVar)
-            self.statPrint('new renderer registered')
+            print ('new renderer registered')
         except Exception as e:
-            self.statPrint('error : '+str(e))
+            print ('error : '+str(e))
         return
 
     def setupFun(self):
         repVar=crSetupCore.setupJobTable()
         if repVar==1:
-            self.statPrint('job table created')
+            print ('job table created')
         else:
-            self.statPrint('failed to create job table')
+            print ('failed to create job table')
         repVar=crSetupCore.setupClientTable()
         if repVar==1:
-            self.statPrint('client table created')
+            print ('client table created')
         else:
-            self.statPrint('failed to create client job table')
+            print ('failed to create client job table')
+        repVar=crSetupCore.setupLogTable()
+        if repVar==1:
+            print ('log table created')
+        else:
+            print ('failed to log client job table')
         repVar=crSetupCore.setupRenderer()
         if repVar==1:
-            self.statPrint('renderer list created')
+            print ('renderer list created')
         else:
-            self.statPrint('failed to create renderer list')
+            print ('failed to create renderer list')
+        repVar=crSetupCore.setupConfiguration()
+        if repVar==1:
+            print ('Config file created')
+        else:
+            print ('failed to create config file')
         return
 
     def printHelp(self):
-        self.statPrint('-+ Constellation Render Manager Setup Help +-')
-        self.statPrint('setup - setup constellation render manager dependencies')
-        self.statPrint('addRdrr - add new renderer')
-        self.statPrint('listRdrr - list all recorded renderer')
-        self.statPrint('delRdrr - delete recorded renderer')
-        self.statPrint('exit - exit setup')
-        self.statPrint('help - view help menu')
-        return
-
-    def statPrint(self,textVar):
-        time.sleep(0.2)
-        nowVar=datetime.datetime.now()
-        timeVar=str(nowVar.hour)+':'+str(nowVar.minute)+':'+str(nowVar.second)+' '+str(nowVar.year)+'/'+\
-                                                            str(nowVar.month)+'/'+str(nowVar.day)
-        #Print to screen output
-        print '[SETUP - '+str(timeVar)+'] '+str(textVar)
+        print 'setup\t\t- setup constellation render manager dependencies'
+        print 'addRdrr\t\t- add new renderer'
+        print 'listRdrr\t- list all recorded renderer'
+        print 'delRdrr\t\t- delete recorded renderer'
+        print 'exit\t\t- exit setup'
+        print 'help\t\t- view help menu'
         return
 
 constellationRenderConsoleClass()

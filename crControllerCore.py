@@ -11,10 +11,89 @@ import xml.etree.cElementTree as ET
 #Determining root path
 rootPathVar=os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
 
+#Determining system root
+systemRootVar = str(os.environ['WINDIR']).replace('\\Windows','')
+
 #Connect to database
 if os.path.isfile(rootPathVar+'/constellationDatabase.db')==False:
     raise StandardError, 'error : constellation database non-exists'
-connectionVar=sqlite3.connect('constellationDatabase.db')
+connectionVar=sqlite3.connect(rootPathVar+'/constellationDatabase.db')
+
+#This function start cyclic process only in client module.
+def setupClient(client=None,classification=None):
+    #validate classification
+    if classification==None or client==None:
+        raise StandardError, 'error : client classification not specified'
+
+    #Register client to database
+    try:
+        connectionVar.execute("INSERT INTO constellationClientTable "\
+            "("\
+            "clientName,clientBlocked,clientMemory,clientThread,clientWorkMemory,clientWorkThread,clientStatus,clientClassification)"\
+            "VALUES ("\
+            "'"+str(client)+"',"\
+            "'DISABLED',"\
+            "'0',"\
+            "'0',"\
+            "'0',"\
+            "'0',"\
+            "'OFFLINE',"\
+            "'"+str(classification)+"')")
+        connectionVar.commit()
+    except Exception as e:
+        raise StandardError, str(e)
+
+    #create local workspace
+    try:
+        print systemRootVar+'/crClient/renderTemp'
+        if os.path.isdir(systemRootVar+'/crClient/renderTemp')==False:
+            os.makedirs(systemRootVar+'/crClient/renderTemp')
+            os.makedirs(systemRootVar+'/crClient/data')
+    except Exception as e:
+        raise StandardError, str(e)
+
+    #create working hour .xml
+    try:
+        root=ET.Element("root")
+        sunday=ET.SubElement(root,'sunday')
+        sunday.set('workHourStart','-')
+        sunday.set('workHourEnd','-')
+        monday=ET.SubElement(root,'monday')
+        monday.set('workHourStart','0800AM')
+        monday.set('workHourEnd','1000PM')
+        tuesday=ET.SubElement(root,'tuesday')
+        tuesday.set('workHourStart','0800AM')
+        tuesday.set('workHourEnd','1000PM')
+        wednesday=ET.SubElement(root,'wednesday')
+        wednesday.set('workHourStart','0800AM')
+        wednesday.set('workHourEnd','1000PM')
+        thursday=ET.SubElement(root,'thursday')
+        thursday.set('workHourStart','0800AM')
+        thursday.set('workHourEnd','1000PM')
+        friday=ET.SubElement(root,'friday')
+        friday.set('workHourStart','0800AM')
+        friday.set('workHourEnd','1000PM')
+        saturday=ET.SubElement(root,'saturday')
+        saturday.set('workHourStart','-')
+        saturday.set('workHourEnd','-')
+        tree=ET.ElementTree(root)
+        tree.write(systemRootVar+'/crClient/data/workHour.xml')
+    except Exception as e:
+        raise StandardError, str(e)
+    return
+
+def changeClass(client=None,classification=None):
+    #validate classification
+    if classification==None or client==None:
+        raise StandardError, 'error : client classification or name are not specified'
+
+    try:
+        connectionVar.execute("UPDATE constellationClientTable "\
+            "SET clientClassification='"+str(classification)+"' WHERE clientName='"+str(client)+"'")
+        connectionVar.commit()
+    except Exception as e:
+        raise StandardError, str(e)
+    return
 
 #This function list all recorded job.
 def listAllJob():
@@ -121,7 +200,7 @@ def searchJob(id=None, project=None, user=None, software=None, scriptPath=None,\
     return towriteLis
 
 #This function open output folder
-def openOutput(uid=None):
+def openOutput(uid=None, renderer=None):
     recordVar=connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobUuid='"+str(uid)+"'").fetchall()
     recordVar=recordVar[0]
 
@@ -131,14 +210,32 @@ def openOutput(uid=None):
     sceneVar=recordVar[5]
     sceneVar=sceneVar[sceneVar.rfind('/')+1:sceneVar.rfind('.ma')]
 
-    pathInstructionVar=pathInstructionVar[:pathInstructionVar.rfind('/')]
-    pathInstructionVar=pathInstructionVar.replace('<Layer>',str(layerVar))
-    pathInstructionVar=pathInstructionVar.replace('<Camera>',str(cameraVar))
-    pathInstructionVar=pathInstructionVar.replace('<Scene>',str(sceneVar))
 
-    print pathInstructionVar
+    renderer=recordVar[4]
+    if renderer=='maya-vray':
+        pathInstructionVar=pathInstructionVar[:pathInstructionVar.rfind('/')]
+        pathInstructionVar=pathInstructionVar.replace('<Layer>',str(layerVar))
+        pathInstructionVar=pathInstructionVar.replace('<Camera>',str(cameraVar))
+        pathInstructionVar=pathInstructionVar.replace('<Scene>',str(sceneVar))
 
-    subprocess.Popen(r'explorer /select,"'+pathInstructionVar.replace('/','\\')+'\\'+'"')
+        subprocess.Popen(r'explorer /select,"'+pathInstructionVar.replace('/','\\')+'\\'+'"')
+
+    elif renderer=='maya-mray':
+        pathInstructionVar=pathInstructionVar[:pathInstructionVar.rfind('/')]
+        pathInstructionVar=pathInstructionVar.replace('<RenderLayer>',str(layerVar))
+        pathInstructionVar=pathInstructionVar.replace('<Camera>',str(cameraVar))
+        pathInstructionVar=pathInstructionVar.replace('<Scene>',str(sceneVar))
+        pathInstructionVar=pathInstructionVar.replace('<RenderPass>','')
+
+        pathInstructionVar=pathInstructionVar[:pathInstructionVar.rfind('\\')]
+        while pathInstructionVar.endswith('\\'):
+            pathInstructionVar=pathInstructionVar[:pathInstructionVar.rfind('\\')]
+
+    if pathInstructionVar!='':
+        if os.path.isdir(pathInstructionVar)==True:
+            subprocess.Popen(r'explorer /select,"'+pathInstructionVar.replace('/','\\')+'\\'+'"')
+        else:
+            raise StandardError, 'error : directory not found'
     return
 
 #This function will delete all or done job by uid
@@ -198,25 +295,6 @@ def resetJobRecord(uid=None):
         if chk[0][1]==str(uid):
             jobGroupLis=chk
 
-    #Checking render directory make one if non exists
-    pathInstructionVar=jobGroupLis[0][6]
-    layerVar=jobGroupLis[0][9]
-    cameraVar=jobGroupLis[0][14]
-    sceneVar=jobGroupLis[0][5]
-    sceneVar=sceneVar[sceneVar.rfind('/')+1:sceneVar.rfind('.ma')]
-
-    pathInstructionVar=pathInstructionVar[:pathInstructionVar.rfind('/')]
-    pathInstructionVar=pathInstructionVar.replace('<Layer>',str(layerVar))
-    pathInstructionVar=pathInstructionVar.replace('<Camera>',str(cameraVar))
-    pathInstructionVar=pathInstructionVar.replace('<Scene>',str(sceneVar))
-
-    if os.path.isdir(pathInstructionVar)==False:
-        os.makedirs(pathInstructionVar)
-
-    for chk in os.listdir(pathInstructionVar):
-        if os.path.isfile(pathInstructionVar+'/'+chk)==True:
-            os.remove(pathInstructionVar+'/'+chk)
-
     connectionVar.execute("UPDATE constellationJobTable SET jobStatus='QUEUE' WHERE jobUuid='"+uid+"'")
     connectionVar.commit()
     return
@@ -231,23 +309,27 @@ def changeJobPrior(uid=None, priority=None):
     return
 
 #This function will change job record attribute
-def changeJobRecord(uid=None, enabler=None):
+def changeJobRecord(jobId=None, status=None):
     #Validate uid. Make sure its not None
-    if uid==None:
+    if jobId==None:
         raise ValueError, 'error : no id specified'
 
-    #Change job enabler. Enabler used to block and prevent a job being rendered by client.
-    #Note enabler: 0=SUSPENDED 1=ENABLED
-    if enabler!=None:
-        if enabler not in [0,1]:
-            raise ValueError, 'error : invalid value'
+    #change job status
+    if status!=None:
+        connectionVar.execute("UPDATE constellationJobTable SET jobStatus='"+str(status)+"' WHERE jobId='"+str(jobId)+"'")
+        connectionVar.commit()
 
-        if enabler==0:
-            enabler='DISABLED'
-        elif enabler==1:
-            enabler='ENABLED'
+    return
 
-        connectionVar.execute("UPDATE constellationJobTable SET jobEnabler='"+enabler+"' WHERE jobUuid='"+str(uid)+"'")
+#This function will change job record attribute
+def changeJobRecordBlocked(jobUuid=None, blockStatus=None):
+    #Validate uid. Make sure its not None
+    if jobUuid==None:
+        raise ValueError, 'error : no id specified'
+
+    #change job status
+    if blockStatus!=None:
+        connectionVar.execute("UPDATE constellationJobTable SET jobBlocked='"+str(blockStatus)+"' WHERE jobUuid='"+str(jobUuid)+"'")
         connectionVar.commit()
 
     return
@@ -260,7 +342,10 @@ def listAllClient():
     return returnLis
 
 #This function change client status
-def changeClientStatus(clientName=None, status=None, blockClient=None,offline=None):
+def changeClientStatus(clientName=None,\
+                       status=None,\
+                       blockClient=None,\
+                       clientJob=None):
     #Validate client id
     if clientName==None:
         raise ValueError, 'error : no id specified'
@@ -271,27 +356,18 @@ def changeClientStatus(clientName=None, status=None, blockClient=None,offline=No
         connectionVar.commit()
 
     #Processing blockClient
-    #Algorithm will check if the client is rendering or not. If its rendering the status will be stopping instead
-    #of SUSPENDED. This is to avoid confusion later on.
     if blockClient!=None:
-        if blockClient==True:
-            clientBlocked='SUSPENDED'
-            #Compare clientName with listAllClient() to find out client is rendering or not.
-            for clientCheck in listAllClient():
-                if clientCheck[1]==clientName:
-                    if clientCheck[4]=='RENDERING':
-                        clientBlocked='STOPPING'
-
-            connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='"+clientBlocked+"' WHERE clientName='"+str(clientName)+"'")
+        if blockClient=='DISABLED':
+            connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='DISABLED' WHERE clientName='"+str(clientName)+"'")
             connectionVar.commit()
-        elif blockClient==False:
-            connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='ACTIVE' WHERE clientName='"+str(clientName)+"'")
+        elif blockClient=='ENABLED':
+            connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='ENABLED' WHERE clientName='"+str(clientName)+"'")
+            connectionVar.commit()
+        elif blockClient=='OFFLINE':
+            connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='OFFLINE' WHERE clientName='"+str(clientName)+"'")
             connectionVar.commit()
 
-    if offline==True:
-        connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='STOPPING-OFF' WHERE clientName='"+str(clientName)+"'")
-        connectionVar.commit()
-    elif offline==False:
-        connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='ACTIVE' WHERE clientName='"+str(clientName)+"'")
+    if clientJob!=None:
+        connectionVar.execute("UPDATE constellationClientTable SET clientJob='"+str(clientJob)+"' WHERE clientName='"+str(clientName)+"'")
         connectionVar.commit()
     return
