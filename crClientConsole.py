@@ -49,9 +49,33 @@ class crClientConsoleClass:
                 self.disableClientFun(mode='DISABLED')
             elif commandVar=='clientStat':
                 self.clientStat()
+            elif commandVar=='setThread':
+                self.setThread()
+            elif commandVar=='setWorkThread':
+                self.setWorkThread()
+            elif commandVar=='setMemory':
+                self.setMemory()
+            elif commandVar=='setWorkMemory':
+                self.setWorkMemory()
             else:
                 print ('invalid command')
             print ''
+
+        return
+
+    def setWorkMemory(self):
+
+        return
+
+    def setWorkThread(self):
+
+        return
+
+    def setMemory(self):
+
+        return
+
+    def setThread(self):
 
         return
 
@@ -64,6 +88,10 @@ class crClientConsoleClass:
         print 'enableClient\t- Enable client for rendering'
         print 'disableClient\t- Disable client for rendering'
         print 'clientStat\t- Get client current status'
+        print 'setThread\t- Set client thread limit during non-work hour'
+        print 'setWorkThread\t- Set client thread limit during work hour'
+        print 'setMemory\t- Set client memory limit during non-work hour'
+        print 'setWorkMemory\t- Set client memory limit durin work hour'
         print 'exit\t\t- Close this console'
         return
 
