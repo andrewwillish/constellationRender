@@ -4,6 +4,15 @@
     <mapping directory="" vcs="" />
     <mapping directory="$PROJECT_DIR$/../constellationRenderNuke" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../constellationRenderNuke" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../constellationRenderNuke" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../shotgunInterface" vcs="Git" />
+    <mapping directory="Y:/TECH/asiist" vcs="Git" />
+    <mapping directory="Y:/TECH/constellationRenderNuke" vcs="Git" />
+    <mapping directory="Y:/TECH/registrarFileManager" vcs="Git" />
+    <mapping directory="Z:/development/asiist" vcs="Git" />
+    <mapping directory="Z:/development/asiist" vcs="Git" />
+    <mapping directory="Z:/development/registrarFileManager" vcs="Git" />
+    <mapping directory="Z:/development/registrarFileManager" vcs="Git" />
   </component>
 </project>
 

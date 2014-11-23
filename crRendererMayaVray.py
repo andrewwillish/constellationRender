@@ -77,6 +77,13 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
                 dirResult=True
             except:
                 dirResult=False
+
+        #dev error report:
+        #Error reported where the renderer created an extra directory within the output
+        #directory. Last part of the directoryInst which actually the file name instruction
+        #will be removed on the following code.as
+        directoryInst = directoryInst[:directoryInst.rfind('/')]
+        print 'directoryInst ', directoryInst
         #CREATE DIRECTORY===============================================================================================
 
         if dirResult==True and os.path.isdir(directoryInst):

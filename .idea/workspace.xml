@@ -13,17 +13,21 @@
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/constellationRender$crSetupConsole.coverage" NAME="crSetupConsole Coverage Results" MODIFIED="1410882524928" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/constellationRender$crClientConsole.coverage" NAME="crClientConsole Coverage Results" MODIFIED="1410868087971" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/constellationRender$crNukeControllerUI.coverage" NAME="crNukeControllerUI Coverage Results" MODIFIED="1411474028334" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../constellationRenderNuke" />
-    <SUITE FILE_PATH="coverage/constellationRender$listAllClient.coverage" NAME="listAllClient Coverage Results" MODIFIED="1411480606944" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/constellationRender$listAllLogTable.coverage" NAME="listAllLogTable Coverage Results" MODIFIED="1411480626359" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/constellationRender$crClientService.coverage" NAME="crClientService Coverage Results" MODIFIED="1411479187181" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/constellationRender$server.coverage" NAME="server Coverage Results" MODIFIED="1410872242076" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../networkRunTest" />
-    <SUITE FILE_PATH="coverage/constellationRender$compiler.coverage" NAME="compiler Coverage Results" MODIFIED="1411476319911" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../constellationRenderNuke" />
-    <SUITE FILE_PATH="coverage/constellationRender$resetClientTable.coverage" NAME="resetClientTable Coverage Results" MODIFIED="1411480673960" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/constellationRender$compiler.coverage" NAME="compiler Coverage Results" MODIFIED="1413291868205" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="Z:/development/registrarFileManager" />
+    <SUITE FILE_PATH="coverage/constellationRender$crNukeClientUI.coverage" NAME="crNukeClientUI Coverage Results" MODIFIED="1411649360257" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="Y:/TECH/constellationRenderNuke" />
     <SUITE FILE_PATH="coverage/constellationRender$addJobBulk.coverage" NAME="addJobBulk Coverage Results" MODIFIED="1410883125317" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/constellationRender$crNukeClientUI.coverage" NAME="crNukeClientUI Coverage Results" MODIFIED="1411475520356" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../constellationRenderNuke" />
+    <SUITE FILE_PATH="coverage/constellationRender$teset.coverage" NAME="teset Coverage Results" MODIFIED="1411649450556" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="Y:/TECH/constellationRenderNuke/data" />
+    <SUITE FILE_PATH="coverage/constellationRender$compiler__1_.coverage" NAME="compiler (1) Coverage Results" MODIFIED="1415707659011" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="Z:/development/asiist" />
+    <SUITE FILE_PATH="coverage/constellationRender$listAllTable.coverage" NAME="listAllTable Coverage Results" MODIFIED="1413895133766" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="Y:/TECH/registrarFileManager" />
+    <SUITE FILE_PATH="coverage/constellationRender$crClientConsole.coverage" NAME="crClientConsole Coverage Results" MODIFIED="1410868087971" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/constellationRender$listAllClient.coverage" NAME="listAllClient Coverage Results" MODIFIED="1411480606944" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/constellationRender$crClientService.coverage" NAME="crClientService Coverage Results" MODIFIED="1411479187181" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/constellationRender$listAllLogTable.coverage" NAME="listAllLogTable Coverage Results" MODIFIED="1411480626359" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/constellationRender$resetClientTable.coverage" NAME="resetClientTable Coverage Results" MODIFIED="1411480673960" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/constellationRender$listAllJobTable.coverage" NAME="listAllJobTable Coverage Results" MODIFIED="1411480684069" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/constellationRender$query.coverage" NAME="query Coverage Results" MODIFIED="1413896002418" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="Y:/TECH/registrarFileManager" />
     <SUITE FILE_PATH="coverage/constellationRender$client.coverage" NAME="client Coverage Results" MODIFIED="1410872247276" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../networkRunTest" />
     <SUITE FILE_PATH="coverage/constellationRender$resetJobTable.coverage" NAME="resetJobTable Coverage Results" MODIFIED="1411480677948" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
@@ -39,46 +43,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="crClientService.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/crClientService.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="151" column="27" selection-start="6115" selection-end="6115" vertical-scroll-proportion="0.0" vertical-offset="2305" max-vertical-offset="4675">
+              <folding>
+                <marker date="1416722086281" expanded="true" signature="1138:1176" placeholder="SELECT * FRO..constellationClientTable..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="crRendererMayaVray.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/crRendererMayaVray.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="99" column="16" selection-start="4922" selection-end="4922" vertical-scroll-proportion="0.49656358" vertical-offset="1326" max-vertical-offset="3298">
+            <state line="69" column="0" selection-start="3348" selection-end="3348" vertical-scroll-proportion="0.68761224" vertical-offset="722" max-vertical-offset="3383">
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="listAllClient.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/listAllClient.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="13" selection-start="261" selection-end="261" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
-              <folding>
-                <element signature="e#0#14#0" expanded="true" />
-                <marker date="1411048317474" expanded="true" signature="180:218" placeholder="SELECT * FRO..constellationClientTable..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="listAllJobTable.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/listAllJobTable.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="13" selection-start="258" selection-end="258" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="238">
-              <folding>
-                <marker date="1411048317475" expanded="true" signature="180:215" placeholder="SELECT * FRO..constellationJobTable..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="listAllLogTable.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/listAllLogTable.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="13" selection-start="258" selection-end="258" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
-              <folding>
-                <element signature="e#0#14#0" expanded="true" />
-                <marker date="1411397992461" expanded="true" signature="180:215" placeholder="SELECT * FRO..constellationLogTable..." />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -91,7 +71,7 @@
     </FindUsagesManager>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../constellationRenderNuke" />
+    <option name="RECENT_GIT_ROOT_PATH" value="Z:/development/asiist" />
   </component>
   <component name="GitLogSettings">
     <option name="myDateState">
@@ -101,19 +81,21 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/../networkRunTest/client.py" />
-        <option value="$PROJECT_DIR$/../networkRunTest/server.py" />
-        <option value="$PROJECT_DIR$/notes.txt" />
-        <option value="$PROJECT_DIR$/addJobBulk.py" />
-        <option value="$PROJECT_DIR$/crSubmitCore.py" />
-        <option value="$PROJECT_DIR$/../pyCompiler/userSetup.py" />
-        <option value="$PROJECT_DIR$/../pyCompiler/PyCompiler.py" />
-        <option value="$PROJECT_DIR$/../constellationRenderNuke/compiler.py" />
-        <option value="$PROJECT_DIR$/../constellationRenderNuke/crNukeSubmitterUI.py" />
-        <option value="$PROJECT_DIR$/../constellationRenderNuke/crNukeClientUI.py" />
-        <option value="$PROJECT_DIR$/crClientConsole.py" />
+        <option value="Z:/development/registrarFileManager/ramAssetUI.py" />
+        <option value="Y:/TECH/registrarFileManager/registrarManagerUI.py" />
+        <option value="Z:/development/registrarFileManager/ramAssetCore.py" />
+        <option value="Z:/development/registrarFileManager/compiler.py" />
+        <option value="Z:/development/registrarFileManager/ramSetupCore.py" />
+        <option value="Y:/TECH/registrarFileManager/listAllTable.py" />
+        <option value="Y:/TECH/registrarFileManager/query.py" />
+        <option value="Y:/TECH/registrarFileManager/ramAssetUI.py" />
+        <option value="Y:/TECH/registrarFileManager/ramAssetCore.py" />
+        <option value="Z:/development/asiist/testFlight/projectData/KIKO/projInfo.xml" />
+        <option value="$PROJECT_DIR$/../veTools/shotSetup.py" />
+        <option value="Z:/development/asiist/compiler.py" />
+        <option value="Z:/development/asiist/asiist.py" />
+        <option value="Z:/development/registrarFileManager/ramAssetImportUI.py" />
         <option value="$PROJECT_DIR$/crClientService.py" />
-        <option value="$PROJECT_DIR$/userSetup.py" />
         <option value="$PROJECT_DIR$/crRendererMayaVray.py" />
       </list>
     </option>
@@ -150,7 +132,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -171,114 +152,120 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="editor.preferences.appearance" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../shotgunInterface" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
       <PyConsoleSettings />
     </option>
   </component>
-  <component name="RunManager" selected="Python.listAllJobTable">
-    <configuration default="false" name="listAllClient" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="Y:\TECH\registrarFileManager" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.compiler (1)">
+    <configuration default="false" name="teset" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="Y:/TECH/constellationRenderNuke/data" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="constellationRender" />
+      <module name="constellationRenderNuke" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/listAllClient.py" />
+      <option name="SCRIPT_NAME" value="Y:/TECH/constellationRenderNuke/data/teset.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="listAllJobTable" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration default="false" name="compiler" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="Z:/development/registrarFileManager" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="constellationRender" />
+      <module name="registrarFileManager" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/listAllJobTable.py" />
+      <option name="SCRIPT_NAME" value="Z:/development/registrarFileManager/compiler.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="listAllLogTable" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration default="false" name="listAllTable" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="Y:/TECH/registrarFileManager" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="constellationRender" />
+      <module name="TECH" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/listAllLogTable.py" />
+      <option name="SCRIPT_NAME" value="Y:\TECH\registrarFileManager\query.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="resetClientTable" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration default="false" name="query" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="Y:/TECH/registrarFileManager" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="constellationRender" />
+      <module name="TECH" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/resetClientTable.py" />
+      <option name="SCRIPT_NAME" value="Y:/TECH/registrarFileManager/query.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="resetJobTable" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration default="false" name="compiler (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="Z:/development/asiist" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="constellationRender" />
+      <module name="asiist" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/resetJobTable.py" />
+      <option name="SCRIPT_NAME" value="Z:/development/asiist/compiler.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
@@ -368,9 +355,6 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
-      <method />
-    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -392,6 +376,9 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -435,19 +422,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.listAllClient" />
-      <item index="1" class="java.lang.String" itemvalue="Python.listAllJobTable" />
-      <item index="2" class="java.lang.String" itemvalue="Python.listAllLogTable" />
-      <item index="3" class="java.lang.String" itemvalue="Python.resetClientTable" />
-      <item index="4" class="java.lang.String" itemvalue="Python.resetJobTable" />
+      <item index="0" class="java.lang.String" itemvalue="Python.teset" />
+      <item index="1" class="java.lang.String" itemvalue="Python.compiler" />
+      <item index="2" class="java.lang.String" itemvalue="Python.listAllTable" />
+      <item index="3" class="java.lang.String" itemvalue="Python.query" />
+      <item index="4" class="java.lang.String" itemvalue="Python.compiler (1)" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.listAllJobTable" />
-        <item index="1" class="java.lang.String" itemvalue="Python.resetJobTable" />
-        <item index="2" class="java.lang.String" itemvalue="Python.resetClientTable" />
-        <item index="3" class="java.lang.String" itemvalue="Python.listAllLogTable" />
-        <item index="4" class="java.lang.String" itemvalue="Python.listAllClient" />
+        <item index="0" class="java.lang.String" itemvalue="Python.compiler (1)" />
+        <item index="1" class="java.lang.String" itemvalue="Python.query" />
+        <item index="2" class="java.lang.String" itemvalue="Python.listAllTable" />
+        <item index="3" class="java.lang.String" itemvalue="Python.compiler" />
+        <item index="4" class="java.lang.String" itemvalue="Python.teset" />
       </list>
     </recent_temporary>
   </component>
@@ -465,20 +452,20 @@
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18667643" sideWeight="0.6714976" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28341386" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -487,21 +474,21 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1830161" sideWeight="0.73429954" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18667643" sideWeight="0.6714976" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28341386" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2657005" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -513,119 +500,95 @@
     </option>
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="13" />
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/notes.txt">
+    <entry file="file://$PROJECT_DIR$/renderer.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="53" selection-start="251" selection-end="251" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="204" />
+        <state line="0" column="65" selection-start="65" selection-end="65" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="582" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/crSubmitCore.py">
+    <entry file="file://Z:/development/registrarFileManager/compiler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="2" selection-start="466" selection-end="466" vertical-scroll-proportion="0.0" vertical-offset="272" max-vertical-offset="935" />
+        <state line="9" column="23" selection-start="152" selection-end="152" vertical-scroll-proportion="0.25714287" vertical-offset="0" max-vertical-offset="595" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/notes.txt">
+    <entry file="file://Z:/development/registrarFileManager/ramSetupCore.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="92" column="68" selection-start="3966" selection-end="3966" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2431" />
+        <state line="73" column="15" selection-start="2432" selection-end="2432" vertical-scroll-proportion="0.2857143" vertical-offset="1054" max-vertical-offset="2839" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/crSetupCore.py">
+    <entry file="file://Z:/development/registrarFileManager/ramAssetCore.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="134" column="11" selection-start="4506" selection-end="4506" vertical-scroll-proportion="-0.9807692" vertical-offset="2703" max-vertical-offset="3570" />
+        <state line="329" column="16" selection-start="12126" selection-end="12126" vertical-scroll-proportion="1.2703412" vertical-offset="5092" max-vertical-offset="10659" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/crSetupConsole.py">
+    <entry file="file://Z:/development/registrarFileManager/ramAssetUI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="23" selection-start="419" selection-end="419" vertical-scroll-proportion="0.5862069" vertical-offset="0" max-vertical-offset="2023" />
+        <state line="460" column="21" selection-start="20775" selection-end="20775" vertical-scroll-proportion="0.67541766" vertical-offset="7435" max-vertical-offset="14620" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/notes.txt">
+    <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/-891257481/exceptions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="760" selection-end="760" vertical-scroll-proportion="0.3797251" vertical-offset="0" max-vertical-offset="2431" />
+        <state line="79" column="6" selection-start="2368" selection-end="2368" vertical-scroll-proportion="0.33174226" vertical-offset="1204" max-vertical-offset="13651" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/crSubmitCore.py">
+    <entry file="file://Z:/development/asiist/testFlight/projectData/KIKO/projInfo.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="41" selection-start="1548" selection-end="1548" vertical-scroll-proportion="0.34285715" vertical-offset="340" max-vertical-offset="1411" />
+        <state line="2" column="17" selection-start="54" selection-end="54" vertical-scroll-proportion="0.057142857" vertical-offset="0" max-vertical-offset="595" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/crClientConsole.py">
+    <entry file="file://Z:/development/asiist/userSetup.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="64" column="36" selection-start="2391" selection-end="2391" vertical-scroll-proportion="0.71428573" vertical-offset="663" max-vertical-offset="1819">
-          <folding />
-        </state>
+        <state line="97" column="0" selection-start="3527" selection-end="3527" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1700" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/userSetup.py">
+    <entry file="file://Z:/development/asiist/compiler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="103" selection-start="969" selection-end="969" vertical-scroll-proportion="0.85202867" vertical-offset="85" max-vertical-offset="629">
+        <state line="5" column="0" selection-start="60" selection-end="60" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="187" />
+      </provider>
+    </entry>
+    <entry file="file://Z:/development/asiist/asiistMenu.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="0" selection-start="433" selection-end="433" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="476" />
+      </provider>
+    </entry>
+    <entry file="file://Z:/development/registrarFileManager/listAllTable.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="595" />
+      </provider>
+    </entry>
+    <entry file="file://Z:/development/registrarFileManager/ramAssetImportUI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="51" column="37" selection-start="1526" selection-end="1526" vertical-scroll-proportion="-0.057142857" vertical-offset="867" max-vertical-offset="3876" />
+      </provider>
+    </entry>
+    <entry file="file://Z:/development/asiist/asiist.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="129" column="25" selection-start="3957" selection-end="3957" vertical-scroll-proportion="0.74285716" vertical-offset="1700" max-vertical-offset="2295" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crRendererMayaMray.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2652">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/crClientService.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="0" selection-start="435" selection-end="531" vertical-scroll-proportion="0.46059114" vertical-offset="0" max-vertical-offset="4403">
+        <state line="151" column="27" selection-start="6115" selection-end="6115" vertical-scroll-proportion="0.0" vertical-offset="2305" max-vertical-offset="4675">
           <folding>
-            <marker date="1411479236452" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..constellationClientTable..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/listAllLogTable.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="13" selection-start="258" selection-end="258" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-            <marker date="1411397992461" expanded="true" signature="180:215" placeholder="SELECT * FRO..constellationLogTable..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/listAllClient.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="13" selection-start="261" selection-end="261" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-            <marker date="1411048317474" expanded="true" signature="180:218" placeholder="SELECT * FRO..constellationClientTable..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resetClientTable.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="0" selection-start="264" selection-end="264" vertical-scroll-proportion="0.36515513" vertical-offset="0" max-vertical-offset="419">
-          <folding>
-            <element signature="e#0#14#0" expanded="false" />
-            <marker date="1411397992463" expanded="true" signature="-1:-1" placeholder="UPDATE const..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resetJobTable.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="0" selection-start="284" selection-end="284" vertical-scroll-proportion="0.36515513" vertical-offset="0" max-vertical-offset="419">
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-            <marker date="1411397992465" expanded="true" signature="-1:-1" placeholder="UPDATE const..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/listAllJobTable.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="13" selection-start="258" selection-end="258" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="238">
-          <folding>
-            <marker date="1411048317475" expanded="true" signature="180:215" placeholder="SELECT * FRO..constellationJobTable..." />
+            <marker date="1416722086281" expanded="true" signature="1138:1176" placeholder="SELECT * FRO..constellationClientTable..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/crRendererMayaVray.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="99" column="16" selection-start="4922" selection-end="4922" vertical-scroll-proportion="0.49656358" vertical-offset="1326" max-vertical-offset="3298">
+        <state line="69" column="0" selection-start="3348" selection-end="3348" vertical-scroll-proportion="0.68761224" vertical-offset="722" max-vertical-offset="3383">
           <folding />
         </state>
       </provider>

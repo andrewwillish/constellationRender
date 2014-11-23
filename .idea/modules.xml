@@ -2,8 +2,15 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://Y:/TECH/.idea/TECH.iml" filepath="Y:/TECH/.idea/TECH.iml" />
+      <module fileurl="file://Z:/development/asiist/.idea/asiist.iml" filepath="Z:/development/asiist/.idea/asiist.iml" />
+      <module fileurl="file://Y:/TECH/asiist/.idea/asiist.iml" filepath="Y:/TECH/asiist/.idea/asiist.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/constellationRender.iml" filepath="$PROJECT_DIR$/.idea/constellationRender.iml" />
+      <module fileurl="file://Y:/TECH/constellationRenderNuke/.idea/constellationRenderNuke.iml" filepath="Y:/TECH/constellationRenderNuke/.idea/constellationRenderNuke.iml" />
       <module fileurl="file://$PROJECT_DIR$/../pyCompiler/.idea/pyCompiler.iml" filepath="$PROJECT_DIR$/../pyCompiler/.idea/pyCompiler.iml" />
+      <module fileurl="file://Z:/development/registrarFileManager/.idea/registrarFileManager.iml" filepath="Z:/development/registrarFileManager/.idea/registrarFileManager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../shotgunInterface/.idea/shotgunInterface.iml" filepath="$PROJECT_DIR$/../shotgunInterface/.idea/shotgunInterface.iml" />
+      <module fileurl="file://Y:/TECH/veTools/.idea/veTools.iml" filepath="Y:/TECH/veTools/.idea/veTools.iml" />
     </modules>
   </component>
 </project>

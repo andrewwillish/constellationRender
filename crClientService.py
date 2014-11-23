@@ -131,14 +131,30 @@ def instructionFunc(clientSetting):
             endClock=tempEnd[-2:]
 
             #check back if the workhour system failed
-            if (int(currentTime>=int(startTime) and currentClock==startClock)or int(currentTime<=int(endTime) and currentClock==endClock)):
-                #workhour thread and memory
-                useThread=str(clientSetting[6])
-                useMemory=str(clientSetting[7])
-            else:
-                #happyhour thread and memory
-                useThread=str(clientSetting[4])
-                useMemory=str(clientSetting[5])
+            #dev error report:
+            #There is an error report within this section. Code has been modified where the bracket considered
+            #to be the problem all along but the error indicate that the value given from the variable is
+            #invalid. As a fail-safe measure I put try except method and print out the variable to check for
+            #further problem.
+            try:
+                print 'currentTime ', currentTime
+                print 'startTime ', startTime
+                print 'currentClock ', currentClock
+                print 'startClock ', startClock
+                print 'endTime ', endTime
+                print 'endClock ', endClock
+                if (int(currentTime)>=int(startTime) and currentClock==startClock) or (int(currentTime)<=int(endTime) and currentClock==endClock):
+                    #workhour thread and memory
+                    useThread=str(clientSetting[6])
+                    useMemory=str(clientSetting[7])
+                else:
+                    #happyhour thread and memory
+                    useThread=str(clientSetting[4])
+                    useMemory=str(clientSetting[5])
+            except Exception as e:
+                print str(e)
+                useThread = '0'
+                useMemory = '0'
         else:
             useThread='0'
             useMemory='0'
