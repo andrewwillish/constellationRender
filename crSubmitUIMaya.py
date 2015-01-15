@@ -11,19 +11,18 @@ rootPathVar=os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
 class constellationMayaSubmitter:
     #invoke UI element
     def __init__(self):
-        if cmds.window('constellationSubmitter',exists=True):
-            cmds.deleteUI('constellationSubmitter',wnd=True)
+        if cmds.window('constellationSubmitter', exists=True):cmds.deleteUI('constellationSubmitter', wnd=True)
 
         cmds.window('constellationSubmitter',t='Constellation Submitter',s=False)
-        cmas=cmds.columnLayout(adj=True)
+        cmas = cmds.columnLayout(adj=True)
 
-        ccmas=cmds.rowColumnLayout( numberOfColumns=2, columnWidth=[(1, 150), (2, 305)],p=cmas)
+        ccmas = cmds.rowColumnLayout( numberOfColumns=2, columnWidth=[(1, 150), (2, 305)],p=cmas)
 
-        cm1=cmds.frameLayout(l='Render Layer',w=150,p=ccmas)
+        cm1 = cmds.frameLayout(l='Render Layer',w=150,p=ccmas)
         cmds.textScrollList('newJobRenderLayer',ams=True)
 
-        cm2=cmds.frameLayout(l='Job Setting',p=ccmas)
-        ccm2=cmds.columnLayout(adj=True)
+        cm2 = cmds.frameLayout(l='Job Setting',p=ccmas)
+        ccm2 = cmds.columnLayout(adj=True)
         cmds.rowColumnLayout( numberOfColumns=4, columnWidth=[(1, 55), (2, 90), (3, 55), (4, 90)],p=ccm2)
         cmds.text(l='  Project:', al='left')
         cmds.textField('newJobProject')
@@ -80,9 +79,9 @@ class constellationMayaSubmitter:
         #Populate UI field
         cmds.textScrollList('newJobRenderLayer',e=True,ra=True)
         for chk in cmds.ls(type='renderLayer'):
-            if chk.endswith('defaultRenderLayer')==False:
-                cmds.textScrollList('newJobRenderLayer',e=True,a=str(chk))
-                cmds.textScrollList('newJobRenderLayer',e=True,si=str(chk))
+            if not chk.endswith('defaultRenderLayer'):
+                cmds.textScrollList('newJobRenderLayer', e=True, a=str(chk))
+                cmds.textScrollList('newJobRenderLayer', e=True, si=str(chk))
 
         cmds.textField('newJobProject',e=True,tx='default')
         cmds.textField('newJobUser',e=True,tx=str(getpass.getuser()))

@@ -9,80 +9,71 @@ import time, datetime, socket
 import xml.etree.cElementTree as ET
 
 #Determining root path
-rootPathVar=os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
+rootPathVar = os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
 
-#This function is to add new renderer for constellation. There are 2 renderer supported until now which is
-#maya and nuke. Adding supported renderer will require hard coding in client part.
+#Add renderer to the database.
 def addRenderer( nameVar, pathVar):
     #Validate xml existence
-    if os.path.isfile(rootPathVar+'/renderer.xml')==False:
-        raise IOError, 'renderer.xml does not exists'
+    if not os.path.isfile(rootPathVar+'/renderer.xml'): raise IOError, 'renderer.xml does not exists'
 
     #Path input validation
-    if os.path.isfile(pathVar)==False:
-        raise ValueError, 'error : invalid renderer path'
+    if not os.path.isfile(pathVar):raise ValueError, 'error : invalid renderer path'
 
     #Name input validation to ensure only 0 and 1 entered
     #note: 0=maya, 1=nuke
-    nameVar=int(nameVar)
-    if nameVar==0:
-        nameVar='maya-mray'
-    elif nameVar==1:
-        nameVar='maya-vray'
-    elif nameVar==2:
-        nameVar='maya-hw'
-    elif nameVar==3:
-        nameVar='maya-sw'
-    elif nameVar==4:
-        nameVar='nuke'
+    nameVar = int(nameVar)
+    if nameVar == 0:
+        nameVar = 'maya-mray'
+    elif nameVar == 1:
+        nameVar = 'maya-vray'
+    elif nameVar == 2:
+        nameVar = 'maya-hw'
+    elif nameVar == 3:
+        nameVar = 'maya-sw'
+    elif nameVar == 4:
+        nameVar = 'nuke'
     else:
         raise ValueError, 'unsupported renderer type'
 
     #Quotation check within pathVar
-    if pathVar.endswith('"')==False:
-        pathVar=pathVar+'"'
-    if pathVar.startswith('"')==False:
-        pathVar='"'+pathVar
+    if not pathVar.endswith('"'): pathVar = pathVar + '"'
+    if not pathVar.startswith('"'): pathVar = '"' + pathVar
 
     #Fetching renderer root from renderer.xml
-    tree=ET.parse(rootPathVar+'/renderer.xml')
-    root=tree.getroot()
+    tree = ET.parse(rootPathVar+'/renderer.xml')
+    root = tree.getroot()
 
     #Checking renderer existence. To update existing renderer please delete it first then
     #enter the new one.
-    tempLis=[]
-    for chk in root:
-        tempLis.append(str(chk.tag))
-    if nameVar in tempLis:
-        raise StandardError, nameVar+' renderer already registered'
+    tempLis = []
+    for chk in root: tempLis.append(str(chk.tag))
+    if nameVar in tempLis: raise StandardError, nameVar + ' renderer already registered'
 
     #Writing renderer to renderer.xml if there is no error from existence check
-    addField=ET.SubElement(root,str(nameVar))
-    addField.text=str(pathVar)
-    tree=ET.ElementTree(root)
-    tree.write(rootPathVar+'/renderer.xml')
+    addField = ET.SubElement(root, str(nameVar))
+    addField.text = str(pathVar)
+    tree = ET.ElementTree(root)
+    tree.write(rootPathVar + '/renderer.xml')
     return
 
 #This function delete renderer from renderer.xml
 def deleteRenderer(nameVar):
     #Validate xml existence
-    if os.path.isfile(rootPathVar+'/renderer.xml')==False:
-        raise IOError, 'renderer.xml does not exists'
+    if not os.path.isfile(rootPathVar+'/renderer.xml'): raise IOError, 'renderer.xml does not exists'
 
     #Fetching root from renderer.xml
-    tree=ET.parse(rootPathVar+'/renderer.xml')
-    root=tree.getroot()
+    tree = ET.parse(rootPathVar+'/renderer.xml')
+    root = tree.getroot()
 
     #Search and delete renderer
-    removalVar=''
+    removalVar = ''
     for chk in root:
-        if str(chk.tag)==nameVar:
-            removalVar=chk
+        if str(chk.tag) == nameVar: removalVar = chk
 
-    if removalVar!='':
+    if removalVar != '':
         root.remove(removalVar)
-        tree=ET.ElementTree(root)
-        tree.write(rootPathVar+'/renderer.xml')
+        tree = ET.ElementTree(root)
+        tree.write(rootPathVar + '/renderer.xml')
     else:
         raise ValueError, 'no renderer named '+str(nameVar)
     return
@@ -90,27 +81,25 @@ def deleteRenderer(nameVar):
 #This function list all recorded renderer
 def listRenderer():
     #Validate xml existence
-    if os.path.isfile(rootPathVar+'/renderer.xml')==False:
-        raise IOError, 'renderer.xml does not exists'
+    if not os.path.isfile(rootPathVar+'/renderer.xml'):raise IOError, 'renderer.xml does not exists'
 
-    allRendererLis=[]
-    tree=ET.parse(rootPathVar+'/renderer.xml')
-    root=tree.getroot()
+    allRendererLis = []
+    tree = ET.parse(rootPathVar+'/renderer.xml')
+    root = tree.getroot()
     for chk in root:
-        tempLis=(chk.tag,chk.text)
+        tempLis = (chk.tag,chk.text)
         allRendererLis.append(tempLis)
-    if allRendererLis==[]:
-        allRendererLis=['<no renderer recorded>']
+    if allRendererLis == []:
+        allRendererLis = ['<no renderer recorded>']
     return allRendererLis
 
 #This function setup all needed database and file for constellation render dependencies module
 def setupJobTable():
     #Setup main database called constellationDatabase.db
-    if os.path.isfile(rootPathVar+'/constellationDatabase.db')==False:
-        connectionVar=sqlite3.connect('constellationDatabase.db')
+    if not os.path.isfile(rootPathVar+'/constellationDatabase.db'): connectionVar=sqlite3.connect('constellationDatabase.db')
 
     try:
-        connectionVar=sqlite3.connect(rootPathVar+'/constellationDatabase.db')
+        connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
         #Create constellationJobTable to record submitted job
         connectionVar.execute("CREATE TABLE constellationJobTable "\
                 "(jobId INTEGER PRIMARY KEY AUTOINCREMENT,"\
@@ -131,18 +120,17 @@ def setupJobTable():
             "jobClassification CHAR(50),"\
             "jobRenderTime CHAR(50))")
         connectionVar.commit()
-        returnVar=1
+        returnVar = 1
     except:
-        returnVar=0
+        returnVar = 0
     return returnVar
 
 def setupLogTable():
     #Setup main database called constellationDatabase.db
-    if os.path.isfile(rootPathVar+'/constellationDatabase.db')==False:
-        connectionVar=sqlite3.connect('constellationDatabase.db')
+    if not os.path.isfile(rootPathVar+'/constellationDatabase.db'): connectionVar=sqlite3.connect('constellationDatabase.db')
 
     try:
-        connectionVar=sqlite3.connect(rootPathVar+'/constellationDatabase.db')
+        connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
         #Create constellationClientTable to record working client
         connectionVar.execute("CREATE TABLE constellationLogTable "\
                 "(logId INTEGER PRIMARY KEY AUTOINCREMENT,"\
@@ -151,19 +139,18 @@ def setupLogTable():
             "logDescription CHAR(50),"\
             "logRegistered DATETIME DEFAULT CURRENT_TIMESTAMP)")
         connectionVar.commit()
-        returnVar=1
+        returnVar = 1
     except Exception as e:
         print str(e)
-        returnVar=0
+        returnVar = 0
     return returnVar
 
 def setupClientTable():
     #Setup main database called constellationDatabase.db
-    if os.path.isfile(rootPathVar+'/constellationDatabase.db')==False:
-        connectionVar=sqlite3.connect(rootPathVar+'/constellationDatabase.db')
+    if not os.path.isfile(rootPathVar+'/constellationDatabase.db'): connectionVar=sqlite3.connect(rootPathVar+'/constellationDatabase.db')
 
     try:
-        connectionVar=sqlite3.connect(rootPathVar+'/constellationDatabase.db')
+        connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
         #Create constellationClientTable to record working client
         connectionVar.execute("CREATE TABLE constellationClientTable "\
                 "(clientId INTEGER PRIMARY KEY AUTOINCREMENT,"\
@@ -177,30 +164,30 @@ def setupClientTable():
             "clientClassification CHAR(50),"\
             "clientStatus CHAR(50))")
         connectionVar.commit()
-        returnVar=1
+        returnVar = 1
     except Exception as e:
         print str(e)
-        returnVar=0
+        returnVar = 0
     return returnVar
 
 def setupConfiguration():
     #Generating renderer.xml to record renderer
-    if os.path.isfile(rootPathVar+'/config.xml')==False:
+    if not os.path.isfile(rootPathVar+'/config.xml'):
         root=ET.Element('root')
         tree=ET.ElementTree(root)
         tree.write(rootPathVar+'/config.xml')
-        returnVar=1
+        returnVar = 1
     else:
-        returnVar=0
+        returnVar = 0
     return returnVar
 
 def setupRenderer():
     #Generating renderer.xml to record renderer
-    if os.path.isfile(rootPathVar+'/renderer.xml')==False:
+    if not os.path.isfile(rootPathVar+'/renderer.xml'):
         root=ET.Element('root')
         tree=ET.ElementTree(root)
         tree.write(rootPathVar+'/renderer.xml')
-        returnVar=1
+        returnVar = 1
     else:
-        returnVar=0
+        returnVar = 0
     return returnVar

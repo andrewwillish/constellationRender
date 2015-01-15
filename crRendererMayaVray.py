@@ -33,17 +33,17 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
     #CHANGE CLIENT AND JOB STATUS======================================================================================
 
     #GET RENDERER======================================================================================================
-    rendererPath=None
+    rendererPath = None
     if os.path.isfile(rootPathVar+'/renderer.xml'):
-        tree=ET.parse(rootPathVar+'/renderer.xml')
-        root=tree.getroot()
+        tree = ET.parse(rootPathVar+'/renderer.xml')
+        root = tree.getroot()
 
         for chk in root:
-            if str(chk.tag)==str(jobToRender[4]):
-                rendererPath= chk.text
+            if str(chk.tag) == str(jobToRender[4]):
+                rendererPath = chk.text
     #GET RENDERER======================================================================================================
 
-    if rendererPath!=None:
+    if rendererPath is not None:
         #<pathToRenderer> -rd <"localTarget"> -fnc <"fileNamingConvention"> -im <"imageName"> <renderFilePath>
         statPrint('starting job id:'+str(jobToRender[0])+' uuid:'+str(jobToRender[1]))
 
@@ -56,21 +56,24 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
         #CREATE DIRECTORY===============================================================================================
         #vray unable to create their own output directory so we need to create one
         #please note that CR only able to parse <Layer>,<Camera>,and <Scene> tag and not passes
-        statPrint('creating directory <special for vray only>')
-        directoryInst=jobToRender[6]
-        cameraName=jobToRender[14]
-        layerName=jobToRender[9]
-        sceneName=str(jobToRender[5])[str(jobToRender[5]).rfind('/')+1:]
-        sceneName=sceneName.replace('.ma','')
+        statPrint('creating directory')
+        directoryInst = jobToRender[6]
+        cameraName = jobToRender[14]
+        layerName = jobToRender[9]
+        sceneName = str(jobToRender[5])[str(jobToRender[5]).rfind('/')+1:]
+        sceneName = sceneName.replace('.ma','')
 
-        directoryInst=directoryInst.replace('<Layer>',str(layerName))
-        directoryInst=directoryInst.replace('<Camera>',str(cameraName))
-        directoryInst=directoryInst.replace('<Scene>',str(sceneName))
-        directoryInst=directoryInst[:directoryInst.rfind('\\')]
+        directoryInst = directoryInst.replace('<Layer>',str(layerName))
+        directoryInst = directoryInst.replace('<Camera>',str(cameraName))
+        directoryInst = directoryInst.replace('<Scene>',str(sceneName))
+        directoryInst = directoryInst.replace('\\', '/')
+        directoryInst = directoryInst[:directoryInst.rfind('/')]
 
-        dirResult=None
-        if os.path.isdir(directoryInst)==True:
-            dirResult=True
+        print directoryInst
+
+        dirResult = None
+        if os.path.isdir(directoryInst):
+            dirResult = True
         else:
             try:
                 os.makedirs(directoryInst)
@@ -79,22 +82,22 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
                 dirResult=False
         #CREATE DIRECTORY===============================================================================================
 
-        if dirResult==True and os.path.isdir(directoryInst):
+        if dirResult is True and os.path.isdir(directoryInst):
             #PRE-PROCESSING=================================================================================================
             statPrint('pre-processing')
             #writing render instruction
-            renderInst=str(rendererPath)+' -r vray -rl '+str(jobToRender[9])+' -threads '+str(useThread)+' -cam '+str(jobToRender[14])+' -s '+\
+            renderInst = str(rendererPath)+' -r vray -rl '+str(jobToRender[9])+' -threads '+str(useThread)+' -cam '+str(jobToRender[14])+' -s '+\
                        str(jobToRender[7])+' -e '+str(jobToRender[8])+\
                        ' '+'"'+str(jobToRender[5]).replace('/','\\')+'"'
             #PRE-PROCESSING=================================================================================================
 
             #RENDERTIME WATCHER=============================================================================================
-            startEpoch=calendar.timegm(time.gmtime())
+            startEpoch = calendar.timegm(time.gmtime())
             #RENDERTIME WATCHER=============================================================================================
 
             #PROCESSING=====================================================================================================
             statPrint('processing')
-            renderRunError=None
+            renderRunError = None
             try:
                 subprocess.check_output(renderInst, shell=True, stderr=subprocess.STDOUT)
             except Exception as renderRunError:
@@ -102,13 +105,13 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
             #PROCESSING=====================================================================================================
 
             #RENDERTIME WATCHER=============================================================================================
-            endEpoch=calendar.timegm(time.gmtime())
-            averageTime=(endEpoch-startEpoch)/((int(jobToRender[8])-int(jobToRender[7]))+1)
+            endEpoch = calendar.timegm(time.gmtime())
+            averageTime = (endEpoch-startEpoch)/((int(jobToRender[8])-int(jobToRender[7]))+1)
             #RENDERTIME WATCHER=============================================================================================
 
             #POST-PROCESSING================================================================================================
             statPrint('post-processing')
-            if renderRunError==None:
+            if renderRunError is None:
                 #rendering finished without error.
                 #Write job render average
                 currentRenderTime=connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobId='"+str(jobToRender[0])+"'").fetchall()
@@ -158,8 +161,13 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
         else:
             #rendering process unable to start due to unable to create directory output
             #change status to ERROR to all job uuid [block everything that share the same uuid]
+
+            statPrint('process error check job log for detail')
+
             connectionVar.execute("UPDATE constellationJobTable SET jobStatus='ERROR' WHERE jobUuid='"+str(jobToRender[1])+"'")
             connectionVar.commit()
+
+            statPrint('job Uuid:'+str(jobToRender[1])+' blocked and disabled')
 
             #change client status to STANDBY
             connectionVar.execute("UPDATE constellationClientTable SET clientStatus='STANDBY' "\
@@ -169,7 +177,7 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
 
             #WRITELOG=======================================================================================================
             connectionVar.execute("INSERT INTO constellationLogTable (clientName,jobUuid,logDescription) "\
-                "VALUES ('"+str(clientName)+"','"+str(jobToRender[1])+"','process failed:\n "+str(renderRunError).replace("'","")+"')")
+                "VALUES ('"+str(clientName)+"','"+str(jobToRender[1])+"','process failed:unable to create directory')")
             connectionVar.commit()
             #WRITELOG=======================================================================================================
     else:

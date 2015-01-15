@@ -84,14 +84,14 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
 
         #POST-PROCESSING================================================================================================
         statPrint('post-processing')
-        if renderRunError==None:
+        if renderRunError is None:
             #rendering finished without error.
             #Write job render average
-            currentRenderTime=connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobId='"+str(jobToRender[0])+"'").fetchall()
-            if len(currentRenderTime)!=1:
+            currentRenderTime = connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobId='"+str(jobToRender[0])+"'").fetchall()
+            if len(currentRenderTime) != 1:
                 statPrint('unable to record average render time database fetch anomaly')
             else:
-                newRenderTime=averageTime
+                newRenderTime = averageTime
                 connectionVar.execute("UPDATE constellationJobTable SET jobRenderTime='"+str(newRenderTime)+"' WHERE jobId='"+str(jobToRender[0])+"'")
                 connectionVar.commit()
 

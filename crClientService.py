@@ -14,15 +14,15 @@ from threading import Thread
 import crRendererMayaMray, crRendererMayaVray, crControllerCore
 
 #Determining root path
-rootPathVar=os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
+rootPathVar = os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
 
 #Connect to database
 if os.path.isfile(rootPathVar+'/constellationDatabase.db')==False:
     raise StandardError, 'error : constellation database non-exists'
-connectionVar=sqlite3.connect(rootPathVar+'/constellationDatabase.db')
+connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
 
 #Determining client name
-clientName=str(socket.gethostname())
+clientName = str(socket.gethostname())
 
 #Determining system root
 systemRootVar = str(os.environ['WINDIR']).replace('\\Windows','')
@@ -31,8 +31,8 @@ systemRootVar = str(os.environ['WINDIR']).replace('\\Windows','')
 def startService():
     statPrint('starting client service')
     #Check if the client has been registered to the database
-    allClientLis=connectionVar.execute("SELECT * FROM constellationClientTable")
-    templis=[]
+    allClientLis = connectionVar.execute("SELECT * FROM constellationClientTable")
+    templis = []
     for chk in allClientLis:
         templis.append(chk[1])
     if clientName not in templis:
@@ -52,10 +52,10 @@ def startService():
     #Fetch client setting from database
     clientSetting=(connectionVar.execute("SELECT * FROM constellationClientTable WHERE clientName='"\
                                         +str(socket.gethostname())+"'").fetchall())
-    if len(clientSetting)!=1:
+    if len(clientSetting) != 1:
         statPrint('database respond anomaly')
         raise StandardError, 'error : database respond anomaly'
-    clientSetting=clientSetting[0]
+    clientSetting = clientSetting[0]
 
     #start hail server
     try:
@@ -69,7 +69,6 @@ def startService():
     while True:
         instructionFunc(clientSetting)
     return
-
 
 #hail function service
 def hailServer(clientSetting):
@@ -91,15 +90,15 @@ def hailServer(clientSetting):
 #Render instruction command : <mayaDir> -rl <layer> -s <startFrame> -e <endFrame> <filePath>
 def instructionFunc(clientSetting):
     #Re-fetch client setting from database
-    clientSetting=(connectionVar.execute("SELECT * FROM constellationClientTable WHERE clientName='"\
+    clientSetting = (connectionVar.execute("SELECT * FROM constellationClientTable WHERE clientName='"\
                                         +str(socket.gethostname())+"'").fetchall())
-    if len(clientSetting)!=1:
+    if len(clientSetting) != 1:
         statPrint('database respond anomaly')
         raise StandardError, 'error : database respond anomaly'
-    clientSetting=clientSetting[0]
+    clientSetting = clientSetting[0]
 
     #Check client activatiqon status
-    if clientSetting[3]=='ENABLED':
+    if clientSetting[3] == 'ENABLED':
         statPrint('--render cycle start--')
         #THREAD AND MEMORY==================================================================================================
         #work hour is not fullly developed therefore only the programmer can alter the value
@@ -110,80 +109,81 @@ def instructionFunc(clientSetting):
         #determining thread and memory limit for each client
 
         #get current time and data
-        currentVar=time.strftime("%I%M%p")
-        currentTime=currentVar[:-2]
-        currentClock=currentVar[-2:]
+        currentVar = time.strftime("%I%M%p")
+        currentTime = currentVar[:-2]
+        currentClock = currentVar[-2:]
 
         #read working time instruction
         if os.path.isfile(systemRootVar+'/crClient/data/workHour.xml'):
-            tree=ET.parse(systemRootVar+'/crClient/data/workHour.xml')
-            root=tree.getroot()
+            tree = ET.parse(systemRootVar+'/crClient/data/workHour.xml')
+            root = tree.getroot()
 
-            if len(root)!=7:
-                raise StandardError, 'error : corrupted work hour instruction data'
+            if len(root) != 7: raise StandardError, 'error : corrupted work hour instruction data'
 
-            dayData=root[int(time.strftime("%w"))]
-            tempStart= dayData.get('workHourStart')
-            startTime=tempStart[:-2]
-            startClock=tempStart[-2:]
-            tempEnd= dayData.get('workHourEnd')
-            endTime=tempEnd[:-2]
-            endClock=tempEnd[-2:]
+            dayData = root[int(time.strftime("%w"))]
+            tempStart = dayData.get('workHourStart')
+            startTime = tempStart[:-2]
+            startClock = tempStart[-2:]
+            tempEnd = dayData.get('workHourEnd')
+            endTime = tempEnd[:-2]
+            endClock = tempEnd[-2:]
 
             #check back if the workhour system failed
-            if (int(currentTime>=int(startTime) and currentClock==startClock)or int(currentTime<=int(endTime) and currentClock==endClock)):
+            if (int(currentTime >= int(startTime) and currentClock == startClock)or \
+                    int(currentTime <= int(endTime) and currentClock == endClock)):
                 #workhour thread and memory
-                useThread=str(clientSetting[6])
-                useMemory=str(clientSetting[7])
+                useThread = str(clientSetting[6])
+                useMemory = str(clientSetting[7])
             else:
                 #happyhour thread and memory
-                useThread=str(clientSetting[4])
-                useMemory=str(clientSetting[5])
+                useThread = str(clientSetting[4])
+                useMemory = str(clientSetting[5])
         else:
-            useThread='0'
-            useMemory='0'
+            useThread = '0'
+            useMemory = '0'
         #THREAD AND MEMORY==================================================================================================
 
-        if not useThread=='-1' or not useMemory=='-1':
-            jobToRender=None
+        if not useThread == '-1' or not useMemory == '-1':
+            jobToRender = None
 
             #SELF-CHECK====================================================================================================
             #check if there are previous stalled job made by current client
-            if jobToRender==None:
+            if jobToRender is None:
                 statPrint('checking local stalled job')
                 for chk in crControllerCore.listAllClient():
-                    if str(chk[9])=='RENDERING' and str(chk[1])==str(clientName):
+                    if str(chk[9]) == 'RENDERING' and str(chk[1]) == str(clientName):
                         statPrint('previous stalled job detected')
                         for chb in crControllerCore.listAllJob():
-                            if str(chb[0])==str(chk[2]):
-                                jobToRender=chb
+                            if str(chb[0]) == str(chk[2]):
+                                jobToRender = chb
                                 statPrint('resuming job id:'+str(jobToRender[0]))
-                if jobToRender==None:
+                if jobToRender is None:
                     statPrint('no local stalled job')
             #SELF-CHECK====================================================================================================
 
             #HAIL==========================================================================================================
-            if jobToRender==None:
+            if jobToRender is None:
                 #hail transfer stalled job from one system to another by
                 #check all the client that is rendering but not responding.
                 statPrint('checking peer stalled job')
-                clientList=crControllerCore.listAllClient()
+                clientList = crControllerCore.listAllClient()
                 for clientRow in clientList:
                     if clientRow[1] != clientName and clientRow[2]!='':
                         statPrint('hailing '+clientRow[1])
-                        hailCon=socket.socket()
+                        hailCon = socket.socket()
                         hailCon.settimeout(3)
-                        hailHost=clientRow[1]
-                        hailPort=1989+int(clientRow[0])
-                        repVar=None
+                        hailHost = clientRow[1]
+                        hailPort = 1989 + int(clientRow[0])
+                        repVar = None
                         try:
                             hailCon.connect((hailHost, hailPort))
                             hailCon.send('stallCheck')
-                            repVar=hailCon.recv(1024)
+                            repVar = hailCon.recv(1024)
                             hailCon.close()
                         except:
                             pass
-                        if repVar==None:
+
+                        if repVar is None:
                             statPrint('stalled job detected jobId='+str(clientRow[2]))
                             allJob=crControllerCore.listAllJob()
                             for chk in allJob:
@@ -222,7 +222,7 @@ def instructionFunc(clientSetting):
             #FETCH NEW=====================================================================================================
 
             #RENDERER======================================================================================================
-            if jobToRender!=None:
+            if jobToRender is not None:
                 #find job renderer and pass the job to each individual renderer
                 if jobToRender[4]=='maya-mray':
                     #re-routed
@@ -237,7 +237,7 @@ def instructionFunc(clientSetting):
         statPrint('--render cycle end--')
         print ''
         time.sleep(2)
-    elif clientSetting[3]=='DISABLED':
+    elif clientSetting[3] == 'DISABLED':
         statPrint('client disabled - database block')
     else:
         statPrint('client instructed to shutdown')
