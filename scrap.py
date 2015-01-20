@@ -1,9 +1,5 @@
-import sqlite3
-import os
+import re
 
-rootPathVar=os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
+line = "asfasdfasafsf_%4n.%e"
 
-con=sqlite3.connect(rootPathVar+'/constellationDatabase.db')
-
-prt=con.execute("UPDATE constellationClientTable SET clientJob='199' WHERE clientId='2'")
-con.commit()
+print re.sub( r'%*n', 'hahaha', line)

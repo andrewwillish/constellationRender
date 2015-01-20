@@ -49,10 +49,16 @@ class crClientConsoleClass:
                 self.disableClientFun(mode='DISABLED')
             elif commandVar=='clientStat':
                 self.clientStat()
+            elif commandVar=='setupTender':
+                self.setupTender()
             else:
                 print ('invalid command')
             print ''
+        return
 
+    def setupTender(self, *args):
+        print "schtasks /create /tn crTender /tr "+rootPathVar.replace('/', '\\')+"\\_crTenderRun.bat /sc ONLOGON"
+        os.system("schtasks /create /tn crTender /tr "+rootPathVar.replace('/', '\\')+"\\_crTenderRun.bat /sc ONLOGON")
         return
 
     def printHelp(self, *args):
@@ -64,6 +70,7 @@ class crClientConsoleClass:
         print 'enableClient\t- Enable client for rendering'
         print 'disableClient\t- Disable client for rendering'
         print 'clientStat\t- Get client current status'
+        print 'setupTender\t- Setup client scheduled tender'
         print 'exit\t\t- Close this console'
         return
 
@@ -93,7 +100,7 @@ class crClientConsoleClass:
 
         #temporarily client service will be started directly during development
         #stage for ease of debuggin (damn I'm tired)
-        os.startfile(rootPathVar+'/_crClientServiceLaunch.bat')
+        os.startfile(rootPathVar+'/_crClientService.bat')
         return
 
     def setupFun(self,*args):

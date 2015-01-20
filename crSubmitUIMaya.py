@@ -6,7 +6,7 @@ import crSubmitCore, getpass, os
 import socket
 
 #Determining root path
-rootPathVar=os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
+rootPathVar = os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
 
 class constellationMayaSubmitter:
     #invoke UI element
@@ -27,7 +27,7 @@ class constellationMayaSubmitter:
         cmds.text(l='  Project:', al='left')
         cmds.textField('newJobProject')
         cmds.text(l='  Software:', al='left')
-        cmds.optionMenu('newJobSoftware',l='')
+        cmds.optionMenu('newJobSoftware',l='', cc=self.rendererChange)
         cmds.menuItem(l='')
         cmds.menuItem(l='maya-mray')
         cmds.menuItem(l='maya-vray')
@@ -87,14 +87,28 @@ class constellationMayaSubmitter:
         cmds.textField('newJobUser',e=True,tx=str(getpass.getuser()))
         cmds.textField('newJobScriptPath',e=True, tx=str(cmds.file(q=True,sn=True)))
 
-        targetVar=cmds.renderSettings(ign=True)[0]
-        cmds.textField('newJobTarget',e=True,tx=str(targetVar))
-
         cmds.editRenderLayerGlobals(crl='defaultRenderLayer')
         cmds.intField('newJobStartFrame',e=True,value=cmds.getAttr('defaultRenderGlobals.startFrame'))
         cmds.intField('newJobEndFrame',e=True,value=cmds.getAttr('defaultRenderGlobals.endFrame'))
         cmds.intField('newJobFpb',e=True,value=10)
         cmds.intField('newJobPriority',e=True,value=50)
+        return
+
+    def rendererChange(self, *args):
+        newJobRenderer = cmds.optionMenu('newJobSoftware', q=True, v=True)
+        if newJobRenderer == 'maya-mray':
+            targetVar = cmds.renderSettings(ign=True)[0]
+            cmds.textField('newJobTarget', e=True, tx=str(targetVar))
+        elif newJobRenderer == 'maya-vray':
+            if cmds.objExists('vraySettings'):
+                targetVar = cmds.getAttr('vraySettings.fileNamePrefix', asString=True)
+                padding = cmds.getAttr('vraySettings.fileNamePadding', asString=True)
+                textVar = targetVar+'.%'+padding+'n.%e'
+                cmds.textField('newJobTarget', e=True, tx=str(textVar))
+            else:
+                cmds.confirmDialog(icn='warning', t='CR', m='No V-ray setting node exist!', button=['OK'])
+                cmds.optionMenu('newJobSoftware', e=True, sl=1)
+                cmds.textField('newJobTarget', e=True, tx='')
         return
 
     def submitProc(self,*args):

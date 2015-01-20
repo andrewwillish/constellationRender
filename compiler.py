@@ -1,11 +1,14 @@
-__author__ = 'andrew.willis'
-
 try:
-    import crControllerUI
-    reload (crControllerUI)
+    import crClientConsole
+    reload (crClientConsole)
 except:
     pass
 
+try:
+    import crClientService
+    reload (crClientService)
+except:
+    pass
 
 try:
     import crControllerCore
@@ -14,19 +17,40 @@ except:
     pass
 
 try:
+    import crControllerUI
+    reload (crControllerUI)
+except:
+    pass
+
+try:
+    import crLogConsole
+    reload (crLogConsole)
+except:
+    pass
+
+try:
+    import crRendererMayaMray
+    reload (crRendererMayaMray)
+except:
+    pass
+
+try:
+    import crRendererMayaVray
+    reload (crRendererMayaVray)
+except:
+    pass
+try:
+    import crSetupConsole
+    reload (crSetupConsole)
+except:
+    pass
+try:
     import crSetupCore
     reload (crSetupCore)
 except:
     pass
-
 try:
-    import crSubmitCore
-    reload (crSubmitCore)
-except:
-    pass
-
-try:
-    import crSetupConsole
-    reload (crSetupConsole)
+    import crTender
+    reload (crTender)
 except:
     pass

@@ -9,21 +9,36 @@ import hashlib, time, datetime, socket
 import xml.etree.cElementTree as ET
 
 #Determining root path
-rootPathVar=os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
+rootPathVar = os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
 
 #Determining system root
 systemRootVar = str(os.environ['WINDIR']).replace('\\Windows','')
 
 #Connect to database
-if os.path.isfile(rootPathVar+'/constellationDatabase.db')==False:
-    raise StandardError, 'error : constellation database non-exists'
-connectionVar=sqlite3.connect(rootPathVar+'/constellationDatabase.db')
+if not os.path.isfile(rootPathVar+'/constellationDatabase.db'): raise StandardError, 'error : constellation database non-exists'
+connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
+
+def onlineClient(client=None):
+    if client is None: raise StandardError, 'no client specified'
+    clientSetting = None
+    for clientParse in listAllClient():
+        if clientParse[1] == client:
+            clientSetting = clientParse
+
+    if clientSetting is not None:
+        if clientSetting[3] == 'OFFLINE':
+            socketVar = socket.socket()
+            host = str(clientSetting[1])
+            port = 1990 + int(clientSetting[0])
+            socketVar.connect((host, port))
+            socketVar.send('wakeUp')
+            socketVar.close()
+    return
 
 #This function start cyclic process only in client module.
-def setupClient(client=None,classification=None):
+def setupClient(client = None, classification = None):
     #validate classification
-    if classification==None or client==None:
-        raise StandardError, 'error : client classification not specified'
+    if classification is None or client is None: raise StandardError, 'error : client classification not specified'
 
     #Register client to database
     try:
@@ -97,29 +112,29 @@ def changeClass(client=None,classification=None):
 
 #This function list all recorded job.
 def listAllJob():
-    returnLis=(connectionVar.execute("SELECT * FROM constellationJobTable")).fetchall()
+    returnLis = (connectionVar.execute("SELECT * FROM constellationJobTable")).fetchall()
     return returnLis
 
 #This function list all job grouped based on uuid
 def listAllJobGrouped():
-    allLis=(connectionVar.execute("SELECT * FROM constellationJobTable")).fetchall()
+    allLis = (connectionVar.execute("SELECT * FROM constellationJobTable")).fetchall()
 
-    tempLis=[]
-    uuidLis=[]
-    groupedJobLis=[]
-    currentRecVar=''
+    tempLis = []
+    uuidLis = []
+    groupedJobLis = []
+    currentRecVar = ''
 
     for chk in allLis:
-        if chk[1]!=currentRecVar:
+        if chk[1] != currentRecVar:
             uuidLis.append(chk[1])
-            currentRecVar=chk[1]
+            currentRecVar = chk[1]
 
     for chk in uuidLis:
         for chb in allLis:
             if chk in chb:
                 tempLis.append(chb)
         groupedJobLis.append(tempLis)
-        tempLis=[]
+        tempLis = []
     return groupedJobLis
 
 #This function search for job with specific field in it.
@@ -201,38 +216,35 @@ def searchJob(id=None, project=None, user=None, software=None, scriptPath=None,\
 
 #This function open output folder
 def openOutput(uid=None, renderer=None):
-    recordVar=connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobUuid='"+str(uid)+"'").fetchall()
-    recordVar=recordVar[0]
+    recordVar = connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobUuid='"+str(uid)+"'").fetchall()
+    recordVar = recordVar[0]
 
-    pathInstructionVar=recordVar[6]
-    layerVar=recordVar[9]
-    cameraVar=recordVar[14]
-    sceneVar=recordVar[5]
-    sceneVar=sceneVar[sceneVar.rfind('/')+1:sceneVar.rfind('.ma')]
+    pathInstructionVar = recordVar[6]
+    layerVar = recordVar[9]
+    cameraVar = recordVar[14]
+    sceneVar = recordVar[5]
+    sceneVar = sceneVar[sceneVar.rfind('/')+1:sceneVar.rfind('.ma')]
 
 
-    renderer=recordVar[4]
-    if renderer=='maya-vray':
-        pathInstructionVar=pathInstructionVar[:pathInstructionVar.rfind('/')]
-        pathInstructionVar=pathInstructionVar.replace('<Layer>',str(layerVar))
-        pathInstructionVar=pathInstructionVar.replace('<Camera>',str(cameraVar))
-        pathInstructionVar=pathInstructionVar.replace('<Scene>',str(sceneVar))
+    renderer = recordVar[4]
+    if renderer == 'maya-vray':
+        pathInstructionVar = pathInstructionVar[:pathInstructionVar.rfind('/')]
+        pathInstructionVar = pathInstructionVar.replace('<Layer>',str(layerVar))
+        pathInstructionVar = pathInstructionVar.replace('<Camera>',str(cameraVar))
+        pathInstructionVar = pathInstructionVar.replace('<Scene>',str(sceneVar))
 
         subprocess.Popen(r'explorer /select,"'+pathInstructionVar.replace('/','\\')+'\\'+'"')
 
-    elif renderer=='maya-mray':
-        pathInstructionVar=pathInstructionVar[:pathInstructionVar.rfind('/')]
-        pathInstructionVar=pathInstructionVar.replace('<RenderLayer>',str(layerVar))
-        pathInstructionVar=pathInstructionVar.replace('<Camera>',str(cameraVar))
-        pathInstructionVar=pathInstructionVar.replace('<Scene>',str(sceneVar))
-        pathInstructionVar=pathInstructionVar.replace('<RenderPass>','')
+    elif renderer == 'maya-mray':
+        pathInstructionVar = pathInstructionVar[:pathInstructionVar.rfind('/')]
+        pathInstructionVar = pathInstructionVar.replace('<RenderLayer>',str(layerVar))
+        pathInstructionVar = pathInstructionVar.replace('<Camera>',str(cameraVar))
+        pathInstructionVar = pathInstructionVar.replace('<Scene>',str(sceneVar))
+        pathInstructionVar = pathInstructionVar.replace('<RenderPass>','')
+        pathInstructionVar = pathInstructionVar.replace ('\\', '/')
 
-        pathInstructionVar=pathInstructionVar[:pathInstructionVar.rfind('\\')]
-        while pathInstructionVar.endswith('\\'):
-            pathInstructionVar=pathInstructionVar[:pathInstructionVar.rfind('\\')]
-
-    if pathInstructionVar!='':
-        if os.path.isdir(pathInstructionVar)==True:
+    if pathInstructionVar != '':
+        if os.path.isdir(pathInstructionVar):
             subprocess.Popen(r'explorer /select,"'+pathInstructionVar.replace('/','\\')+'\\'+'"')
         else:
             raise StandardError, 'error : directory not found'
@@ -287,16 +299,27 @@ def clearJobRecord(uid=None, done=False, all=False):
 #This function reset job record
 def resetJobRecord(uid=None):
     #Validate uid. Make sure its not None
-    if uid==None:
-        raise ValueError, 'error : no id entered'
+    if uid is None: raise ValueError, 'error : no id entered'
 
-    allJobLis=listAllJobGrouped()
+    allJobLis = listAllJobGrouped()
     for chk in allJobLis:
-        if chk[0][1]==str(uid):
-            jobGroupLis=chk
+        if chk[0][1] == str(uid):
+            filePath = chk[0][6]
+
+    filePath = filePath.replace('\\', '/')
+    filePath = filePath[:filePath.rfind('/')]
+
+
+    for itm in os.listdir(filePath):
+        try:
+            os.remove(filePath+'/'+itm)
+        except:
+            pass
 
     connectionVar.execute("UPDATE constellationJobTable SET jobStatus='QUEUE' WHERE jobUuid='"+uid+"'")
     connectionVar.commit()
+
+    #delete the selected record
     return
 
 #This function will change job record massively or singularly
@@ -334,11 +357,11 @@ def changeJobRecordBlocked(jobUuid=None, blockStatus=None):
 
     return
 
-#This function list all client
+#This function list all client.
 def listAllClient():
-    returnLis=(connectionVar.execute("SELECT * FROM constellationClientTable")).fetchall()
-    if returnLis==[]:
-        returnLis=['<no client registered to the network>']
+    returnLis = (connectionVar.execute("SELECT * FROM constellationClientTable")).fetchall()
+    if returnLis == []:
+        returnLis = ['<no client registered to the network>']
     return returnLis
 
 #This function change client status

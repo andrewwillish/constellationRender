@@ -29,7 +29,7 @@ def menutls(*args):
     mainzmenu=cmds.menu(tearOff=True,l='Constellation Render',p=gMainWindow)
     cmds.menuItem(parent=mainzmenu, l='Submit Job',c=lambda*args:launcherscr('crSubmitUIMaya',rootPathVar))
     cmds.menuItem(parent=mainzmenu,d=True)
-    cmds.menuItem(parent=mainzmenu,l='Launch Client Service',c=lambda*args:osLaunch('_crClientServiceLaunch.bat',rootPathVar))
+    cmds.menuItem(parent=mainzmenu,l='Launch Client Service',c=lambda*args:osLaunch('_crClientService.bat',rootPathVar))
     cmds.menuItem(parent=mainzmenu,l='Launch Client Console',c=lambda*args:osLaunch('_crClientConsole.bat',rootPathVar))
     return
     

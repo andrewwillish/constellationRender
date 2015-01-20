@@ -54,7 +54,6 @@ def submit(projectVar=None, userVar=None, softwareVar=None, scriptPathVar=None, 
             blockEndFrame = chk+(int(blockCount)-1)
             if blockEndFrame >= int(parseEndFrameVar)-1: blockEndFrame = int(parseEndFrameVar)-1
 
-
             connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
             connectionVar.execute("INSERT INTO constellationJobTable "\
                                   "(jobProject,jobUuid,jobUser,jobSoftware,jobScriptPath,jobTargetPath,jobFrameStart,"\
