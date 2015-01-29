@@ -309,12 +309,12 @@ def resetJobRecord(uid=None):
     filePath = filePath.replace('\\', '/')
     filePath = filePath[:filePath.rfind('/')]
 
-
-    for itm in os.listdir(filePath):
-        try:
-            os.remove(filePath+'/'+itm)
-        except:
-            pass
+    if os.path.isdir(filePath):
+        for itm in os.listdir(filePath):
+            try:
+                os.remove(filePath+'/'+itm)
+            except:
+                pass
 
     connectionVar.execute("UPDATE constellationJobTable SET jobStatus='QUEUE' WHERE jobUuid='"+uid+"'")
     connectionVar.commit()

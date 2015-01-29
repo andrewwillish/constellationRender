@@ -1,3 +1,11 @@
+__author__ = 'Andrewwillish'
+
+try:
+    import crClientService
+    reload (crClientService)
+except:
+    pass
+
 try:
     import crClientConsole
     reload (crClientConsole)
@@ -23,8 +31,8 @@ except:
     pass
 
 try:
-    import crLogConsole
-    reload (crLogConsole)
+    import crRendererMayaVray
+    reload (crRendererMayaVray)
 except:
     pass
 
@@ -35,22 +43,20 @@ except:
     pass
 
 try:
-    import crRendererMayaVray
-    reload (crRendererMayaVray)
-except:
-    pass
-try:
     import crSetupConsole
     reload (crSetupConsole)
 except:
     pass
+
 try:
     import crSetupCore
     reload (crSetupCore)
 except:
     pass
+
 try:
     import crTender
     reload (crTender)
 except:
     pass
+

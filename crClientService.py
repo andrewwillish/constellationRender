@@ -31,6 +31,8 @@ os.system('cls')
 #This function start cyclic process only in client module.
 def startService():
     statPrint('starting client service', colorStat=10)
+    statPrint('build [1]', colorStat=10)
+    time.sleep(1)
     #Check if the client has been registered to the database
     allClientLis = connectionVar.execute("SELECT * FROM constellationClientTable")
     templis = []
@@ -168,43 +170,44 @@ def instructionFunc(clientSetting):
                                 statPrint('resuming job id:'+str(jobToRender[0]), colorStat=10)
                 if jobToRender is None:
                     statPrint('no local stalled job', colorStat=2)
-            #SELF-CHECK====================================================================================================
+            #SELF-CHECK=================================================================================================
 
-            #HAIL==========================================================================================================
+            #HAIL=======================================================================================================
             if jobToRender is None:
                 #hail transfer stalled job from one system to another by
                 #check all the client that is rendering but not responding.
                 statPrint('checking peer stalled job', colorStat=6)
                 clientList = crControllerCore.listAllClient()
                 for clientRow in clientList:
-                    if clientRow[1] != clientName and clientRow[2] != '':
-                        statPrint('hailing '+clientRow[1], colorStat=8)
-                        hailCon = socket.socket()
-                        hailCon.settimeout(10)
-                        hailHost = clientRow[1]
-                        hailPort = 1989 + int(clientRow[0])
-                        repVar = None
-                        try:
-                            hailCon.connect((hailHost, hailPort))
-                            hailCon.send('stallCheck')
-                            repVar = hailCon.recv(1024)
-                            hailCon.close()
-                        except:
-                            pass
+                    if jobToRender is None:
+                        if clientRow[1] != clientName and clientRow[2] != '':
+                            statPrint('hailing '+clientRow[1], colorStat=8)
+                            hailCon = socket.socket()
+                            hailCon.settimeout(10)
+                            hailHost = clientRow[1]
+                            hailPort = 1989 + int(clientRow[0])
+                            repVar = None
+                            try:
+                                hailCon.connect((hailHost, hailPort))
+                                hailCon.send('stallCheck')
+                                repVar = hailCon.recv(1024)
+                                hailCon.close()
+                            except:
+                                pass
 
-                        if repVar is None:
-                            statPrint('stalled job detected jobId='+str(clientRow[2]), colorStat=12)
-                            connectionVar.execute("UPDATE constellationClientTable SET clientJob='',clientStatus='STANDBY' WHERE clientName='"+str(clientRow[1])+"'")
-                            connectionVar.commit()
-                            allJob = crControllerCore.listAllJob()
-                            for chk in allJob:
-                                #compare if the id match and the classification match as well
-                                if str(chk[0]) == str(clientRow[2]) and str(chk[15]) == str(clientSetting[8]):
-                                    jobToRender = chk
-                                    statPrint('taking over job '+str(jobToRender[1])+' from '+str(clientRow[1]), colorStat=10)
-                                    #set other client as disabled
-                                    connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='DISABLED', clientJob='',clientStatus='STANDBY' WHERE clientName='"+str(clientRow[1])+"'")
-                                    connectionVar.commit()
+                            if repVar is None:
+                                statPrint('stalled job detected jobId='+str(clientRow[2]), colorStat=12)
+                                connectionVar.execute("UPDATE constellationClientTable SET clientJob='',clientStatus='STANDBY' WHERE clientName='"+str(clientRow[1])+"'")
+                                connectionVar.commit()
+                                allJob = crControllerCore.listAllJob()
+                                for chk in allJob:
+                                    #compare if the id match and the classification match as well
+                                    if str(chk[0]) == str(clientRow[2]) and str(chk[15]) == str(clientSetting[8]):
+                                        jobToRender = chk
+                                        statPrint('taking over job '+str(jobToRender[1])+' from '+str(clientRow[1]), colorStat=10)
+                                        #set other client as disabled
+                                        connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='DISABLED', clientJob='',clientStatus='STANDBY' WHERE clientName='"+str(clientRow[1])+"'")
+                                        connectionVar.commit()
                 if jobToRender is None:
                     statPrint('no peer stalled job', colorStat=2)
             #HAIL=======================================================================================================

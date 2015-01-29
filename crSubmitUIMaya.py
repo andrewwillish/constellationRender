@@ -103,7 +103,10 @@ class constellationMayaSubmitter:
             if cmds.objExists('vraySettings'):
                 targetVar = cmds.getAttr('vraySettings.fileNamePrefix', asString=True)
                 padding = cmds.getAttr('vraySettings.fileNamePadding', asString=True)
-                textVar = targetVar+'.%'+padding+'n.%e'
+                if cmds.getAttr('vraySettings.imageFormatStr', asString=True) == 'exr (multichannel)':
+                    textVar = targetVar+'%'+str(padding)+'n.%e'
+                else:
+                    textVar = targetVar+'.%'+str(padding)+'n.%e'
                 cmds.textField('newJobTarget', e=True, tx=str(textVar))
             else:
                 cmds.confirmDialog(icn='warning', t='CR', m='No V-ray setting node exist!', button=['OK'])
@@ -114,7 +117,11 @@ class constellationMayaSubmitter:
     def submitProc(self,*args):
         #save file to its own directory.
         #Note: mark in wiki render file need to be accessible to all client
-        cmds.file(save=True)
+        repVar = cmds.confirmDialog(icn='question', t='Const. Render', m='Would you like to save?', button = ['SAVE', 'DO NOT SAVE', 'CANCEL'])
+        if repVar == 'SAVE':
+            cmds.file(save=True)
+        elif repVar == 'CANCEL':
+            cmds.error('cancelled by user')
         allLayerLis=cmds.textScrollList('newJobRenderLayer',q=True,si=True)
 
         #validate field

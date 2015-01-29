@@ -96,7 +96,8 @@ def listRenderer():
 #This function setup all needed database and file for constellation render dependencies module
 def setupJobTable():
     #Setup main database called constellationDatabase.db
-    if not os.path.isfile(rootPathVar+'/constellationDatabase.db'): connectionVar=sqlite3.connect('constellationDatabase.db')
+    if not os.path.isfile(rootPathVar+'/constellationDatabase.db'): \
+        connectionVar=sqlite3.connect(rootPathVar+'/constellationDatabase.db')
 
     try:
         connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')

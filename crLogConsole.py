@@ -12,3 +12,5 @@ os.system('cls')
 prt = con.execute("SELECT * FROM constellationLogTable").fetchall()
 for chk in prt:
     print chk[0], '\t', chk[1], '\t', chk[2], '\t', chk[3].replace('\n', ''), '\t', chk[4]
+	
+os.system("pause")

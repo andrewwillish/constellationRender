@@ -101,7 +101,7 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
             if startRange == endRange or startRange is None: startRange = int(jobToRender[7])
         #CHECKPOINT CHECK===============================================================================================
 
-        if dirResult is True and os.path.isdir(directoryInst):
+        if dirResult is True and os.path.isdir(directoryRoot):
             #PRE-PROCESSING=============================================================================================
             statPrint('pre-processing', colorStat=14)
             #writing render instruction

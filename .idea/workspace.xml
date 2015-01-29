@@ -12,22 +12,22 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/constellationRender$crClientConsole.coverage" NAME="crClientConsole Coverage Results" MODIFIED="1410868087971" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/constellationRender$resetClientTable.coverage" NAME="resetClientTable Coverage Results" MODIFIED="1421663616828" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/constellationRender$crControllerUI.coverage" NAME="crControllerUI Coverage Results" MODIFIED="1421722868241" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/constellationRender$compiler.coverage" NAME="compiler Coverage Results" MODIFIED="1411476319911" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../constellationRenderNuke" />
-    <SUITE FILE_PATH="coverage/constellationRender$listAllJobTable.coverage" NAME="listAllJobTable Coverage Results" MODIFIED="1421663664488" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/constellationRender$crSetupConsole.coverage" NAME="crSetupConsole Coverage Results" MODIFIED="1410882524928" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/constellationRender$crClientService.coverage" NAME="crClientService Coverage Results" MODIFIED="1411479187181" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/constellationRender$listAllClient.coverage" NAME="listAllClient Coverage Results" MODIFIED="1411480606944" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/constellationRender$addJobBulk.coverage" NAME="addJobBulk Coverage Results" MODIFIED="1410883125317" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/constellationRender$server.coverage" NAME="server Coverage Results" MODIFIED="1410872242076" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../networkRunTest" />
-    <SUITE FILE_PATH="coverage/constellationRender$listAllLogTable.coverage" NAME="listAllLogTable Coverage Results" MODIFIED="1421665419069" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/constellationRender$resetJobTable.coverage" NAME="resetJobTable Coverage Results" MODIFIED="1421663620458" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/constellationRender$crNukeClientUI.coverage" NAME="crNukeClientUI Coverage Results" MODIFIED="1411475520356" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../constellationRenderNuke" />
     <SUITE FILE_PATH="coverage/constellationRender$crNukeControllerUI.coverage" NAME="crNukeControllerUI Coverage Results" MODIFIED="1411474028334" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../constellationRenderNuke" />
+    <SUITE FILE_PATH="coverage/constellationRender$server.coverage" NAME="server Coverage Results" MODIFIED="1410872242076" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../networkRunTest" />
+    <SUITE FILE_PATH="coverage/constellationRender$compiler.coverage" NAME="compiler Coverage Results" MODIFIED="1422080115108" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/constellationRender$crControllerUI.coverage" NAME="crControllerUI Coverage Results" MODIFIED="1422019179868" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/constellationRender$crNukeClientUI.coverage" NAME="crNukeClientUI Coverage Results" MODIFIED="1411475520356" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../constellationRenderNuke" />
+    <SUITE FILE_PATH="coverage/constellationRender$addJobBulk.coverage" NAME="addJobBulk Coverage Results" MODIFIED="1410883125317" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/constellationRender$crClientConsole.coverage" NAME="crClientConsole Coverage Results" MODIFIED="1410868087971" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/constellationRender$crControllerCore.coverage" NAME="crControllerCore Coverage Results" MODIFIED="1421665896158" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/constellationRender$listAllClient.coverage" NAME="listAllClient Coverage Results" MODIFIED="1411480606944" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/constellationRender$crClientService.coverage" NAME="crClientService Coverage Results" MODIFIED="1422077602175" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/constellationRender$listAllLogTable.coverage" NAME="listAllLogTable Coverage Results" MODIFIED="1421665419069" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/constellationRender$resetClientTable.coverage" NAME="resetClientTable Coverage Results" MODIFIED="1421663616828" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/constellationRender$listAllJobTable.coverage" NAME="listAllJobTable Coverage Results" MODIFIED="1421663664488" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/constellationRender$client.coverage" NAME="client Coverage Results" MODIFIED="1410872247276" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../networkRunTest" />
+    <SUITE FILE_PATH="coverage/constellationRender$resetJobTable.coverage" NAME="resetJobTable Coverage Results" MODIFIED="1421663620458" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -41,12 +41,42 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="crControllerUI.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/crControllerUI.py">
+      <file leaf-file-name="crClientService.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/crClientService.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="48" column="65" selection-start="1873" selection-end="1873" vertical-scroll-proportion="0.38379815" vertical-offset="527" max-vertical-offset="7684">
+            <state line="34" column="16" selection-start="1133" selection-end="1133" vertical-scroll-proportion="0.0" vertical-offset="357" max-vertical-offset="5100">
               <folding>
-                <element signature="e#101#132#0" expanded="true" />
+                <element signature="e#129#198#0" expanded="true" />
+                <marker date="1422080112309" expanded="true" signature="1238:1276" placeholder="SELECT * FRO..constellationClientTable..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="compiler.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/compiler.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="7" column="8" selection-start="108" selection-end="108" vertical-scroll-proportion="0.28333333" vertical-offset="0" max-vertical-offset="420">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="crSubmitUIMaya.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/crSubmitUIMaya.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="122" column="23" selection-start="5486" selection-end="5486" vertical-scroll-proportion="0.0" vertical-offset="1507" max-vertical-offset="2924">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="crRendererMayaVray.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/crRendererMayaVray.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="100" column="93" selection-start="4964" selection-end="4964" vertical-scroll-proportion="0.0" vertical-offset="1408" max-vertical-offset="3893">
+              <folding>
+                <element signature="e#106#173#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -70,7 +100,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/addJobBulk.py" />
         <option value="$PROJECT_DIR$/../pyCompiler/userSetup.py" />
         <option value="$PROJECT_DIR$/../pyCompiler/PyCompiler.py" />
         <option value="$PROJECT_DIR$/../constellationRenderNuke/compiler.py" />
@@ -79,21 +108,22 @@
         <option value="$PROJECT_DIR$/crClientConsole.py" />
         <option value="$PROJECT_DIR$/userSetup.py" />
         <option value="$PROJECT_DIR$/crTender.py" />
-        <option value="$PROJECT_DIR$/crSubmitCore.py" />
+        <option value="$PROJECT_DIR$/crRendererMayaMray.py" />
         <option value="$PROJECT_DIR$/crControllerCore.py" />
         <option value="$PROJECT_DIR$/crControllerUI.py" />
-        <option value="$PROJECT_DIR$/crClientService.py" />
-        <option value="$PROJECT_DIR$/crRendererMayaMray.py" />
+        <option value="$PROJECT_DIR$/crSubmitCore.py" />
         <option value="$PROJECT_DIR$/crSubmitUIMaya.py" />
         <option value="$PROJECT_DIR$/crRendererMayaVray.py" />
+        <option value="$PROJECT_DIR$/compiler.py" />
+        <option value="$PROJECT_DIR$/crClientService.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-1924" />
-    <option name="y" value="-124" />
-    <option name="width" value="1928" />
-    <option name="height" value="1208" />
+    <option name="x" value="-4" />
+    <option name="y" value="-4" />
+    <option name="width" value="1374" />
+    <option name="height" value="742" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -147,38 +177,19 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="editor.preferences.appearance" />
     <property name="recentsLimit" value="5" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="options.lastSelected" value="editor.preferences.appearance" />
+    <property name="last_opened_file_path" value="Y:/TECH/constellationRender" />
     <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
       <PyConsoleSettings />
     </option>
   </component>
-  <component name="RunManager" selected="Python.crControllerUI">
-    <configuration default="false" name="listAllJobTable" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="constellationRender" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/listAllJobTable.py" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python.compiler">
     <configuration default="false" name="listAllLogTable" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -193,25 +204,6 @@
       <module name="constellationRender" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/listAllLogTable.py" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="resetJobTable" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="constellationRender" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/resetJobTable.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
@@ -250,6 +242,44 @@
       <module name="constellationRender" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/crControllerCore.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="compiler" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="constellationRender" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/compiler.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="crClientService" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="constellationRender" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/crClientService.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
@@ -339,6 +369,9 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+      <method />
+    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -360,9 +393,6 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -406,19 +436,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.listAllJobTable" />
-      <item index="1" class="java.lang.String" itemvalue="Python.listAllLogTable" />
-      <item index="2" class="java.lang.String" itemvalue="Python.resetJobTable" />
-      <item index="3" class="java.lang.String" itemvalue="Python.crControllerUI" />
-      <item index="4" class="java.lang.String" itemvalue="Python.crControllerCore" />
+      <item index="0" class="java.lang.String" itemvalue="Python.listAllLogTable" />
+      <item index="1" class="java.lang.String" itemvalue="Python.crControllerUI" />
+      <item index="2" class="java.lang.String" itemvalue="Python.crControllerCore" />
+      <item index="3" class="java.lang.String" itemvalue="Python.compiler" />
+      <item index="4" class="java.lang.String" itemvalue="Python.crClientService" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.crControllerUI" />
-        <item index="1" class="java.lang.String" itemvalue="Python.crControllerCore" />
-        <item index="2" class="java.lang.String" itemvalue="Python.listAllLogTable" />
-        <item index="3" class="java.lang.String" itemvalue="Python.listAllJobTable" />
-        <item index="4" class="java.lang.String" itemvalue="Python.resetJobTable" />
+        <item index="0" class="java.lang.String" itemvalue="Python.compiler" />
+        <item index="1" class="java.lang.String" itemvalue="Python.crClientService" />
+        <item index="2" class="java.lang.String" itemvalue="Python.crControllerUI" />
+        <item index="3" class="java.lang.String" itemvalue="Python.crControllerCore" />
+        <item index="4" class="java.lang.String" itemvalue="Python.listAllLogTable" />
       </list>
     </recent_temporary>
   </component>
@@ -432,49 +462,29 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1924" y="-124" width="1928" height="1208" extended-state="6" />
+    <frame x="-4" y="-4" width="1374" height="742" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18645833" sideWeight="0.7166513" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18667643" sideWeight="0.71819645" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28334868" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28180355" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="129" y="241" width="1728" height="844" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
-    <layout-to-restore>
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1830161" sideWeight="0.73429954" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2657005" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -488,118 +498,105 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/userSetup.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="103" selection-start="969" selection-end="969" vertical-scroll-proportion="0.85202867" vertical-offset="85" max-vertical-offset="629" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/crTender.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="17" selection-start="643" selection-end="643" vertical-scroll-proportion="0.27238455" vertical-offset="0" max-vertical-offset="1061">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resetClientTable.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="0" selection-start="264" selection-end="264" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
-          <folding>
-            <element signature="e#0#14#0" expanded="false" />
-            <marker date="1412571494254" expanded="true" signature="-1:-1" placeholder="UPDATE const..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/crSubmitCore.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="0" selection-start="2652" selection-end="2652" vertical-scroll-proportion="0.0" vertical-offset="573" max-vertical-offset="1326">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resetJobTable.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="0" selection-start="284" selection-end="284" vertical-scroll-proportion="0.20318726" vertical-offset="0" max-vertical-offset="753">
-          <folding>
-            <element signature="e#0#14#0" expanded="false" />
-            <marker date="1412571494258" expanded="true" signature="-1:-1" placeholder="UPDATE const..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/listAllJobTable.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="13" selection-start="258" selection-end="258" vertical-scroll-proportion="0.20318726" vertical-offset="0" max-vertical-offset="753">
-          <folding>
-            <element signature="e#0#14#0" expanded="false" />
-            <marker date="1412571494227" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..constellationJobTable..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/listAllLogTable.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="13" selection-start="258" selection-end="258" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-            <marker date="1412571494232" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..constellationLogTable..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/crControllerCore.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="41" selection-start="958" selection-end="958" vertical-scroll-proportion="-16.32" vertical-offset="34" max-vertical-offset="6783">
-          <folding>
-            <marker date="1421666204847" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..constellationJobTable..." />
-            <marker date="1421666204847" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..constellationJobTable..." />
-            <marker date="1421666204847" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..constellationJobTable..." />
-            <marker date="1421666204847" expanded="true" signature="-1:-1" placeholder="DELETE FROM ..." />
-            <marker date="1421666204847" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..constellationClientTable..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/crClientService.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="73" column="61" selection-start="2769" selection-end="2769" vertical-scroll-proportion="0.0" vertical-offset="697" max-vertical-offset="4981">
+        <state line="249" column="30" selection-start="12327" selection-end="12327" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5049">
           <folding>
-            <marker date="1421716435840" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..constellationClientTable..." />
+            <element signature="e#129#198#0" expanded="true" />
+            <marker date="1422080112309" expanded="true" signature="1238:1276" placeholder="SELECT * FRO..constellationClientTable..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/crRendererMayaVray.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="81" column="26" selection-start="3765" selection-end="3765" vertical-scroll-proportion="0.28783783" vertical-offset="1164" max-vertical-offset="3893">
+        <state line="153" column="21" selection-start="8349" selection-end="8349" vertical-scroll-proportion="0.0" vertical-offset="2348" max-vertical-offset="3893">
           <folding>
             <element signature="e#106#173#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/crSubmitUIMaya.py">
+    <entry file="file://$PROJECT_DIR$/crClientConsole.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="106" column="65" selection-start="4736" selection-end="4736" vertical-scroll-proportion="0.7810811" vertical-offset="1190" max-vertical-offset="2856">
+        <state line="63" column="31" selection-start="2128" selection-end="2128" vertical-scroll-proportion="0.0" vertical-offset="867" max-vertical-offset="2465" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/compiler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="8" selection-start="108" selection-end="108" vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="221">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crControllerUI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="46" selection-start="2147" selection-end="2147" vertical-scroll-proportion="0.0" vertical-offset="816" max-vertical-offset="60282">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/crRendererMayaMray.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="83" column="52" selection-start="4073" selection-end="4073" vertical-scroll-proportion="0.67729086" vertical-offset="901" max-vertical-offset="3383">
-          <folding>
-            <element signature="e#111#178#0" expanded="true" />
-          </folding>
+        <state line="75" column="0" selection-start="3641" selection-end="3641" vertical-scroll-proportion="0.14901257" vertical-offset="1192" max-vertical-offset="3383" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crClientConsole.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="63" column="31" selection-start="2128" selection-end="2128" vertical-scroll-proportion="0.0" vertical-offset="867" max-vertical-offset="2465" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crControllerCore.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="359" column="19" selection-start="12581" selection-end="12585" vertical-scroll-proportion="0.48101267" vertical-offset="5879" max-vertical-offset="6783">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crSubmitCore.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="40" column="0" selection-start="1859" selection-end="1859" vertical-scroll-proportion="0.0" vertical-offset="301" max-vertical-offset="1224">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/crControllerUI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="65" selection-start="1873" selection-end="1873" vertical-scroll-proportion="0.38379815" vertical-offset="527" max-vertical-offset="7684">
+        <state line="411" column="25" selection-start="16675" selection-end="16675" vertical-scroll-proportion="0.0" vertical-offset="6615" max-vertical-offset="7616">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crSubmitUIMaya.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="122" column="23" selection-start="5486" selection-end="5486" vertical-scroll-proportion="0.0" vertical-offset="1507" max-vertical-offset="2924">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crRendererMayaVray.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="100" column="93" selection-start="4964" selection-end="4964" vertical-scroll-proportion="0.0" vertical-offset="1408" max-vertical-offset="3893">
           <folding>
-            <element signature="e#101#132#0" expanded="true" />
+            <element signature="e#106#173#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crClientService.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="34" column="16" selection-start="1133" selection-end="1133" vertical-scroll-proportion="0.0" vertical-offset="357" max-vertical-offset="5100">
+          <folding>
+            <element signature="e#129#198#0" expanded="true" />
+            <marker date="1422080112309" expanded="true" signature="1238:1276" placeholder="SELECT * FRO..constellationClientTable..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/compiler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="8" selection-start="108" selection-end="108" vertical-scroll-proportion="0.28333333" vertical-offset="0" max-vertical-offset="420">
+          <folding />
         </state>
       </provider>
     </entry>

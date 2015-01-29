@@ -16,7 +16,7 @@ rootPathVar = os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
 class crControllerUI(QtGui.QWidget):
     def __init__(self, *args):
         QtGui.QMainWindow.__init__(self, *args)
-        self.main = uic.loadUi('controllerUI.ui')
+        self.main = uic.loadUi(rootPathVar+'/controllerUI.ui')
         self.main.show()
         self.main.setFixedSize(1268, 591)
 
@@ -395,7 +395,7 @@ class crControllerUI(QtGui.QWidget):
             #client status actual
             for clientRow in crControllerCore.listAllClient():
                 hailCon = socket.socket()
-                hailCon.settimeout(10)
+                hailCon.settimeout(5)
                 hailHost = clientRow[1]
                 hailPort = 1989 + int(clientRow[0])
                 repVar = None

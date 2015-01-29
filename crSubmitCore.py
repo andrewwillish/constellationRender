@@ -37,15 +37,9 @@ def submit(projectVar=None, userVar=None, softwareVar=None, scriptPathVar=None, 
     for rdrLayerVar in renderLayer:
         #parse each render layer for overwritten render layer
         cmds.editRenderLayerGlobals(crl=rdrLayerVar)
-        if int(frameStartVar) == int(cmds.getAttr('defaultRenderGlobals.startFrame')):
-            parseStartFrameVar=frameStartVar
-        else:
-            parseStartFrameVar=int(cmds.getAttr('defaultRenderGlobals.startFrame'))
+        parseStartFrameVar = frameStartVar
 
-        if int(frameEndVar)==int(cmds.getAttr('defaultRenderGlobals.endFrame')):
-            parseEndFrameVar=int(frameEndVar)+1
-        else:
-            parseEndFrameVar=int(cmds.getAttr('defaultRenderGlobals.endFrame'))+1
+        parseEndFrameVar=int(frameEndVar)+1
 
         assignedId = str(uuid.uuid4())
         #separate job to block and upload it to server database
