@@ -7,7 +7,7 @@ __author__='andrew.willis'
 import sys, sqlite3, os, socket
 import datetime
 import crControllerCore
-from PyQt4 import QtCore, QtGui, uic
+from PyQt4 import QtGui, uic
 import time
 
 #Determining root path
