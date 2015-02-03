@@ -99,7 +99,7 @@ def setupClient(client = None, classification = None):
 
 def changeClass(client=None,classification=None):
     #validate classification
-    if classification==None or client==None:
+    if classification is None or client is None:
         raise StandardError, 'error : client classification or name are not specified'
 
     try:
@@ -250,14 +250,36 @@ def openOutput(uid=None, renderer=None):
             raise StandardError, 'error : directory not found'
     return
 
+#generate command line and export it to batch file
+def genBatch(uuid = None):
+    jobData = connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobUuid='"+str(uuid)+"'").fetchall()
+    startMark = jobData[0][7]
+    endMark = jobData[len(jobData)-1][8]
+
+    rendererPath = None
+    if os.path.isfile(rootPathVar+'/renderer.xml'):
+        tree = ET.parse(rootPathVar+'/renderer.xml')
+        root = tree.getroot()
+
+        for chk in root:
+            if str(chk.tag) == str(jobData[0][4]):
+                rendererPath = chk.text
+
+    renderInst=str(rendererPath)+' -rl '+str(jobData[0][9])+' -cam '+str(jobData[0][14])+' -s '+\
+               str(startMark)+' -e '+\
+               str(endMark)+' -mr:rt '+\
+               str(0)+' -mr:mem '+\
+               str(0)+' '+'"'+str(jobData[0][5]).replace('/','\\')+'"'
+    return renderInst
+
 #This function will delete all or done job by uid
 def clearJobRecord(uid=None, done=False, all=False):
     #Shield to prevent double operation both all and done
-    if done==True and all==True:
+    if done is True and all is True:
         raise StandardError, 'error : dobule operation not allowed'
 
     #Delete all DONE job
-    if done==True:
+    if done:
         for chk in listAllJobGrouped():
             tempStatusLis=[]
             countStatusDone=0
@@ -280,18 +302,33 @@ def clearJobRecord(uid=None, done=False, all=False):
             elif countStatusDone>0 and countStatusQueue>0 and countStatusRendering==0:
                 statusinVar='HALTED'
 
-            if statusinVar=='DONE':
+            if statusinVar == 'DONE':
                 for chb in chk:
                     connectionVar.execute("DELETE FROM constellationJobTable WHERE jobUuid='"+chb[1]+"'")
                     connectionVar.commit()
 
     #Delete all job
-    if all==True:
+    if all:
         connectionVar.execute("DELETE FROM constellationJobTable;")
         connectionVar.commit()
 
+        for clItem in listAllClient():
+            connectionVar.execute("UPDATE constellationClientTable SET clientJob = '' WHERE clientId='"+str(clItem[0])+"'")
+            connectionVar.commit()
+
     #Delete job based by UUID
-    if uid!=None:
+    if uid is not None:
+        groupedJob = connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobUuid='"+str(uid)+"'").fetchall()
+        for item in groupedJob:
+            jobId = str(item[0])
+            for clItem in listAllClient():
+                currentJob = clItem[2]
+                if jobId == currentJob:
+                    connectionVar.execute("UPDATE constellationClientTable SET clientJob = '' WHERE clientId='"+str(clItem[0])+"'")
+                    connectionVar.commit()
+
+                    #continue here to force the running process to stop and restart the client
+
         connectionVar.execute("DELETE FROM constellationJobTable WHERE jobUuid='"+str(uid)+"'")
         connectionVar.commit()
     return
@@ -374,12 +411,12 @@ def changeClientStatus(clientName=None,\
         raise ValueError, 'error : no id specified'
 
     #Processing status
-    if status!=None:
+    if status is not None:
         connectionVar.execute("UPDATE constellationClientTable SET clientStatus='"+status+"' WHERE clientName='"+str(clientName)+"'")
         connectionVar.commit()
 
     #Processing blockClient
-    if blockClient!=None:
+    if blockClient is not None:
         if blockClient=='DISABLED':
             connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='DISABLED' WHERE clientName='"+str(clientName)+"'")
             connectionVar.commit()
@@ -390,7 +427,7 @@ def changeClientStatus(clientName=None,\
             connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='OFFLINE' WHERE clientName='"+str(clientName)+"'")
             connectionVar.commit()
 
-    if clientJob!=None:
+    if clientJob is not None:
         connectionVar.execute("UPDATE constellationClientTable SET clientJob='"+str(clientJob)+"' WHERE clientName='"+str(clientName)+"'")
         connectionVar.commit()
     return

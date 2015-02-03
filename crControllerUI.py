@@ -7,7 +7,7 @@ __author__='andrew.willis'
 import sys, sqlite3, os, socket
 import datetime
 import crControllerCore
-from PyQt4 import QtGui, uic
+from PyQt4 import QtGui, uic, QtCore
 import time
 
 #Determining root path
@@ -20,17 +20,18 @@ class crControllerUI(QtGui.QWidget):
         self.main.show()
         self.main.setFixedSize(1268, 591)
 
+        self.main.clientTable.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.main.clientTable.customContextMenuRequested.connect(self.clientPopup)
+
+        self.main.jobTable.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.main.jobTable.customContextMenuRequested.connect(self.jobPopup)
+
         self.refreshFun()
 
         self.main.refreshBtn.clicked.connect(self.refreshFun)
         self.main.activateClientBtn.clicked.connect(lambda*args:self.clientBlocker(switch=1))
         self.main.suspendClientBtn.clicked.connect(lambda*args:self.clientBlocker(switch=0))
 
-        self.main.enableJobBtn.clicked.connect(self.enableJob)
-        self.main.disableJobBtn.clicked.connect(self.disableJob)
-        self.main.resetJobBtn.clicked.connect(self.resetJob)
-
-        self.main.deleteJobBtn.clicked.connect(self.deleteJob)
         self.main.deleteAllBtn.clicked.connect(self.deleteAll)
         self.main.deleteDoneBtn.clicked.connect(self.deleteDone)
         self.main.offlineClientButton.clicked.connect(self.shutDownClient)
@@ -40,6 +41,58 @@ class crControllerUI(QtGui.QWidget):
         self.main.jobTable.itemSelectionChanged.connect(self.populatePriorityFun)
         self.main.updateSelectedBtn.clicked.connect(self.prioritySet)
         self.main.onlineClientButton.clicked.connect(self.onlineClient)
+        return
+
+    def jobPopup(self, pos):
+        menu = QtGui.QMenu()
+        enaDisaMen = menu.addMenu('Enable / Disable Job')
+        enaJob = enaDisaMen.addAction('Enable Job')
+        disaJob = enaDisaMen.addAction('Disable Job')
+        menu.addSeparator()
+        resJob = menu.addAction('Reset Job')
+        delJob = menu.addAction('Delete Job')
+        menu.addSeparator()
+        genBatch = menu.addAction('Generate Batch')
+        action = menu.exec_(self.main.jobTable.viewport().mapToGlobal(pos))
+        if action == enaJob: self.enableJob()
+        elif action == disaJob: self.disableJob()
+        elif action == resJob: self.resetJob()
+        elif action == delJob: self.deleteJob()
+        elif action == genBatch: self.genBatch()
+        return
+
+    def clientPopup(self, pos):
+        menu = QtGui.QMenu()
+        enaClient = menu.addAction('Enable Client')
+        disaClient = menu.addAction('Disable Client')
+        menu.addSeparator()
+        menu.addAction('Skip Job')
+        menu.addAction('Skip and Disable')
+        menu.addSeparator()
+        menu.addAction('Delete Client')
+        menu.addSeparator()
+        clt = menu.addMenu('Client Program')
+        clt.addAction('Start Client')
+        clt.addAction('Shut Down Client')
+        clt.addSeparator()
+        clt.addAction('Restart Client')
+        mch = menu.addMenu('Machine')
+        mch.addAction('Shut Down')
+        mch.addAction('Restart')
+        mch.addAction('Wake On Lan')
+        action = menu.exec_(self.main.clientTable.viewport().mapToGlobal(pos))
+        if action == enaClient: self.onlineClient()
+        elif action == disaClient: self.shutDownClient()
+        return
+
+    def genBatch(self):
+        selectedRowLis = self.main.jobTable.selectedItems()
+
+        instructionLis = []
+        if (len(selectedRowLis)/13) == 1:
+            instructionLis.append(crControllerCore.genBatch(uuid = selectedRowLis[0].text()))
+        print instructionLis
+        #CONTINUE EXPORTING THE INSTRUCTION LIST
         return
 
     def onlineClient(self):
@@ -395,7 +448,7 @@ class crControllerUI(QtGui.QWidget):
             #client status actual
             for clientRow in crControllerCore.listAllClient():
                 hailCon = socket.socket()
-                hailCon.settimeout(5)
+                hailCon.settimeout(4)
                 hailHost = clientRow[1]
                 hailPort = 1989 + int(clientRow[0])
                 repVar = None
