@@ -532,6 +532,7 @@ class crControllerUI(QtGui.QWidget):
 
     #Function to populate job table
     def populateJobFun(self):
+        selRowIndex = self.main.jobTable.currentRow()
         self.main.jobTable.setRowCount(0)
         self.main.jobTable.setRowCount(len(crControllerCore.listAllJobGrouped()))
 
@@ -649,17 +650,17 @@ class crControllerUI(QtGui.QWidget):
                     runTime=int(chb[16])
                     renderTotal=renderTotal+int(runTime)
                     counter+=1
-
-            if renderTotal==0:
-                averageTime=0
+            if renderTotal == 0:
+                averageTime = 0
             else:
-                averageTime=renderTotal/counter
-            averageTime=datetime.timedelta(seconds=averageTime)
-            itemVar=QtGui.QTableWidgetItem(str(averageTime))
+                averageTime = renderTotal/counter
+            averageTime = datetime.timedelta(seconds=averageTime)
+            itemVar = QtGui.QTableWidgetItem(str(averageTime))
             itemVar.setBackgroundColor(colorCodeVar)
-            self.main.jobTable.setItem(cnt,13,itemVar)
-            cnt+=1
+            self.main.jobTable.setItem(cnt, 13, itemVar)
+            cnt += 1
         self.main.jobTable.resizeColumnsToContents()
+        self.main.jobTable.setCurrentIndex(QtCore.QModelIndex.row(0))
         return
 
     #Function to populate client table
