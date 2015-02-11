@@ -503,15 +503,12 @@ class crControllerUI(QtGui.QWidget):
 
         for chk in range(len(selectedRecordLis)/13):
             jobUuid= str(selectedRecordLis[chk].text())
-            crControllerCore.changeJobRecordBlocked(jobUuid=jobUuid,\
-                                                        blockStatus='ENABLED')
+            crControllerCore.changeJobRecordBlocked(jobUuid=jobUuid,  blockStatus='ENABLED')
         self.refreshFun()
         return
 
     #Function to activate and suspend client
     def clientBlocker(self,switch=None):
-        #switch 0=SUSPENDED 1=ACTIVE
-
         selectedRecordLis = self.main.clientTable.selectedItems()
 
         if selectedRecordLis == []:
@@ -521,11 +518,9 @@ class crControllerUI(QtGui.QWidget):
         for chk in range(len(selectedRecordLis)/4):
             clientNameVar = str(selectedRecordLis[chk].text())
             if switch == 0:
-                crControllerCore.changeClientStatus(clientName=clientNameVar,\
-                                                               blockClient='DISABLED')
+                crControllerCore.changeClientStatus(clientName=clientNameVar, blockClient='DISABLED')
             else:
-                crControllerCore.changeClientStatus(clientName=clientNameVar,\
-                                                               blockClient='ENABLED')
+                crControllerCore.changeClientStatus(clientName=clientNameVar, blockClient='ENABLED')
         self.refreshFun()
         return
 
@@ -549,40 +544,26 @@ class crControllerUI(QtGui.QWidget):
             countStatusQueue = 0
             countStatusError = 0
             for chb in chk:
-                if chb[10] == 'DONE':
-                    countStatusDone += 1
-                if chb[10] == 'RENDERING':
-                    countStatusRendering += 1
-                if chb[10] == 'QUEUE':
-                    countStatusQueue += 1
-                if chb[10] == 'ERROR':
-                    countStatusError += 1
+                if chb[10] == 'DONE': countStatusDone += 1
+                if chb[10] == 'RENDERING': countStatusRendering += 1
+                if chb[10] == 'QUEUE': countStatusQueue += 1
+                if chb[10] == 'ERROR': countStatusError += 1
                 tempStatusLis.append(chb[10])
-            if countStatusDone == len(tempStatusLis):
-                statusinVar = 'DONE'
-            elif countStatusQueue == len(tempStatusLis):
-                statusinVar = 'QUEUE'
-            elif countStatusRendering > 0:
-                statusinVar = 'RENDERING'
+            if countStatusDone == len(tempStatusLis):statusinVar = 'DONE'
+            elif countStatusQueue == len(tempStatusLis):statusinVar = 'QUEUE'
+            elif countStatusRendering > 0:statusinVar = 'RENDERING'
             elif countStatusDone > 0 and countStatusQueue > 0 and countStatusRendering == 0:
                 statusinVar = 'HALTED'
 
-            if countStatusError > 0:
-                statusinVar = 'ERROR'
+            if countStatusError > 0:statusinVar = 'ERROR'
 
             #Determining color code
-            if statusinVar == 'DONE':
-                colorCodeVar = QtGui.QColor(100,100,100)
-            elif statusinVar == 'QUEUE':
-                colorCodeVar = QtGui.QColor(150,150,150)
-            elif statusinVar == 'RENDERING':
-                colorCodeVar = QtGui.QColor(100,250,100)
-            elif statusinVar == 'HALTED':
-                colorCodeVar = QtGui.QColor(150,150,0)
-            elif statusinVar == 'ERROR':
-                colorCodeVar=QtGui.QColor(180,180,0)
-            if str(chk[0][11]) == 'DISABLED':
-                colorCodeVar = QtGui.QColor(255,0,0)
+            if statusinVar == 'DONE':colorCodeVar = QtGui.QColor(100,100,100)
+            elif statusinVar == 'QUEUE':colorCodeVar = QtGui.QColor(150,150,150)
+            elif statusinVar == 'RENDERING':colorCodeVar = QtGui.QColor(100,250,100)
+            elif statusinVar == 'HALTED':colorCodeVar = QtGui.QColor(150,150,0)
+            elif statusinVar == 'ERROR':colorCodeVar=QtGui.QColor(180,180,0)
+            if str(chk[0][11]) == 'DISABLED':colorCodeVar = QtGui.QColor(255,0,0)
 
             #uuid
             itemVar=QtGui.QTableWidgetItem(str(chk[0][1]))
