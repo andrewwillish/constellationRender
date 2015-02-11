@@ -16,7 +16,7 @@ rootPathVar=os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
 class crClientConsoleClass:
     def __init__(self):
         #Welcome message
-        print 'Constellation Render Manager 4.0 - Client Console'
+        print 'Constellation Render Manager 4.2 - Client Console'
         print ''
         #invoking main menu looping around to keep asking for new order
         while True:
@@ -24,7 +24,7 @@ class crClientConsoleClass:
 
             os.system('cls')
 
-            print 'Constellation Render Manager 4.0 - Client Console'
+            print 'Constellation Render Manager 4.2 - Client Console'
             print ''
             #Parsing command
             if commandVar=='exit':
@@ -97,9 +97,6 @@ class crClientConsoleClass:
     def startClientFun(self,*args):
         #start client service externally without waiting for error
         #error watching will be between client service and the renderer
-
-        #temporarily client service will be started directly during development
-        #stage for ease of debuggin (damn I'm tired)
         os.startfile(rootPathVar+'/_crClientService.bat')
         return
 

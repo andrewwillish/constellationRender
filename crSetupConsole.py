@@ -11,7 +11,7 @@ os.system("cls")
 class constellationRenderConsoleClass:
     def __init__(self):
         #Welcome message
-        print 'Constellation Render Manager 4.0 - Setup Console'
+        print 'Constellation Render Manager 4.2 - Setup Console'
         print ''
         #invoking main menu looping around to keep asking for new order
         while True:
@@ -19,7 +19,7 @@ class constellationRenderConsoleClass:
 
             os.system('cls')
 
-            print 'Constellation Render Manager 4.0 - Client Console'
+            print 'Constellation Render Manager 4.2 - Client Console'
             print ''
             #Parsing command
             if commandVar == 'exit':

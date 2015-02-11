@@ -1,18 +1,18 @@
 __author__ = 'andrew.willis'
 
-#Constellation Render 3.0 - Setup Module
-#Andrew Willis 2014
+#Constellation Render 4.2 - Setup Module
+#Andrew Willis 2015
 
 #Module import
-import os, shutil, sys, sqlite3, imp
-import time, datetime, socket
+import os
+import sqlite3
 import xml.etree.cElementTree as ET
 
 #Determining root path
 rootPathVar = os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
 
 #Add renderer to the database.
-def addRenderer( nameVar, pathVar):
+def addRenderer(nameVar, pathVar):
     #Validate xml existence
     if not os.path.isfile(rootPathVar+'/renderer.xml'): raise IOError, 'renderer.xml does not exists'
 
@@ -44,7 +44,6 @@ def addRenderer( nameVar, pathVar):
     root = tree.getroot()
 
     #Checking renderer existence. To update existing renderer please delete it first then
-    #enter the new one.
     tempLis = []
     for chk in root: tempLis.append(str(chk.tag))
     if nameVar in tempLis: raise StandardError, nameVar + ' renderer already registered'
@@ -163,7 +162,8 @@ def setupClientTable():
             "clientWorkMemory CHAR(50),"\
             "clientWorkThread CHAR(50),"\
             "clientClassification CHAR(50),"\
-            "clientStatus CHAR(50))")
+            "clientStatus CHAR(50),"\
+            "clientMacAddr CHAR(50))")
         connectionVar.commit()
         returnVar = 1
     except Exception as e:

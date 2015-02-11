@@ -1,5 +1,4 @@
-import re
+import os
+import signal
 
-line = "asfasdfasafsf_%4n.%e"
-
-print re.sub( r'%*n', 'hahaha', line)
+os.kill(4608, signal.SIGTERM)

@@ -15,7 +15,7 @@ socketObj = socket.socket()
 hostName = socket.gethostname()
 portNum = None
 for clientelle in crControllerCore.listAllClient():
-    if clientelle[1] == hostName: portNum = 1990 + int(clientelle[0])
+    if clientelle[1] == hostName: portNum = 1991 + int(clientelle[0])
 
 if portNum is not None:
     print hostName
@@ -25,6 +25,7 @@ if portNum is not None:
     while True:
         socketVar, addr = socketObj.accept()
         recData = socketVar.recv(1024)
+        print recData
         if str(recData) == 'wakeUp' and os.path.isfile('_crClientService.bat'):
             os.startfile('_crClientService.bat')
         socketVar.close()

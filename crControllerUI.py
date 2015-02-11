@@ -9,6 +9,7 @@ import datetime
 import crControllerCore
 from PyQt4 import QtGui, uic, QtCore
 import time
+import math
 
 #Determining root path
 rootPathVar = os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
@@ -18,7 +19,7 @@ class crControllerUI(QtGui.QWidget):
         QtGui.QMainWindow.__init__(self, *args)
         self.main = uic.loadUi(rootPathVar+'/controllerUI.ui')
         self.main.show()
-        self.main.setFixedSize(1268, 591)
+        self.main.setFixedSize(1319, 591)
 
         self.main.clientTable.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.main.clientTable.customContextMenuRequested.connect(self.clientPopup)
@@ -29,18 +30,121 @@ class crControllerUI(QtGui.QWidget):
         self.refreshFun()
 
         self.main.refreshBtn.clicked.connect(self.refreshFun)
-        self.main.activateClientBtn.clicked.connect(lambda*args:self.clientBlocker(switch=1))
-        self.main.suspendClientBtn.clicked.connect(lambda*args:self.clientBlocker(switch=0))
 
         self.main.deleteAllBtn.clicked.connect(self.deleteAll)
         self.main.deleteDoneBtn.clicked.connect(self.deleteDone)
-        self.main.offlineClientButton.clicked.connect(self.shutDownClient)
 
         self.main.outputBtn.clicked.connect(self.openOutputFolder)
 
         self.main.jobTable.itemSelectionChanged.connect(self.populatePriorityFun)
         self.main.updateSelectedBtn.clicked.connect(self.prioritySet)
-        self.main.onlineClientButton.clicked.connect(self.onlineClient)
+
+        self.main.jobTable.itemSelectionChanged.connect(self.populateInformation)
+        self.main.jobTable.clicked.connect(self.populateInformation)
+        self.main.generateBatchButton.clicked.connect(self.genBatch)
+        self.main.deleteJobButton.clicked.connect(self.deleteJob)
+        self.main.jobInformationGroup.setEnabled(0)
+        return
+
+    def populateInformation(self):
+        selectedRowLis = self.main.jobTable.selectedItems()
+        if (len(selectedRowLis)/13) == 1:
+            #single selection populate the information
+            self.main.jobInformationGroup.setEnabled(1)
+
+            jobGrouped = None
+            for item in  crControllerCore.listAllJobGrouped():
+                if item[0][1] == str(selectedRowLis[0].text()):
+                    jobGrouped = item
+
+            if jobGrouped is not None:
+                #calculate total block, rendering block, done block, queue block
+                #total block
+                totalBlock = len(jobGrouped)
+                #rendering block
+                renderBlock = 0
+                for i in jobGrouped:
+                    if i[10] == 'RENDERING':renderBlock += 1
+                #done block
+                doneBlock = 0
+                for i in jobGrouped:
+                    if i[10] == 'DONE':doneBlock += 1
+                #queue block
+                queueBlock = 0
+                for i in jobGrouped:
+                    if i[10] == 'QUEUE':queueBlock += 1
+
+                #build the table
+                self.main.progressTable.clear()
+                columnCount = 10
+                self.main.progressTable.setColumnCount(columnCount)
+                for i in range(0, columnCount):
+                    self.main.progressTable.setColumnWidth(i, 60)
+                rowAmount = math.ceil(float(totalBlock) / float(columnCount))
+                self.main.progressTable.setRowCount(int(rowAmount))
+
+                #populate the progress bar
+                self.main.queueProgBar.setValue((float(queueBlock)/float(totalBlock))*100.0)
+                self.main.inRdrProgBar.setValue((float(renderBlock)/float(totalBlock))*100.0)
+                self.main.doneProgBar.setValue((float(doneBlock)/float(totalBlock))*100.0)
+
+                #populate job information
+                self.main.uuidLbl.setText(jobGrouped[0][1])
+                self.main.layerLbl.setText(jobGrouped[0][9])
+                self.main.filePathLbl.setText(jobGrouped[0][5])
+
+                self.main.softwareLbl.setText(jobGrouped[0][4])
+                self.main.statusLbl.setText(str(selectedRowLis[6].text()))
+                self.main.blockedLbl.setText(jobGrouped[0][11])
+                self.main.rdrTimeLbl.setText(str(selectedRowLis[13].text()))
+                instruct = crControllerCore.genBatch(uuid = jobGrouped[0][1])
+                self.main.commandLbl.setText(instruct)
+
+                #populate the table
+                column = 0
+                width = 0
+                for item in jobGrouped:
+                    clients = crControllerCore.listAllClient()
+                    renderingClient = ''
+                    for clt in clients:
+                        if str(clt[2]) == str(item[0]):renderingClient = clt[1]
+                    if column == columnCount:
+                        column = 0
+                        width += 1
+                    blockRange = str(item[7])+'-'+str(item[8])
+                    blockItem = QtGui.QTableWidgetItem(renderingClient+"\r\n"+blockRange)
+                    if item[10] == 'QUEUE':
+                        blockItem.setBackgroundColor(QtGui.QColor(200, 200, 200))
+                    elif item[10] == 'DONE':
+                        blockItem.setBackgroundColor(QtGui.QColor(0, 200, 0))
+                    elif item[10] == 'RENDERING':
+                        blockItem.setBackgroundColor(QtGui.QColor(255, 255, 100))
+                    elif item[10] == 'ERROR':
+                        blockItem.setBackgroundColor(QtGui.QColor(255, 98, 101))
+                    else:
+                        blockItem.setBackgroundColor(QtGui.QColor(0, 0, 0))
+                    self.main.progressTable.setItem(width, column, blockItem)
+                    column +=1
+            self.main.progressTable.resizeColumnsToContents()
+            self.main.progressTable.resizeRowsToContents()
+        else:
+            #multiple selection clear all the information
+            self.main.jobInformationGroup.setEnabled(0)
+            self.main.progressTable.clear()
+
+            self.main.uuidLbl.clear()
+            self.main.layerLbl.clear()
+            self.main.filePathLbl.clear()
+
+            self.main.softwareLbl.clear()
+            self.main.statusLbl.clear()
+            self.main.blockedLbl.clear()
+            self.main.rdrTimeLbl.clear()
+            self.main.commandLbl.clear()
+
+            self.main.queueProgBar.setValue(0)
+            self.main.inRdrProgBar.setValue(0)
+            self.main.doneProgBar.setValue(0)
         return
 
     def jobPopup(self, pos):
@@ -66,62 +170,204 @@ class crControllerUI(QtGui.QWidget):
         enaClient = menu.addAction('Enable Client')
         disaClient = menu.addAction('Disable Client')
         menu.addSeparator()
-        menu.addAction('Skip Job')
-        menu.addAction('Skip and Disable')
+        delClt = menu.addAction('Delete Client')
         menu.addSeparator()
-        menu.addAction('Delete Client')
-        menu.addSeparator()
-        clt = menu.addMenu('Client Program')
-        clt.addAction('Start Client')
-        clt.addAction('Shut Down Client')
-        clt.addSeparator()
-        clt.addAction('Restart Client')
+        clt = menu.addMenu('Client')
+        strtClt = clt.addAction('Start Client (Tender Required)')
+        shutDownClt = clt.addAction('Instruct Client to Shutdown')
         mch = menu.addMenu('Machine')
-        mch.addAction('Shut Down')
-        mch.addAction('Restart')
-        mch.addAction('Wake On Lan')
+        wolMch = mch.addAction('Wake On Lan')
+        mch.addSeparator()
+        shutDownMch = mch.addAction('Shut Down')
+        restartMch = mch.addAction('Restart')
+        menu.addSeparator()
+        chgClass = menu.addAction('Change Class')
+        menu.addSeparator()
+        clrJob = menu.addAction('Clear Job')
+
         action = menu.exec_(self.main.clientTable.viewport().mapToGlobal(pos))
-        if action == enaClient: self.onlineClient()
-        elif action == disaClient: self.shutDownClient()
+        if action == enaClient: self.clientBlocker(switch=1)
+        elif action == disaClient: self.clientBlocker(switch=0)
+        elif action == delClt: self.deleteClient()
+        elif action == strtClt: self.onlineClient()
+        elif action == shutDownClt: self.shutDownClient()
+        elif action == shutDownMch: self.shutDownMachine()
+        elif action == restartMch: self.restartMachine()
+        elif action == wolMch: self.wolTrig()
+        elif action == chgClass: self.changeClass()
+        elif action == clrJob: self.clearJobFromClient()
+        return
+
+    def clearJobFromClient(self):
+        selectedRecordLis = self.main.clientTable.selectedItems()
+        if selectedRecordLis == []:
+            QtGui.QMessageBox.warning(None,'Error','There is no record selected.')
+            raise StandardError, 'error : no record selected'
+        for chk in range(len(selectedRecordLis)/4):
+            clientNameVar = str(selectedRecordLis[chk].text())
+            for clientRow in crControllerCore.listAllClient():
+                hailCon = socket.socket()
+                hailCon.settimeout(4)
+                hailHost = clientRow[1]
+                hailPort = 1990 + int(clientRow[0])
+                repVar = None
+                try:
+                    hailCon.connect((hailHost, hailPort))
+                    hailCon.send('stallCheck')
+                    repVar = hailCon.recv(1024)
+                    hailCon.close()
+                except:
+                    pass
+                if repVar is not None:
+                    QtGui.QMessageBox.warning(None,'Error','Client is ONLINE. Turn client off before clear stall job.')
+                    raise StandardError, 'error : client is online.'
+                else:
+                    crControllerCore.clearStat(clientName=clientNameVar)
+        time.sleep(2)
+        self.refreshFun()
+        return
+
+    def resetClient(self):
+        selectedRecordLis = self.main.clientTable.selectedItems()
+        if selectedRecordLis == []:
+            QtGui.QMessageBox.warning(None,'Error','There is no record selected.')
+            raise StandardError, 'error : no record selected'
+
+        for chk in range(len(selectedRecordLis)/4):
+            clientNameVar = str(selectedRecordLis[chk].text())
+            crControllerCore.clientCom(client=clientNameVar, message='quit', portBase=1990)
+            crControllerCore.clientCom(client=clientNameVar, message='wakeUp', portBase=1991)
+        time.sleep(5)
+        self.refreshFun()
+        return
+
+    def restartClient(self):
+        selectedRecordLis = self.main.clientTable.selectedItems()
+        if selectedRecordLis == []:
+            QtGui.QMessageBox.warning(None,'Error','There is no record selected.')
+            raise StandardError, 'error : no record selected'
+
+        for chk in range(len(selectedRecordLis)/4):
+            clientNameVar = str(selectedRecordLis[chk].text())
+            crControllerCore.clientCom(client=clientNameVar, message='restartClient', portBase=1990)
+        time.sleep(2)
+        self.refreshFun()
+        return
+
+    def changeClass(self):
+        selectedRecordLis = self.main.clientTable.selectedItems()
+        if selectedRecordLis == []:
+            QtGui.QMessageBox.warning(None, 'Error','There is no record selected.')
+            raise StandardError, 'error : no record selected'
+
+        newClass, ok = QtGui.QInputDialog.getText(None, 'Const. Render', \
+    'Enter new classification.\nPlease be aware that previously assigned job to old class will not be rendered by this client.')
+
+        for chk in range(len(selectedRecordLis)/4):
+            clientNameVar = str(selectedRecordLis[chk].text())
+            if ok:
+                crControllerCore.changeClass(client=clientNameVar, classification=newClass)
+        self.refreshFun()
+        return
+
+    def wolTrig(self):
+        selectedRecordLis = self.main.clientTable.selectedItems()
+        if selectedRecordLis == []:
+            QtGui.QMessageBox.warning(None,'Error','There is no record selected.')
+            raise StandardError, 'error : no record selected'
+
+        for chk in range(len(selectedRecordLis)/4):
+            clientNameVar = str(selectedRecordLis[chk].text())
+            crControllerCore.wolTrig(client=clientNameVar)
+        self.refreshFun()
+        return
+
+    def restartMachine(self):
+        selectedRecordLis = self.main.clientTable.selectedItems()
+        if selectedRecordLis == []:
+            QtGui.QMessageBox.warning(None,'Error','There is no record selected.')
+            raise StandardError, 'error : no record selected'
+
+        for chk in range(len(selectedRecordLis)/4):
+            clientNameVar = str(selectedRecordLis[chk].text())
+            crControllerCore.clientCom(client=clientNameVar, message='restart', portBase=1990)
+        time.sleep(2)
+        self.refreshFun()
+        return
+
+    def shutDownMachine(self):
+        selectedRecordLis = self.main.clientTable.selectedItems()
+        if selectedRecordLis == []:
+            QtGui.QMessageBox.warning(None,'Error','There is no record selected.')
+            raise StandardError, 'error : no record selected'
+
+        for chk in range(len(selectedRecordLis)/4):
+            clientNameVar = str(selectedRecordLis[chk].text())
+            crControllerCore.clientCom(client=clientNameVar, message='shutDown', portBase=1990)
+        time.sleep(2)
+        self.refreshFun()
         return
 
     def genBatch(self):
         selectedRowLis = self.main.jobTable.selectedItems()
-
+        if selectedRowLis == []:
+            QtGui.QMessageBox.warning(None,'Error','There is no job selected.')
+            raise StandardError, 'error : no record selected'
         instructionLis = []
         if (len(selectedRowLis)/13) == 1:
             instructionLis.append(crControllerCore.genBatch(uuid = selectedRowLis[0].text()))
-        print instructionLis
-        #CONTINUE EXPORTING THE INSTRUCTION LIST
+        repVar = str(QtGui.QFileDialog.getSaveFileName(None, 'Save Batch file'))
+        if not repVar.endswith('.bat'):repVar = repVar+'.bat'
+        opn = open(repVar, 'w')
+        for item in instructionLis:
+            opn.write(str(item)+'\n')
+        opn.close()
+        return
+
+    def deleteClient(self):
+        selectedRecordLis = self.main.clientTable.selectedItems()
+        if selectedRecordLis == []:
+            QtGui.QMessageBox.warning(None,'Error','There is no record selected.')
+            raise StandardError, 'error : no record selected'
+
+        repVar = QtGui.QMessageBox.question(None, 'Const. Render', 'Delete selected client?',\
+                                            QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
+        if repVar == 16384:
+            for chk in range(len(selectedRecordLis)/4):
+                clientNameVar = str(selectedRecordLis[chk].text())
+                crControllerCore.clientCom(client=clientNameVar, message='quit', portBase=1990)
+                crControllerCore.deleteClient(clientName = clientNameVar)
+        self.refreshFun()
         return
 
     def onlineClient(self):
         selectedRecordLis = self.main.clientTable.selectedItems()
+        if selectedRecordLis == []:
+            QtGui.QMessageBox.warning(None,'Error','There is no record selected.')
+            raise StandardError, 'error : no record selected'
         for chk in range(len(selectedRecordLis)/4):
             clientNameVar = str(selectedRecordLis[chk].text())
-            crControllerCore.onlineClient(client =  clientNameVar)
+            crControllerCore.clientCom(client=clientNameVar, message='wakeUp', portBase=1991)
 
-        time.sleep(1)
+        time.sleep(5)
         self.refreshFun()
         return
 
     def shutDownClient(self):
+        selectedRecordLis = self.main.clientTable.selectedItems()
+        if selectedRecordLis == []:
+            QtGui.QMessageBox.warning(None,'Error','There is no record selected.')
+            raise StandardError, 'error : no record selected'
+
         repVar = QtGui.QMessageBox.question(None,\
-                                          'Shut Down Client',\
-                                          'Shut down selected client? Client will finish job assigned to it before shut down.',\
+                                          'Const. Render 4.2',\
+                                          'Shutdown client?',\
                                           QtGui.QMessageBox.Ok,\
                                           QtGui.QMessageBox.Cancel)
         if repVar == 1024:
-            selectedRecordLis = self.main.clientTable.selectedItems()
-
-            if selectedRecordLis == []:
-                QtGui.QMessageBox.warning(None,'Error','There is no record selected.')
-                raise StandardError, 'error : no record selected'
-
             for chk in range(len(selectedRecordLis)/4):
                 clientNameVar = str(selectedRecordLis[chk].text())
-                crControllerCore.changeClientStatus(clientName=str(clientNameVar),\
-                                                    blockClient='OFFLINE')
+                crControllerCore.changeClientStatus(clientName=str(clientNameVar), blockClient='OFFLINE')
         self.refreshFun()
         return
 
@@ -199,7 +445,6 @@ class crControllerUI(QtGui.QWidget):
 
     def deleteJob(self):
         selectedRecordLis = self.main.jobTable.selectedItems()
-
         if selectedRecordLis == []:
             QtGui.QMessageBox.warning(None, 'Error','There is no record selected.')
             raise StandardError, 'error : no record selected'
@@ -220,7 +465,6 @@ class crControllerUI(QtGui.QWidget):
 
     def resetJob(self):
         selectedRecordLis = self.main.jobTable.selectedItems()
-
         if selectedRecordLis == []:
             QtGui.QMessageBox.warning(None,'Error','There is no record selected.')
             raise StandardError, 'error : no record selected'
@@ -279,7 +523,7 @@ class crControllerUI(QtGui.QWidget):
 
         for chk in range(len(selectedRecordLis)/4):
             clientNameVar = str(selectedRecordLis[chk].text())
-            if switch==0:
+            if switch == 0:
                 crControllerCore.changeClientStatus(clientName=clientNameVar,\
                                                                blockClient='DISABLED')
             else:
@@ -450,7 +694,7 @@ class crControllerUI(QtGui.QWidget):
                 hailCon = socket.socket()
                 hailCon.settimeout(4)
                 hailHost = clientRow[1]
-                hailPort = 1989 + int(clientRow[0])
+                hailPort = 1990 + int(clientRow[0])
                 repVar = None
                 try:
                     hailCon.connect((hailHost, hailPort))
@@ -461,11 +705,11 @@ class crControllerUI(QtGui.QWidget):
                     pass
                 if repVar is None:
                     #change client status to OFFLINE
-                    if clientRow[3] != 'OFFLINE':
-                        connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
-                        connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='DISABLED' WHERE clientName='"+str(clientRow[1])+"'")
-                        connectionVar.commit()
-                        connectionVar.close()
+                    #if clientRow[3] != 'OFFLINE':
+                    connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
+                    connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='OFFLINE' WHERE clientName='"+str(clientRow[1])+"'")
+                    connectionVar.commit()
+                    connectionVar.close()
 
             #populating the clientTable
             self.main.clientTable.setRowCount(len(crControllerCore.listAllClient()))
@@ -490,6 +734,10 @@ class crControllerUI(QtGui.QWidget):
                 itemVar = QtGui.QTableWidgetItem(str(chk[3]))
                 itemVar.setBackgroundColor(colorCodeVar)
                 self.main.clientTable.setItem(cnt, 3, itemVar)
+
+                itemVar = QtGui.QTableWidgetItem(str(chk[8]))
+                itemVar.setBackgroundColor(colorCodeVar)
+                self.main.clientTable.setItem(cnt, 4, itemVar)
                 cnt+=1
         self.main.clientTable.resizeColumnsToContents()
         return

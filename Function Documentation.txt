@@ -1,0 +1,179 @@
+CONSTELLATION RENDER FUNCTION DOCUMENTATION
+Andrew willis 2015
+
+[crSetupCore]
+1. crSetupCore.addRenderer(nameVar, pathVar)
+   Add renderer path to database. The renderer actual installation path has to be exactly the same
+   on every machine. setupRenderer function has to be run before using this function.
+    -. nameVar = int
+       specify the type of renderer. 0=maya-mray, 1=maya-vray, 2=maya-hw, 3=maya-sw, 4=nuke.
+    -. pathVar = str
+       specify the path to the renderer.
+2. crSetupCore.deleteRenderer(nameVar)
+   Delete registered renderer. setupRenderer function has to be run before using this function.
+    -. nameVar = str
+       specify the renderer name to delete.
+3. crSetupCore.listRenderer()
+   List all registered renderer. setupRenderer function has to be run before using this function.
+4. crSetupCore.setupJobTable()
+   Setup a job table into constellationDatabse that will be automatically created if none exists
+   within the same directory of the module.
+5. crSetupCore.setupLogTable()
+   Setup a log table into constellationDatabse that will be automatically created if none exists
+   within the same directory of the module.
+6. crSetupCore.setupClientTable()
+   Setup a client table into constellationDatabse that will be automatically created if none exists
+   within the same directory of the module.
+7. crSetupCore.setupConfiguration()
+   Create configuration file in xml
+8. crSetupCore.setupRenderer()
+   Create renderer file in xml. This function has to be run first before running listRenderer,
+   createRenderer, or deleteRenderer.
+   
+[crSubmitCore]
+1. submit(projectVar=str, userVar=str, softwareVar=str, scriptPathVar=str, targetPathVar=str,
+             frameStartVar=int, frameEndVar=int, blockCount=int, priorityVar=int, renderLayer=str, cameraSet=str,\
+             classificationVar=str,enablerVar=bool)
+   Submit current scene file render job to database. Make sure the scene file is available for all
+   the client to access otherwise the job will marked as error.
+    -. projectVar = str
+       specify job project.
+    -. userVar = str
+       specify the user submitting the job.
+    -. softwareVar = str
+       specify the software used for render.
+    -. scriptPathVar = str
+       specify the location of the scene file.
+    -. targetPathVar = str
+       specify the output directory.
+    -. frameStartVar = int
+       specify the start frame of the job.
+    -. frameEndVar = int
+       specify the end frame of the job.
+    -. blockCount = int
+       specify the f/block rate for the job. This block count is the rate of how many frame contained
+       in one render block where block is a chunk of job sent to client for render.
+    -. priorityVar = int
+       specify the priority of the job. maximum will be 99 where minimum is 0.
+    -. renderLayer = str
+       specify the render layer of the job.
+    -. cameraSet = str
+       specify the render camera of the job.
+    -. classificationVar = str
+       specify the job classification in alphabet to match up with the client classification.
+    -. enablerVar = bool
+       specify the job enabler. If False, the job will be registered as disabled job and wil not be
+       rendered. By default the value is True.
+
+[crControllerCore]
+1. clientCom(client=str, message=str)
+   Manage socket comunication to specified client.
+    -. client = str
+       specify client name. return error if client is not found or the client is not running.
+    -. message = str
+       specify message to be sent to client. The following command is available.
+                +. wakeUp = turn on client. works only if tender service is running.
+                +. quit = turn off client. works only if tender service is running.
+                +. stallCheck = return ok if client is online. Used for hailing.
+                +. shutDown = shutdown client pc. return error if the client is not online.
+                +. restart = restart client pc. return error if the client is not online.
+2. setupClient(client=str, classification=str)
+   Setup client module in renderer machine. Client machine data will be recorded for controller and
+   additional file will be created on windows system root.
+    -. client = str
+       specify the client name. usually it can be obtained by using socket.gethostname()
+    -. classification = str
+       specify the client machine classification in alphabet to match up with the job classification.
+3. changeClass(client=str, classification=str)
+   Change client classification to be matched with the job classification.
+     -. client = str
+        specify the client name. usually it can be obtained by using socket.gethostname()
+     -. classification = str
+        new classification of the client.
+4. listAllJob()
+   Return all registered job in the database following the database id. with format as follow.
+   <jobId, jobUuid, jobProject, jobUser, jobSoftware, jobScriptPath, jobTargetPath, jobFrameStart, jobFrameEnd,
+   jobLayer, jobStatus, jobBlocked, jobRegistered, jobPriority, jobCamera, jobClassification, jobRenderTime>
+5. listAllJobGrouped()
+   Return all registered job in the database based on uuid group. This usually used to get certain
+   job based on its UUID.
+6. searchJob(id=int, project=str, user=str, software=str, scriptPath=str, status=str,
+            priorityAbove=int, priorityBelow=int)
+   Search and return job from database.
+    -. id = int
+       id of the job database id.
+    -. project = str
+       specify project name.
+    -. user = str
+       specify the user who submit the job.
+    -. software = str
+       specify the software used for the job.
+    -. scriptPath = str
+       specify the location of the job scene file.
+    -. status = str
+       specify the status of the job.
+    -. priorityAbove = int
+       specify the priority above the searched job.
+    -. priorityBelow = int
+       specify the priority below the searched job.
+7. openOutput(uid=str)
+   Open the output directory of the render job.
+    -. uid = str
+       specify the uuid of the job.
+8. deleteClient(clientName=str)
+   Delete client from database.
+    -. clientName = str
+       specify the client name to be deleted from database.
+9. genBatch(uuid=str)
+   Generate render command line and save it as bat file.
+    -. uuid = str
+       specify the uuid of the job.
+10. clearJobRecord(uid=str, done=bool, all=bool)
+    Clear job from database. Once deleted job is not recoverable.
+    -. uid = str
+       specify the job uid to be deleted.
+    -. done = bool
+       specify if all the marked done job will be deleted. Can not be used with uid flag. Default
+       value is False.
+    -. all = bool
+       specify if all job in database will be deleted. Can not be used with uid flag. Default value
+       is False.
+11. resetJobRecord(uid=str)
+    Reset job from database to make the client re-render all the file. The output directory will
+    automatically wiped out.
+    -. uid = str
+       specify the job uid to be reset.
+12. changeJobPrior(uid=str, priority=int)
+    Change the job priority. Higher priority job will be rendered first by the system.
+    -. uid = str
+       specify the uid of the job from database.
+    -. priority = int
+       specify the new priority for the job.
+13. changeJobRecord(jobId=str, status=str)
+    Change job record status from database.
+    -. jobId = str
+       specify job id.
+    -. status = str
+       specify the new status of the job. Standard job statuses as follow:
+            +. QUEUE        = job is not rendered and put on queue
+            +. RENDERING    = job is being rendered by the clients
+            +. HALTED       = job is rendered halfway but no client is rendering right now
+            +. DONE         = job has been rendered
+            +. ERROR        = job is error please check the log for further information
+14. changeJobRecordBlocked(jobUuid=str, blockStatus=str)
+    Change job blocked status.
+    -. jobUuid = str
+       specify job uuid.
+    -. blockStatus = str
+       specify the new block status. block status consist of ENABLED and DISABLED.
+15. listAllClient()
+    List all available client.
+16. changeClientStatus(clientName=str, status=str, blockClient=str, clientJob=str)
+    Change various client status to control how the client behave.
+    -. clientName = str
+       specify client name status will be changed.
+    -. status = str
+       specify new client status.
+                +. STANDBY      = client is standing by no job available.
+                +. RENDERING    = client is rendering.
+                +. COOLDOWN     = client is cooling down. This is a process after rendering.

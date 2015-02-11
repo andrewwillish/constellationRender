@@ -4,9 +4,11 @@ __author__ = 'andrew.willis'
 #Andrew Willis 2014
 
 #Module import
-import os, shutil, sys, sqlite3, imp, subprocess
-import hashlib, time, datetime, socket
+import os, sqlite3, subprocess
+import socket
 import xml.etree.cElementTree as ET
+import uuid
+import struct
 
 #Determining root path
 rootPathVar = os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
@@ -18,21 +20,54 @@ systemRootVar = str(os.environ['WINDIR']).replace('\\Windows','')
 if not os.path.isfile(rootPathVar+'/constellationDatabase.db'): raise StandardError, 'error : constellation database non-exists'
 connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
 
-def onlineClient(client=None):
-    if client is None: raise StandardError, 'no client specified'
+#wake on lan
+def wolTrig(client=None):
     clientSetting = None
     for clientParse in listAllClient():
         if clientParse[1] == client:
             clientSetting = clientParse
 
     if clientSetting is not None:
-        if clientSetting[3] == 'OFFLINE':
-            socketVar = socket.socket()
-            host = str(clientSetting[1])
-            port = 1990 + int(clientSetting[0])
-            socketVar.connect((host, port))
-            socketVar.send('wakeUp')
-            socketVar.close()
+        macaddress = clientSetting[10]
+        # Check macaddress format and try to compensate.
+        if len(macaddress) == 12:
+            pass
+        elif len(macaddress) == 12 + 5:
+            sep = macaddress[2]
+            macaddress = macaddress.replace(sep, '')
+        else:
+            raise ValueError('Incorrect MAC address format')
+
+        # Pad the synchronization stream.
+        data = ''.join(['FFFFFFFFFFFF', macaddress * 20])
+        send_data = ''
+
+        # Split up the hex values and pack.
+        for i in range(0, len(data), 2):
+            send_data = ''.join([send_data,
+                                 struct.pack('B', int(data[i: i + 2], 16))])
+
+        # Broadcast it to the LAN.
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        sock.sendto(send_data, ('<broadcast>', 7))
+    return
+
+#client communication
+def clientCom(client=None, message = None, portBase = None):
+    if client is None or message is None or portBase is None: raise StandardError, 'no client specified'
+    clientSetting = None
+    for clientParse in listAllClient():
+        if clientParse[1] == client:
+            clientSetting = clientParse
+
+    if clientSetting is not None:
+        socketVar = socket.socket()
+        host = str(clientSetting[1])
+        port = int(portBase) + int(clientSetting[0])
+        socketVar.connect((host, port))
+        socketVar.send(str(message))
+        socketVar.close()
     return
 
 #This function start cyclic process only in client module.
@@ -42,26 +77,28 @@ def setupClient(client = None, classification = None):
 
     #Register client to database
     try:
+        macAddr = ':'.join(['{:02x}'.format((uuid.getnode() >> i) & 0xff) for i in range(0,8*6,8)][::-1])
         connectionVar.execute("INSERT INTO constellationClientTable "\
             "("\
-            "clientName,clientBlocked,clientMemory,clientThread,clientWorkMemory,clientWorkThread,clientStatus,clientClassification)"\
+            "clientName,clientBlocked,clientMemory,clientThread,clientWorkMemory,clientWorkThread,clientStatus,clientClassification,clientJob,clientMacAddr)"\
             "VALUES ("\
             "'"+str(client)+"',"\
-            "'DISABLED',"\
-            "'0',"\
-            "'0',"\
-            "'0',"\
-            "'0',"\
             "'OFFLINE',"\
-            "'"+str(classification)+"')")
+            "'0',"\
+            "'0',"\
+            "'0',"\
+            "'0',"\
+            "'STANDBY',"\
+            "'"+str(classification)+"',"\
+            "'',"\
+            "'"+str(macAddr)+"')")
         connectionVar.commit()
     except Exception as e:
         raise StandardError, str(e)
 
     #create local workspace
     try:
-        print systemRootVar+'/crClient/renderTemp'
-        if os.path.isdir(systemRootVar+'/crClient/renderTemp')==False:
+        if not os.path.isdir(systemRootVar+'/crClient/renderTemp'):
             os.makedirs(systemRootVar+'/crClient/renderTemp')
             os.makedirs(systemRootVar+'/crClient/data')
     except Exception as e:
@@ -69,34 +106,35 @@ def setupClient(client = None, classification = None):
 
     #create working hour .xml
     try:
-        root=ET.Element("root")
-        sunday=ET.SubElement(root,'sunday')
+        root = ET.Element("root")
+        sunday = ET.SubElement(root,'sunday')
         sunday.set('workHourStart','-')
         sunday.set('workHourEnd','-')
-        monday=ET.SubElement(root,'monday')
+        monday = ET.SubElement(root,'monday')
         monday.set('workHourStart','0800AM')
         monday.set('workHourEnd','1000PM')
-        tuesday=ET.SubElement(root,'tuesday')
+        tuesday = ET.SubElement(root,'tuesday')
         tuesday.set('workHourStart','0800AM')
         tuesday.set('workHourEnd','1000PM')
-        wednesday=ET.SubElement(root,'wednesday')
+        wednesday = ET.SubElement(root,'wednesday')
         wednesday.set('workHourStart','0800AM')
         wednesday.set('workHourEnd','1000PM')
-        thursday=ET.SubElement(root,'thursday')
+        thursday = ET.SubElement(root,'thursday')
         thursday.set('workHourStart','0800AM')
         thursday.set('workHourEnd','1000PM')
-        friday=ET.SubElement(root,'friday')
+        friday = ET.SubElement(root,'friday')
         friday.set('workHourStart','0800AM')
         friday.set('workHourEnd','1000PM')
-        saturday=ET.SubElement(root,'saturday')
+        saturday = ET.SubElement(root,'saturday')
         saturday.set('workHourStart','-')
         saturday.set('workHourEnd','-')
-        tree=ET.ElementTree(root)
+        tree = ET.ElementTree(root)
         tree.write(systemRootVar+'/crClient/data/workHour.xml')
     except Exception as e:
         raise StandardError, str(e)
     return
 
+#change class of a client
 def changeClass(client=None,classification=None):
     #validate classification
     if classification is None or client is None:
@@ -141,81 +179,80 @@ def listAllJobGrouped():
 def searchJob(id=None, project=None, user=None, software=None, scriptPath=None,\
             status=None, priorityAbove=None, priorityBelow=None):
     #Get all recorded job from database
-    allJobLis=(connectionVar.execute("SELECT * FROM constellationJobTable")).fetchall()
+    allJobLis = (connectionVar.execute("SELECT * FROM constellationJobTable")).fetchall()
 
     #Declaring tempLis for temporary structural search
     #Search will systematically done by searching one condition, save it to a list, then re-search it again with
     #next condition. This way all condition can be met.
-    tempLis=[]
-    towriteLis=allJobLis
+    tempLis = []
+    towriteLis = allJobLis
 
     #Search by ID
-    if id!=None:
+    if id is not None:
         for check in towriteLis:
-            if str(id)==str(check[0]):
+            if str(id) == str(check[0]):
                 tempLis.append(check)
-        towriteLis=tempLis
+        towriteLis = tempLis
 
     #Search by project
-    if user!=None:
+    if user is not None:
         for check in towriteLis:
-            if str(user)==str(check[1]):
+            if str(user) == str(check[1]):
                 tempLis.append(check)
-        towriteLis=tempLis
+        towriteLis = tempLis
 
     #Search by user
-    if user!=None:
+    if user is not None:
         for check in towriteLis:
-            if str(user)==str(check[2]):
+            if str(user) == str(check[2]):
                 tempLis.append(check)
-        towriteLis=tempLis
+        towriteLis = tempLis
 
     #Search by software
-    if software!=None:
-        if software==0:
-            software='maya'
-        elif software ==1:
-            software='nuke'
-        if software=='maya' or software=='nuke':
+    if software is not None:
+        if software == 0:
+            software = 'maya'
+        elif software == 1:
+            software = 'nuke'
+        if software == 'maya' or software == 'nuke':
             for check in towriteLis:
-                if str(software)==str(check[3]):
+                if str(software) == str(check[3]):
                     tempLis.append(check)
-            towriteLis=tempLis
+            towriteLis = tempLis
         else:
             raise ValueError, 'error : invalid software value'
 
     #Search by scriptPath
-    if scriptPath!=None:
+    if scriptPath is not None:
         for check in towriteLis:
-            if str(check[4]).find(str(scriptPath))!=-1:
+            if str(check[4]).find(str(scriptPath)) != -1:
                 tempLis.append(check)
-        towriteLis=tempLis
+        towriteLis = tempLis
 
     #Search by user
-    if status!=None:
+    if status is not None:
         for check in towriteLis:
-            if str(status)==str(check[8]):
+            if str(status) == str(check[8]):
                 tempLis.append(check)
-        towriteLis=tempLis
+        towriteLis = tempLis
 
     #Search by priorityAbove
-    if priorityAbove!=None:
+    if priorityAbove is not None:
         for check in towriteLis:
-            if int(priorityAbove)<=int(check[10]):
+            if int(priorityAbove) <= int(check[10]):
                 tempLis.append(check)
-        towriteLis=tempLis
+        towriteLis = tempLis
 
     #Search by priorityBelow
-    if priorityBelow!=None:
+    if priorityBelow is not None:
         for check in towriteLis:
-            if int(priorityBelow)>=int(check[10]):
+            if int(priorityBelow) >= int(check[10]):
                 tempLis.append(check)
-        towriteLis=tempLis
-
+        towriteLis = tempLis
     return towriteLis
 
 #This function open output folder
-def openOutput(uid=None, renderer=None):
+def openOutput(uid=None):
     recordVar = connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobUuid='"+str(uid)+"'").fetchall()
     recordVar = recordVar[0]
 
@@ -250,6 +287,42 @@ def openOutput(uid=None, renderer=None):
             raise StandardError, 'error : directory not found'
     return
 
+#clear job status
+def clearStat(clientName=None):
+    #validate parameter
+    if clientName is None: raise StandardError, 'no client name specified'
+
+    #check if there is any stalled rendering. clear it back to queue.
+    for client in listAllClient():
+        if clientName == str(client[1]) and client[2] != '':
+            try:
+                connectionVar.execute("UPDATE constellationJobTable SET jobStatus='QUEUE' WHERE jobId='"+str(client[2])+"'")
+                connectionVar.commit()
+                connectionVar.execute("UPDATE constellationClientTable SET clientJob='', clientStatus='STANDBY' WHERE clientName='"+str(clientName)+"'")
+                connectionVar.commit()
+            except:
+                pass
+    return
+
+#delete client
+def deleteClient(clientName = None):
+    #validate parameter
+    if clientName is None: raise StandardError, 'no client name specified'
+
+    #check if there is any stalled rendering. clear it back to queue.
+    for client in listAllClient():
+        if clientName == str(client[1]) and client[2] != '':
+            try:
+                connectionVar.execute("UPDATE constellationJobTable SET jobStatus='QUEUE' WHERE jobId='"+str(client[2])+"'")
+                connectionVar.commit()
+            except:
+                pass
+
+    #database delete query
+    connectionVar.execute("DELETE FROM constellationClientTable WHERE clientName='"+str(clientName)+"'")
+    connectionVar.commit()
+    return
+
 #generate command line and export it to batch file
 def genBatch(uuid = None):
     jobData = connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobUuid='"+str(uuid)+"'").fetchall()
@@ -274,33 +347,32 @@ def genBatch(uuid = None):
 
 #This function will delete all or done job by uid
 def clearJobRecord(uid=None, done=False, all=False):
-    #Shield to prevent double operation both all and done
-    if done is True and all is True:
-        raise StandardError, 'error : dobule operation not allowed'
+    #validate parameter
+    if done and all:raise StandardError, 'error : dobule operation not allowed'
 
     #Delete all DONE job
     if done:
         for chk in listAllJobGrouped():
-            tempStatusLis=[]
-            countStatusDone=0
-            countStatusRendering=0
-            countStatusQueue=0
+            tempStatusLis = []
+            countStatusDone = 0
+            countStatusRendering = 0
+            countStatusQueue = 0
             for chb in chk:
-                if chb[10]=='DONE':
-                    countStatusDone+=1
-                if chb[10]=='RENDERING':
-                    countStatusRendering+=1
-                if chb[10]=='QUEUE':
-                    countStatusQueue+=1
+                if chb[10] == 'DONE':
+                    countStatusDone += 1
+                if chb[10] == 'RENDERING':
+                    countStatusRendering += 1
+                if chb[10] == 'QUEUE':
+                    countStatusQueue += 1
                 tempStatusLis.append(chb[10])
-            if countStatusDone==len(tempStatusLis):
-                statusinVar='DONE'
-            elif countStatusQueue==len(tempStatusLis):
-                statusinVar='QUEUE'
-            elif countStatusRendering>0:
-                statusinVar='RENDERING'
-            elif countStatusDone>0 and countStatusQueue>0 and countStatusRendering==0:
-                statusinVar='HALTED'
+            if countStatusDone == len(tempStatusLis):
+                statusinVar = 'DONE'
+            elif countStatusQueue == len(tempStatusLis):
+                statusinVar = 'QUEUE'
+            elif countStatusRendering > 0:
+                statusinVar = 'RENDERING'
+            elif countStatusDone > 0 and countStatusQueue > 0 and countStatusRendering == 0:
+                statusinVar = 'HALTED'
 
             if statusinVar == 'DONE':
                 for chb in chk:
@@ -335,13 +407,12 @@ def clearJobRecord(uid=None, done=False, all=False):
 
 #This function reset job record
 def resetJobRecord(uid=None):
-    #Validate uid. Make sure its not None
+    #validate parameter
     if uid is None: raise ValueError, 'error : no id entered'
 
     allJobLis = listAllJobGrouped()
     for chk in allJobLis:
-        if chk[0][1] == str(uid):
-            filePath = chk[0][6]
+        if chk[0][1] == str(uid): filePath = chk[0][6]
 
     filePath = filePath.replace('\\', '/')
     filePath = filePath[:filePath.rfind('/')]
@@ -355,14 +426,12 @@ def resetJobRecord(uid=None):
 
     connectionVar.execute("UPDATE constellationJobTable SET jobStatus='QUEUE' WHERE jobUuid='"+uid+"'")
     connectionVar.commit()
-
-    #delete the selected record
     return
 
 #This function will change job record massively or singularly
 def changeJobPrior(uid=None, priority=None):
-    if uid==None or priority==None:
-        raise ValueError, 'error : empty record'
+    #validate parameter
+    if uid is None or priority is None:raise ValueError, 'error : empty record'
 
     connectionVar.execute("UPDATE constellationJobTable SET jobPriority='"+str(priority)+"' WHERE jobUuid='"+str(uid)+"'")
     connectionVar.commit()
@@ -370,45 +439,35 @@ def changeJobPrior(uid=None, priority=None):
 
 #This function will change job record attribute
 def changeJobRecord(jobId=None, status=None):
-    #Validate uid. Make sure its not None
-    if jobId==None:
-        raise ValueError, 'error : no id specified'
+    #validate parameter
+    if jobId is None:raise ValueError, 'error : no id specified'
 
     #change job status
-    if status!=None:
+    if status is not None:
         connectionVar.execute("UPDATE constellationJobTable SET jobStatus='"+str(status)+"' WHERE jobId='"+str(jobId)+"'")
         connectionVar.commit()
-
     return
 
 #This function will change job record attribute
 def changeJobRecordBlocked(jobUuid=None, blockStatus=None):
-    #Validate uid. Make sure its not None
-    if jobUuid==None:
-        raise ValueError, 'error : no id specified'
+    #validate parameter
+    if jobUuid is None:raise ValueError, 'error : no id specified'
 
-    #change job status
-    if blockStatus!=None:
+    if blockStatus is not None:
         connectionVar.execute("UPDATE constellationJobTable SET jobBlocked='"+str(blockStatus)+"' WHERE jobUuid='"+str(jobUuid)+"'")
         connectionVar.commit()
-
     return
 
 #This function list all client.
 def listAllClient():
     returnLis = (connectionVar.execute("SELECT * FROM constellationClientTable")).fetchall()
-    if returnLis == []:
-        returnLis = ['<no client registered to the network>']
+    if returnLis == []:returnLis = ['<no client registered to the network>']
     return returnLis
 
 #This function change client status
-def changeClientStatus(clientName=None,\
-                       status=None,\
-                       blockClient=None,\
-                       clientJob=None):
-    #Validate client id
-    if clientName==None:
-        raise ValueError, 'error : no id specified'
+def changeClientStatus(clientName=None, status=None, blockClient=None, clientJob=None):
+    #validate parameter
+    if clientName is None: raise ValueError, 'error : no id specified'
 
     #Processing status
     if status is not None:
@@ -417,13 +476,13 @@ def changeClientStatus(clientName=None,\
 
     #Processing blockClient
     if blockClient is not None:
-        if blockClient=='DISABLED':
+        if blockClient == 'DISABLED':
             connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='DISABLED' WHERE clientName='"+str(clientName)+"'")
             connectionVar.commit()
-        elif blockClient=='ENABLED':
+        elif blockClient == 'ENABLED':
             connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='ENABLED' WHERE clientName='"+str(clientName)+"'")
             connectionVar.commit()
-        elif blockClient=='OFFLINE':
+        elif blockClient == 'OFFLINE':
             connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='OFFLINE' WHERE clientName='"+str(clientName)+"'")
             connectionVar.commit()
 

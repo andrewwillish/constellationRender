@@ -4,11 +4,10 @@ __author__ = 'andrew.willis'
 #Andrew Willis 2014
 
 #import standard module
-import os, shutil, sys, sqlite3, imp, time, threading, thread, socket
-import hashlib, datetime, socket, subprocess, ctypes
-from multiprocessing import Process
+import os, sys, sqlite3, time, thread, socket
+import datetime, ctypes
 import xml.etree.cElementTree as ET
-from threading import Thread
+import signal
 
 #import renderer module
 import crRendererMayaMray, crRendererMayaVray, crControllerCore
@@ -31,13 +30,15 @@ os.system('cls')
 #This function start cyclic process only in client module.
 def startService():
     statPrint('starting client service', colorStat=10)
-    statPrint('build [1]', colorStat=10)
-    time.sleep(1)
+    statPrint('Constellation Render v4.2 build 0', colorStat=10)
+    time.sleep(3)
+
+    currentPid = os.getpid()
+
     #Check if the client has been registered to the database
     allClientLis = connectionVar.execute("SELECT * FROM constellationClientTable")
     templis = []
-    for chk in allClientLis:
-        templis.append(chk[1])
+    for chk in allClientLis: templis.append(chk[1])
     if clientName not in templis:
         statPrint(clientName+' is not registered as a client', colorStat = 12)
         raise StandardError, 'error : client has not been registered'
@@ -52,6 +53,7 @@ def startService():
     connectionVar.execute("UPDATE constellationClientTable SET"\
         " clientBlocked='ENABLED' WHERE clientName='"+str(clientName)+"'")
     connectionVar.commit()
+
     #Fetch client setting from database
     clientSetting = (connectionVar.execute("SELECT * FROM constellationClientTable WHERE clientName='"\
                                         +str(socket.gethostname())+"'").fetchall())
@@ -62,9 +64,10 @@ def startService():
 
     #start hail server
     try:
-        thread.start_new_thread(hailServer,(clientSetting,))
+        thread.start_new_thread(hailServer,(clientSetting, currentPid, ))
         statPrint('hail service started', colorStat=10)
     except Exception as e:
+        os._exit(1)
         raise StandardError, str(e)
 
     #Executing instruction function
@@ -76,22 +79,30 @@ def startService():
             statPrint('General block error see log for detail', colorStat = 12)
             connectionVar.execute("INSERT INTO constellationLogTable (clientName,jobUuid,logDescription) "\
                 "VALUES ('"+str(clientName)+"','n/a','error crClientService General block error:"+str(e)+"')")
-
     return
 
 #hail function service
-def hailServer(clientSetting):
+def hailServer(clientSetting, currentPid):
     socketVar = socket.socket()
     host = socket.gethostname()
-    port = 1989+int(clientSetting[0])
-    socketVar.bind((host,port))
-
+    port = 1990+int(clientSetting[0])
+    try:
+        socketVar.bind((host,port))
+    except:
+        os._exit(1)
     socketVar.listen(5)
     while True:
         con, addr = socketVar.accept()
         messageVar = con.recv(1024)
         if messageVar == 'stallCheck':
             con.send('ok')
+        elif messageVar == 'quit':
+            os.kill(currentPid, signal.SIGTERM)
+            #os.system("tskill "+str(currentPid))
+        elif messageVar == 'shutDown':
+            os.system("shutdown -s -t 5")
+        elif messageVar == 'restart':
+            os.system("shutdown -r -t 5")
         con.close()
     return
 

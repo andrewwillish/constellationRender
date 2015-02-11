@@ -1,12 +1,9 @@
 __author__ = 'andrew.willis'
 
 #Constellation Render Manager - Job Submission Core
-#Andrew Willis 2014
 
 #Module import
-import os, shutil, sys, sqlite3, imp, uuid
-import hashlib, time, datetime, gc, socket
-import xml.etree.cElementTree as ET
+import os, sqlite3, uuid
 import maya.cmds as cmds
 
 #Determining root path
@@ -26,10 +23,9 @@ def submit(projectVar=None, userVar=None, softwareVar=None, scriptPathVar=None, 
     if not os.path.isfile(scriptPathVar):raise ValueError, 'error : non-existence script path'
 
     #Validating input credential. Make sure every field is not empty
-    print [softwareVar, scriptPathVar, targetPathVar, frameStartVar, frameEndVar, projectVar, \
-        userVar, renderLayer, priorityVar, cameraSet, classificationVar]
     if None in [softwareVar, scriptPathVar, targetPathVar, frameStartVar, frameEndVar, projectVar, \
-        userVar, renderLayer, priorityVar, cameraSet, classificationVar]:raise StandardError, 'error : incomplete credential'
+        userVar, renderLayer, priorityVar, cameraSet, classificationVar]:
+        raise StandardError, 'error : incomplete credential'
 
     if str(type(renderLayer)) != "<type 'list'>":raise ValueError, 'error : invalid renderLayer value - expecting list'
 
@@ -67,4 +63,5 @@ def submit(projectVar=None, userVar=None, softwareVar=None, scriptPathVar=None, 
                 ",'"+str(classificationVar)+"'"\
                 ",'"+str(cameraSet)+"')")
             connectionVar.commit()
+            connectionVar.close()
     return
