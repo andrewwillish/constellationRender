@@ -374,8 +374,7 @@ class crControllerUI(QtGui.QWidget):
     def populatePriorityFun(self):
         selectedRowLis = self.main.jobTable.selectedItems()
 
-        if (len(selectedRowLis)/13) == 1:
-            self.main.prioritySpinBox.setValue(int(selectedRowLis[10].text()))
+        if (len(selectedRowLis)/13) == 1:self.main.prioritySpinBox.setValue(int(selectedRowLis[10].text()))
         return
 
     def prioritySet(self):
@@ -459,7 +458,6 @@ class crControllerUI(QtGui.QWidget):
             for chk in range(len(selectedRecordLis)/12):
                 jobUuid = str(selectedRecordLis[chk].text())
                 crControllerCore.clearJobRecord(uid=jobUuid)
-
             self.refreshFun()
         return
 
@@ -491,8 +489,7 @@ class crControllerUI(QtGui.QWidget):
 
         for chk in range(len(selectedRecordLis)/13):
             jobUuid = str(selectedRecordLis[chk].text())
-            crControllerCore.changeJobRecordBlocked(jobUuid=jobUuid,\
-                                                        blockStatus='DISABLED')
+            crControllerCore.changeJobRecordBlocked(jobUuid=jobUuid, blockStatus='DISABLED')
         self.refreshFun()
         return
 
@@ -616,19 +613,18 @@ class crControllerUI(QtGui.QWidget):
             itemVar.setBackgroundColor(colorCodeVar)
             self.main.jobTable.setItem(cnt,6,itemVar)
             #left
-            counter=0
+            counter = 0
             for chb in chk:
-                if chb[10]=='QUEUE':
-                    counter+=1
+                if chb[10] == 'QUEUE':counter += 1
 
             itemVar=QtGui.QTableWidgetItem(str(counter))
             itemVar.setBackgroundColor(colorCodeVar)
             self.main.jobTable.setItem(cnt,7,itemVar)
             leftVar=counter
             #done
-            counter=0
+            counter = 0
             for chb in chk:
-                if chb[10]=='DONE' or chb[10]=='ERROR':
+                if chb[10] == 'DONE' or chb[10]=='ERROR':
                     counter+=1
 
             itemVar=QtGui.QTableWidgetItem(str(counter))
