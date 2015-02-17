@@ -31,9 +31,6 @@ class crControllerUI(QtGui.QWidget):
 
         self.main.refreshBtn.clicked.connect(self.refreshFun)
 
-        self.main.deleteAllBtn.clicked.connect(self.deleteAll)
-        self.main.deleteDoneBtn.clicked.connect(self.deleteDone)
-
         self.main.outputBtn.clicked.connect(self.openOutputFolder)
 
         self.main.jobTable.itemSelectionChanged.connect(self.populatePriorityFun)
@@ -43,12 +40,13 @@ class crControllerUI(QtGui.QWidget):
         self.main.jobTable.clicked.connect(self.populateInformation)
         self.main.generateBatchButton.clicked.connect(self.genBatch)
         self.main.deleteJobButton.clicked.connect(self.deleteJob)
+        self.main.refreshHailBtn.clicked.connect(lambda*args: self.refreshFun(hail=True))
         self.main.jobInformationGroup.setEnabled(0)
         return
 
     def populateInformation(self):
         selectedRowLis = self.main.jobTable.selectedItems()
-        if (len(selectedRowLis)/13) == 1:
+        if (len(selectedRowLis)/14) == 1:
             #single selection populate the information
             self.main.jobInformationGroup.setEnabled(1)
 
@@ -148,21 +146,31 @@ class crControllerUI(QtGui.QWidget):
         return
 
     def jobPopup(self, pos):
+        #self.main.deleteAllBtn.clicked.connect(self.deleteAll)
+        #self.main.deleteDoneBtn.clicked.connect(self.deleteDone)
+        selectedRecordLis = self.main.jobTable.selectedItems()
         menu = QtGui.QMenu()
-        enaDisaMen = menu.addMenu('Enable / Disable Job')
-        enaJob = enaDisaMen.addAction('Enable Job')
-        disaJob = enaDisaMen.addAction('Disable Job')
-        menu.addSeparator()
-        resJob = menu.addAction('Reset Job')
-        delJob = menu.addAction('Delete Job')
-        menu.addSeparator()
-        genBatch = menu.addAction('Generate Batch')
-        action = menu.exec_(self.main.jobTable.viewport().mapToGlobal(pos))
-        if action == enaJob: self.enableJob()
-        elif action == disaJob: self.disableJob()
-        elif action == resJob: self.resetJob()
-        elif action == delJob: self.deleteJob()
-        elif action == genBatch: self.genBatch()
+        if len(selectedRecordLis)/14 == 1:
+            enaDisaMen = menu.addMenu('Enable / Disable Job')
+            enaJob = enaDisaMen.addAction('Enable Job')
+            disaJob = enaDisaMen.addAction('Disable Job')
+            menu.addSeparator()
+            resJob = menu.addAction('Reset Job')
+            delJob = menu.addAction('Delete Job')
+            menu.addSeparator()
+            genBatch = menu.addAction('Generate Batch')
+            action = menu.exec_(self.main.jobTable.viewport().mapToGlobal(pos))
+            if action == enaJob: self.enableJob()
+            elif action == disaJob: self.disableJob()
+            elif action == resJob: self.resetJob()
+            elif action == delJob: self.deleteJob()
+            elif action == genBatch: self.genBatch()
+        else:
+            delAllJob = menu.addAction('Delete All Job')
+            delDoneJob = menu.addAction('Delete Done Job')
+            action = menu.exec_(self.main.jobTable.viewport().mapToGlobal(pos))
+            if action == delAllJob: self.deleteAll()
+            elif action == delDoneJob: self.deleteDone()
         return
 
     def clientPopup(self, pos):
@@ -235,7 +243,7 @@ class crControllerUI(QtGui.QWidget):
 
         for chk in range(len(selectedRecordLis)/4):
             clientNameVar = str(selectedRecordLis[chk].text())
-            crControllerCore.clientCom(client=clientNameVar, message='quit', portBase=1990)
+            crControllerCore.clientCom(client=clientNameVar, message='quit', portBase=1989)
             crControllerCore.clientCom(client=clientNameVar, message='wakeUp', portBase=1991)
         time.sleep(5)
         self.refreshFun()
@@ -249,7 +257,7 @@ class crControllerUI(QtGui.QWidget):
 
         for chk in range(len(selectedRecordLis)/4):
             clientNameVar = str(selectedRecordLis[chk].text())
-            crControllerCore.clientCom(client=clientNameVar, message='restartClient', portBase=1990)
+            crControllerCore.clientCom(client=clientNameVar, message='restartClient', portBase=1989)
         time.sleep(2)
         self.refreshFun()
         return
@@ -290,7 +298,7 @@ class crControllerUI(QtGui.QWidget):
 
         for chk in range(len(selectedRecordLis)/4):
             clientNameVar = str(selectedRecordLis[chk].text())
-            crControllerCore.clientCom(client=clientNameVar, message='restart', portBase=1990)
+            crControllerCore.clientCom(client=clientNameVar, message='restart', portBase=1989)
         time.sleep(2)
         self.refreshFun()
         return
@@ -303,7 +311,7 @@ class crControllerUI(QtGui.QWidget):
 
         for chk in range(len(selectedRecordLis)/4):
             clientNameVar = str(selectedRecordLis[chk].text())
-            crControllerCore.clientCom(client=clientNameVar, message='shutDown', portBase=1990)
+            crControllerCore.clientCom(client=clientNameVar, message='shutDown', portBase=1989)
         time.sleep(2)
         self.refreshFun()
         return
@@ -314,14 +322,15 @@ class crControllerUI(QtGui.QWidget):
             QtGui.QMessageBox.warning(None,'Error','There is no job selected.')
             raise StandardError, 'error : no record selected'
         instructionLis = []
-        if (len(selectedRowLis)/13) == 1:
+        if (len(selectedRowLis)/14) == 1:
             instructionLis.append(crControllerCore.genBatch(uuid = selectedRowLis[0].text()))
         repVar = str(QtGui.QFileDialog.getSaveFileName(None, 'Save Batch file'))
-        if not repVar.endswith('.bat'):repVar = repVar+'.bat'
-        opn = open(repVar, 'w')
-        for item in instructionLis:
-            opn.write(str(item)+'\n')
-        opn.close()
+        if repVar != '':
+            if not repVar.endswith('.bat'):repVar = repVar+'.bat'
+            opn = open(repVar, 'w')
+            for item in instructionLis:
+                opn.write(str(item)+'\n')
+            opn.close()
         return
 
     def deleteClient(self):
@@ -335,7 +344,10 @@ class crControllerUI(QtGui.QWidget):
         if repVar == 16384:
             for chk in range(len(selectedRecordLis)/4):
                 clientNameVar = str(selectedRecordLis[chk].text())
-                crControllerCore.clientCom(client=clientNameVar, message='quit', portBase=1990)
+                try:
+                    crControllerCore.clientCom(client=clientNameVar, message='quit', portBase=1989)
+                except:
+                    pass
                 crControllerCore.deleteClient(clientName = clientNameVar)
         self.refreshFun()
         return
@@ -348,8 +360,9 @@ class crControllerUI(QtGui.QWidget):
         for chk in range(len(selectedRecordLis)/4):
             clientNameVar = str(selectedRecordLis[chk].text())
             crControllerCore.clientCom(client=clientNameVar, message='wakeUp', portBase=1991)
+            time.sleep(1)
 
-        time.sleep(5)
+        time.sleep(4)
         self.refreshFun()
         return
 
@@ -374,7 +387,7 @@ class crControllerUI(QtGui.QWidget):
     def populatePriorityFun(self):
         selectedRowLis = self.main.jobTable.selectedItems()
 
-        if (len(selectedRowLis)/13) == 1:self.main.prioritySpinBox.setValue(int(selectedRowLis[10].text()))
+        if (len(selectedRowLis)/14) == 1:self.main.prioritySpinBox.setValue(int(selectedRowLis[10].text()))
         return
 
     def prioritySet(self):
@@ -382,7 +395,7 @@ class crControllerUI(QtGui.QWidget):
         priorityVar = str(self.main.prioritySpinBox.value())
 
         cnt = 0
-        while cnt <= (len(selectedRowLis)/13)-1:
+        while cnt <= (len(selectedRowLis)/14)-1:
             uuidVar = str(selectedRowLis[cnt].text())
             crControllerCore.changeJobPrior(uid=uuidVar, priority=priorityVar)
             cnt+=1
@@ -455,7 +468,7 @@ class crControllerUI(QtGui.QWidget):
                                           QtGui.QMessageBox.Cancel)
 
         if repVar == 1024:
-            for chk in range(len(selectedRecordLis)/12):
+            for chk in range(len(selectedRecordLis)/14):
                 jobUuid = str(selectedRecordLis[chk].text())
                 crControllerCore.clearJobRecord(uid=jobUuid)
             self.refreshFun()
@@ -473,7 +486,7 @@ class crControllerUI(QtGui.QWidget):
                                           QtGui.QMessageBox.Ok,\
                                           QtGui.QMessageBox.Cancel)
         if repVar == 1024:
-            for chk in range(len(selectedRecordLis)/12):
+            for chk in range(len(selectedRecordLis)/14):
                 jobUuid= str(selectedRecordLis[chk].text())
                 crControllerCore.resetJobRecord(uid=jobUuid)
             self.refreshFun()
@@ -487,7 +500,7 @@ class crControllerUI(QtGui.QWidget):
             QtGui.QMessageBox.warning(None,'Error','There is no record selected.')
             raise StandardError, 'error : no record selected'
 
-        for chk in range(len(selectedRecordLis)/13):
+        for chk in range(len(selectedRecordLis)/14):
             jobUuid = str(selectedRecordLis[chk].text())
             crControllerCore.changeJobRecordBlocked(jobUuid=jobUuid, blockStatus='DISABLED')
         self.refreshFun()
@@ -501,7 +514,7 @@ class crControllerUI(QtGui.QWidget):
             QtGui.QMessageBox.warning(None,'Error','There is no record selected.')
             raise StandardError, 'error : no record selected'
 
-        for chk in range(len(selectedRecordLis)/13):
+        for chk in range(len(selectedRecordLis)/14):
             jobUuid= str(selectedRecordLis[chk].text())
             crControllerCore.changeJobRecordBlocked(jobUuid=jobUuid,  blockStatus='ENABLED')
         self.refreshFun()
@@ -521,21 +534,28 @@ class crControllerUI(QtGui.QWidget):
                 crControllerCore.changeClientStatus(clientName=clientNameVar, blockClient='DISABLED')
             else:
                 crControllerCore.changeClientStatus(clientName=clientNameVar, blockClient='ENABLED')
+                time.sleep(1)
         self.refreshFun()
         return
 
     #Head function for refresh
-    def refreshFun(self):
-        self.populateClientFun()
+    def refreshFun(self, hail=False):
+        self.populateClientFun(hail=hail)
         self.populateJobFun()
         return
 
     #Function to populate job table
     def populateJobFun(self):
-        selRowIndex = self.main.jobTable.currentRow()
+        #get current selection
+        selectedRecordLis = self.main.jobTable.selectedItems()
+        if len(selectedRecordLis)/14 == 1:
+            uuidVar = str(selectedRecordLis[0].text())
+
+        #reset row count
         self.main.jobTable.setRowCount(0)
         self.main.jobTable.setRowCount(len(crControllerCore.listAllJobGrouped()))
 
+        indexNum = -1
         cnt=0
         for chk in reversed(crControllerCore.listAllJobGrouped()):
             #Status and blocker Extend
@@ -565,6 +585,13 @@ class crControllerUI(QtGui.QWidget):
             elif statusinVar == 'HALTED':colorCodeVar = QtGui.QColor(150,150,0)
             elif statusinVar == 'ERROR':colorCodeVar=QtGui.QColor(180,180,0)
             if str(chk[0][11]) == 'DISABLED':colorCodeVar = QtGui.QColor(255,0,0)
+
+            #check for index number
+            try:
+                if str(chk[0][1]) ==  uuidVar:
+                    indexNum = cnt
+            except:
+                pass
 
             #uuid
             itemVar=QtGui.QTableWidgetItem(str(chk[0][1]))
@@ -660,34 +687,35 @@ class crControllerUI(QtGui.QWidget):
             self.main.jobTable.setItem(cnt, 13, itemVar)
             cnt += 1
         self.main.jobTable.resizeColumnsToContents()
-        self.main.jobTable.setCurrentIndex(QtCore.QModelIndex.row(0))
+        self.main.jobTable.selectRow(indexNum)
         return
 
     #Function to populate client table
-    def populateClientFun(self):
+    def populateClientFun(self, hail = False):
         self.main.clientTable.setRowCount(0)
         if crControllerCore.listAllClient()[0] != '<no client registered to the network>':
-            #client status actual
-            for clientRow in crControllerCore.listAllClient():
-                hailCon = socket.socket()
-                hailCon.settimeout(4)
-                hailHost = clientRow[1]
-                hailPort = 1990 + int(clientRow[0])
-                repVar = None
-                try:
-                    hailCon.connect((hailHost, hailPort))
-                    hailCon.send('stallCheck')
-                    repVar = hailCon.recv(1024)
-                    hailCon.close()
-                except:
-                    pass
-                if repVar is None:
-                    #change client status to OFFLINE
-                    #if clientRow[3] != 'OFFLINE':
-                    connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
-                    connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='OFFLINE' WHERE clientName='"+str(clientRow[1])+"'")
-                    connectionVar.commit()
-                    connectionVar.close()
+            if hail:
+                #client status actual
+                for clientRow in crControllerCore.listAllClient():
+                    hailCon = socket.socket()
+                    hailCon.settimeout(4)
+                    hailHost = clientRow[1]
+                    hailPort = 1989 + int(clientRow[0])
+                    repVar = None
+                    try:
+                        hailCon.connect((hailHost, hailPort))
+                        hailCon.send('stallCheck')
+                        repVar = hailCon.recv(1024)
+                        hailCon.close()
+                    except:
+                        pass
+                    if repVar is None:
+                        #change client status to OFFLINE
+                        #if clientRow[3] != 'OFFLINE':
+                        connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
+                        connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='OFFLINE' WHERE clientName='"+str(clientRow[1])+"'")
+                        connectionVar.commit()
+                        connectionVar.close()
 
             #populating the clientTable
             self.main.clientTable.setRowCount(len(crControllerCore.listAllClient()))

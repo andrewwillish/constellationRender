@@ -85,7 +85,7 @@ def startService():
 def hailServer(clientSetting, currentPid):
     socketVar = socket.socket()
     host = socket.gethostname()
-    port = 1990+int(clientSetting[0])
+    port = 1989+int(clientSetting[0])
     try:
         socketVar.bind((host,port))
     except:
