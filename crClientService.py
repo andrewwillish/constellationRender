@@ -149,7 +149,7 @@ def instructionFunc(clientSetting):
                 endClock = tempEnd[-2:]
 
                 #check back if the workhour system failed
-                if (int(currentTime >= int(startTime) and currentClock == startClock)or \
+                if (int(currentTime >= int(startTime) and currentClock == startClock) or \
                         int(currentTime <= int(endTime) and currentClock == endClock)):
                     #workhour thread and memory
                     useThread = str(clientSetting[6])
@@ -227,7 +227,7 @@ def instructionFunc(clientSetting):
             #by this stage if jobToRender is still None means there are no stall system
             if jobToRender is None:
                 #Fetch all job array
-                allJobLis=connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobBlocked='ENABLED' "\
+                allJobLis = connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobBlocked='ENABLED' "\
                     "AND jobStatus='QUEUE' AND jobClassification='"+str(clientSetting[8])+"'").fetchall()
 
                 #Check if array result is empty. Empty list mean there are neither ENABLED or QUEUE job in database
