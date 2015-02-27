@@ -18,7 +18,6 @@ systemRootVar = str(os.environ['WINDIR']).replace('\\Windows','')
 
 #Connect to database
 if not os.path.isfile(rootPathVar+'/constellationDatabase.db'): raise StandardError, 'error : constellation database non-exists'
-connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
 
 #wake on lan
 def wolTrig(client=None):
@@ -78,6 +77,7 @@ def setupClient(client = None, classification = None):
     #Register client to database
     try:
         macAddr = ':'.join(['{:02x}'.format((uuid.getnode() >> i) & 0xff) for i in range(0,8*6,8)][::-1])
+        connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
         connectionVar.execute("INSERT INTO constellationClientTable "\
             "("\
             "clientName,clientBlocked,clientMemory,clientThread,clientWorkMemory,clientWorkThread,clientStatus,clientClassification,clientJob,clientMacAddr)"\
@@ -93,6 +93,7 @@ def setupClient(client = None, classification = None):
             "'',"\
             "'"+str(macAddr)+"')")
         connectionVar.commit()
+        connectionVar.close()
     except Exception as e:
         raise StandardError, str(e)
 
@@ -141,21 +142,27 @@ def changeClass(client=None,classification=None):
         raise StandardError, 'error : client classification or name are not specified'
 
     try:
+        connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
         connectionVar.execute("UPDATE constellationClientTable "\
             "SET clientClassification='"+str(classification)+"' WHERE clientName='"+str(client)+"'")
         connectionVar.commit()
+        connectionVar.close()
     except Exception as e:
         raise StandardError, str(e)
     return
 
 #This function list all recorded job.
 def listAllJob():
+    connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
     returnLis = (connectionVar.execute("SELECT * FROM constellationJobTable")).fetchall()
+    connectionVar.close()
     return returnLis
 
 #This function list all job grouped based on uuid
 def listAllJobGrouped():
+    connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
     allLis = (connectionVar.execute("SELECT * FROM constellationJobTable")).fetchall()
+    connectionVar.close()
 
     tempLis = []
     uuidLis = []
@@ -179,7 +186,9 @@ def listAllJobGrouped():
 def searchJob(id=None, project=None, user=None, software=None, scriptPath=None,\
             status=None, priorityAbove=None, priorityBelow=None):
     #Get all recorded job from database
+    connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
     allJobLis = (connectionVar.execute("SELECT * FROM constellationJobTable")).fetchall()
+    connectionVar.close()
 
     #Declaring tempLis for temporary structural search
     #Search will systematically done by searching one condition, save it to a list, then re-search it again with
@@ -253,7 +262,9 @@ def searchJob(id=None, project=None, user=None, software=None, scriptPath=None,\
 
 #This function open output folder
 def openOutput(uid=None):
+    connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
     recordVar = connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobUuid='"+str(uid)+"'").fetchall()
+    connectionVar.close()
     recordVar = recordVar[0]
 
     pathInstructionVar = recordVar[6]
@@ -296,10 +307,12 @@ def clearStat(clientName=None):
     for client in listAllClient():
         if clientName == str(client[1]) and client[2] != '':
             try:
+                connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
                 connectionVar.execute("UPDATE constellationJobTable SET jobStatus='QUEUE' WHERE jobId='"+str(client[2])+"'")
                 connectionVar.commit()
                 connectionVar.execute("UPDATE constellationClientTable SET clientJob='', clientStatus='STANDBY' WHERE clientName='"+str(clientName)+"'")
                 connectionVar.commit()
+                connectionVar.close()
             except:
                 pass
     return
@@ -313,19 +326,25 @@ def deleteClient(clientName = None):
     for client in listAllClient():
         if clientName == str(client[1]) and client[2] != '':
             try:
+                connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
                 connectionVar.execute("UPDATE constellationJobTable SET jobStatus='QUEUE' WHERE jobId='"+str(client[2])+"'")
                 connectionVar.commit()
+                connectionVar.close()
             except:
                 pass
 
     #database delete query
+    connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
     connectionVar.execute("DELETE FROM constellationClientTable WHERE clientName='"+str(clientName)+"'")
     connectionVar.commit()
+    connectionVar.close()
     return
 
 #generate command line and export it to batch file
 def genBatch(uuid = None):
+    connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
     jobData = connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobUuid='"+str(uuid)+"'").fetchall()
+    connectionVar.close()
     startMark = jobData[0][7]
     endMark = jobData[len(jobData)-1][8]
 
@@ -376,17 +395,23 @@ def clearJobRecord(uid=None, done=False, all=False):
 
             if statusinVar == 'DONE':
                 for chb in chk:
+                    connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
                     connectionVar.execute("DELETE FROM constellationJobTable WHERE jobUuid='"+chb[1]+"'")
                     connectionVar.commit()
+                    connectionVar.close()
 
     #Delete all job
     if all:
+        connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
         connectionVar.execute("DELETE FROM constellationJobTable;")
         connectionVar.commit()
+        connectionVar.close()
 
         for clItem in listAllClient():
+            connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
             connectionVar.execute("UPDATE constellationClientTable SET clientJob = '' WHERE clientId='"+str(clItem[0])+"'")
             connectionVar.commit()
+            connectionVar.close()
 
     #Delete job based by UUID
     if uid is not None:
@@ -396,13 +421,16 @@ def clearJobRecord(uid=None, done=False, all=False):
             for clItem in listAllClient():
                 currentJob = clItem[2]
                 if jobId == currentJob:
+                    connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
                     connectionVar.execute("UPDATE constellationClientTable SET clientJob = '' WHERE clientId='"+str(clItem[0])+"'")
                     connectionVar.commit()
+                    connectionVar.close()
 
                     #continue here to force the running process to stop and restart the client
-
+        connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
         connectionVar.execute("DELETE FROM constellationJobTable WHERE jobUuid='"+str(uid)+"'")
         connectionVar.commit()
+        connectionVar.close()
     return
 
 #This function reset job record
@@ -424,8 +452,10 @@ def resetJobRecord(uid=None):
             except:
                 pass
 
+    connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
     connectionVar.execute("UPDATE constellationJobTable SET jobStatus='QUEUE' WHERE jobUuid='"+uid+"'")
     connectionVar.commit()
+    connectionVar.close()
     return
 
 #This function will change job record massively or singularly
@@ -433,8 +463,10 @@ def changeJobPrior(uid=None, priority=None):
     #validate parameter
     if uid is None or priority is None:raise ValueError, 'error : empty record'
 
+    connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
     connectionVar.execute("UPDATE constellationJobTable SET jobPriority='"+str(priority)+"' WHERE jobUuid='"+str(uid)+"'")
     connectionVar.commit()
+    connectionVar.close()
     return
 
 #This function will change job record attribute
@@ -444,8 +476,10 @@ def changeJobRecord(jobId=None, status=None):
 
     #change job status
     if status is not None:
+        connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
         connectionVar.execute("UPDATE constellationJobTable SET jobStatus='"+str(status)+"' WHERE jobId='"+str(jobId)+"'")
         connectionVar.commit()
+        connectionVar.close()
     return
 
 #This function will change job record attribute
@@ -454,13 +488,17 @@ def changeJobRecordBlocked(jobUuid=None, blockStatus=None):
     if jobUuid is None:raise ValueError, 'error : no id specified'
 
     if blockStatus is not None:
+        connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
         connectionVar.execute("UPDATE constellationJobTable SET jobBlocked='"+str(blockStatus)+"' WHERE jobUuid='"+str(jobUuid)+"'")
         connectionVar.commit()
+        connectionVar.close()
     return
 
 #This function list all client.
 def listAllClient():
+    connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
     returnLis = (connectionVar.execute("SELECT * FROM constellationClientTable")).fetchall()
+    connectionVar.close()
     if returnLis == []:returnLis = ['<no client registered to the network>']
     return returnLis
 
@@ -471,11 +509,14 @@ def changeClientStatus(clientName=None, status=None, blockClient=None, clientJob
 
     #Processing status
     if status is not None:
+        connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
         connectionVar.execute("UPDATE constellationClientTable SET clientStatus='"+status+"' WHERE clientName='"+str(clientName)+"'")
         connectionVar.commit()
+        connectionVar.close()
 
     #Processing blockClient
     if blockClient is not None:
+        connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
         if blockClient == 'DISABLED':
             connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='DISABLED' WHERE clientName='"+str(clientName)+"'")
             connectionVar.commit()
@@ -485,8 +526,11 @@ def changeClientStatus(clientName=None, status=None, blockClient=None, clientJob
         elif blockClient == 'OFFLINE':
             connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='OFFLINE' WHERE clientName='"+str(clientName)+"'")
             connectionVar.commit()
+        connectionVar.close()
 
     if clientJob is not None:
+        connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
         connectionVar.execute("UPDATE constellationClientTable SET clientJob='"+str(clientJob)+"' WHERE clientName='"+str(clientName)+"'")
         connectionVar.commit()
+        connectionVar.close()
     return

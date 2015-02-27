@@ -16,8 +16,9 @@ import crRendererMayaMray, crRendererMayaVray, crControllerCore
 rootPathVar = os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
 
 #Connect to database
+#note: we didn't connect the database here anymore just checking if the database
+#exists or not. we will connect to database then close it immediately every use.
 if not os.path.isfile(rootPathVar+'/constellationDatabase.db'): raise StandardError, 'error : constellation database non-exists'
-connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
 
 #Determining client name
 clientName = str(socket.gethostname())
@@ -36,7 +37,9 @@ def startService():
     currentPid = os.getpid()
 
     #Check if the client has been registered to the database
-    allClientLis = connectionVar.execute("SELECT * FROM constellationClientTable")
+    connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
+    allClientLis = connectionVar.execute("SELECT * FROM constellationClientTable").fetchall()
+    connectionVar.close()
     templis = []
     for chk in allClientLis: templis.append(chk[1])
     if clientName not in templis:
@@ -50,6 +53,7 @@ def startService():
         statPrint('local workspace created')
 
     #set client to enabled
+    connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
     connectionVar.execute("UPDATE constellationClientTable SET"\
         " clientBlocked='ENABLED' WHERE clientName='"+str(clientName)+"'")
     connectionVar.commit()
@@ -57,6 +61,7 @@ def startService():
     #Fetch client setting from database
     clientSetting = (connectionVar.execute("SELECT * FROM constellationClientTable WHERE clientName='"\
                                         +str(socket.gethostname())+"'").fetchall())
+    connectionVar.close()
     if len(clientSetting) != 1:
         statPrint('database respond anomaly', colorStat = 12)
         raise StandardError, 'error : database respond anomaly'
@@ -77,8 +82,10 @@ def startService():
             instructionFunc(clientSetting)
         except Exception as e:
             statPrint('General block error see log for detail', colorStat = 12)
+            connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
             connectionVar.execute("INSERT INTO constellationLogTable (clientName,jobUuid,logDescription) "\
                 "VALUES ('"+str(clientName)+"','n/a','error crClientService General block error:"+str(e)+"')")
+            connectionVar.close()
     return
 
 #hail function service
@@ -110,8 +117,10 @@ def hailServer(clientSetting, currentPid):
 #Render instruction command : <mayaDir> -rl <layer> -s <startFrame> -e <endFrame> <filePath>
 def instructionFunc(clientSetting):
     #Re-fetch client setting from database
+    connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
     clientSetting = (connectionVar.execute(\
         "SELECT * FROM constellationClientTable WHERE clientName='"+str(socket.gethostname())+"'").fetchall())
+    connectionVar.close()
     if len(clientSetting) != 1:
         statPrint('database respond anomaly')
         raise StandardError, 'error : database respond anomaly'
@@ -208,8 +217,10 @@ def instructionFunc(clientSetting):
 
                             if repVar is None:
                                 statPrint('stalled job detected jobId='+str(clientRow[2]), colorStat=12)
+                                connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
                                 connectionVar.execute("UPDATE constellationClientTable SET clientJob='',clientStatus='STANDBY' WHERE clientName='"+str(clientRow[1])+"'")
                                 connectionVar.commit()
+                                connectionVar.close()
                                 allJob = crControllerCore.listAllJob()
                                 for chk in allJob:
                                     #compare if the id match and the classification match as well
@@ -217,8 +228,10 @@ def instructionFunc(clientSetting):
                                         jobToRender = chk
                                         statPrint('taking over job '+str(jobToRender[1])+' from '+str(clientRow[1]), colorStat=10)
                                         #set other client as disabled
+                                        connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
                                         connectionVar.execute("UPDATE constellationClientTable SET clientBlocked='DISABLED', clientJob='',clientStatus='STANDBY' WHERE clientName='"+str(clientRow[1])+"'")
                                         connectionVar.commit()
+                                        connectionVar.close()
                 if jobToRender is None:
                     statPrint('no peer stalled job', colorStat=2)
             #HAIL=======================================================================================================
@@ -227,8 +240,10 @@ def instructionFunc(clientSetting):
             #by this stage if jobToRender is still None means there are no stall system
             if jobToRender is None:
                 #Fetch all job array
+                connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
                 allJobLis = connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobBlocked='ENABLED' "\
                     "AND jobStatus='QUEUE' AND jobClassification='"+str(clientSetting[8])+"'").fetchall()
+                connectionVar.close()
 
                 #Check if array result is empty. Empty list mean there are neither ENABLED or QUEUE job in database
                 if allJobLis != []:
@@ -252,15 +267,20 @@ def instructionFunc(clientSetting):
                     #find job renderer and pass the job to each individual renderer
                     if jobToRender[4] == 'maya-mray':
                         #re-routed
+
                         crRendererMayaMray.render(clientSetting,jobToRender, useThread, useMemory, connectionVar)
+
                     elif jobToRender[4] == 'maya-vray':
+
                         crRendererMayaVray.render(clientSetting,jobToRender, useThread, useMemory, connectionVar)
+
                 else:
                     statPrint('client standby - no job available', colorStat=14)
             except Exception as err:
                 #renderer block error write to log
                 err = str(err).replace("'", "")
                 statPrint('process failed: '+str(err), colorStat=12)
+                connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
                 connectionVar.execute("INSERT INTO constellationLogTable (clientName,jobUuid,logDescription) "\
                     "VALUES ('"+str(clientName)+"','"+str(jobToRender[1])+"','error crClientService renderer block:"+str(err)+"')")
 
@@ -272,6 +292,7 @@ def instructionFunc(clientSetting):
                     ",clientJob=''"
                     "WHERE clientName='"+clientName+"'")
                 connectionVar.commit()
+                connectionVar.close()
             #RENDERER===================================================================================================
         else:
             statPrint('client disabled - work mem and thread block', colorStat=12)

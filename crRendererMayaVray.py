@@ -23,6 +23,7 @@ rootPathVar = os.path.dirname(os.path.realpath(__file__)).replace('\\','/')
 def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
     #CHANGE CLIENT AND JOB STATUS=======================================================================================
     #change client status to RENDERING
+    connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
     connectionVar.execute("UPDATE constellationClientTable SET clientStatus='RENDERING' "\
         ",clientJob='"+str(jobToRender[0])+"'"
         "WHERE clientName='"+clientName+"'")
@@ -31,6 +32,7 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
     #change job status to RENDERING
     connectionVar.execute("UPDATE constellationJobTable SET jobStatus='RENDERING' WHERE jobId='"+str(jobToRender[0])+"'")
     connectionVar.commit()
+    connectionVar.close()
     #CHANGE CLIENT AND JOB STATUS=======================================================================================
 
     #GET RENDERER=======================================================================================================
@@ -49,9 +51,11 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
         statPrint('starting job id:'+str(jobToRender[0])+' uuid:'+str(jobToRender[1]), colorStat=10)
 
         #WRITELOG=======================================================================================================
+        connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
         connectionVar.execute("INSERT INTO constellationLogTable (clientName,jobUuid,logDescription) "\
             "VALUES ('"+str(clientName)+"','"+str(jobToRender[1])+"','process started')")
         connectionVar.commit()
+        connectionVar.close()
         #WRITELOG=======================================================================================================
 
         #CREATE DIRECTORY===============================================================================================
@@ -133,6 +137,7 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
             if renderRunError is None:
                 #rendering finished without error.
                 #Write job render average
+                connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
                 currentRenderTime=connectionVar.execute("SELECT * FROM constellationJobTable WHERE jobId='"+str(jobToRender[0])+"'").fetchall()
                 if len(currentRenderTime)!=1:
                     statPrint('unable to record average render time database fetch anomaly', colorStat=12)
@@ -156,11 +161,12 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
                     "VALUES ('"+str(clientName)+"','"+str(jobToRender[1])+"','process finished')")
                 connectionVar.commit()
                 #WRITELOG===============================================================================================
-
+                connectionVar.close()
             else:
                 #rendering finished with error. block appropriate client
                 #rendering finished without error.
                 #change status to ERROR to all job uuid [block everything that share the same uuid]
+                connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
                 connectionVar.execute("UPDATE constellationJobTable SET jobStatus='ERROR' WHERE jobUuid='"+str(jobToRender[1])+"'")
                 connectionVar.commit()
 
@@ -175,7 +181,7 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
                     "VALUES ('"+str(clientName)+"','"+str(jobToRender[1])+"','process failed:\n "+str(renderRunError)+"')")
                 connectionVar.commit()
                 #WRITELOG===============================================================================================
-
+                connectionVar.close()
             #POST-PROCESSING============================================================================================
         else:
             #rendering process unable to start due to unable to create directory output
@@ -183,6 +189,7 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
 
             statPrint('process error check job log for detail', colorStat=12)
 
+            connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
             connectionVar.execute("UPDATE constellationJobTable SET jobStatus='ERROR' WHERE jobUuid='"+str(jobToRender[1])+"'")
             connectionVar.commit()
 
@@ -199,13 +206,16 @@ def render(clientSetting, jobToRender, useThread, useMemory, connectionVar):
                 "VALUES ('"+str(clientName)+"','"+str(jobToRender[1])+"','process failed:unable to create directory')")
             connectionVar.commit()
             #WRITELOG===================================================================================================
+            connectionVar.close()
     else:
         statPrint('no renderer specified', colorStat=12)
         #change client status to STANDBY
+        connectionVar = sqlite3.connect(rootPathVar+'/constellationDatabase.db')
         connectionVar.execute("UPDATE constellationClientTable SET clientStatus='STANDBY' "\
             ",clientJob='',clientBlocked='DISABLED'"
             "WHERE clientName='"+clientName+"'")
         connectionVar.commit()
+        connectionVar.close()
     return
 
 def statPrint(textVar, colorStat = None):
